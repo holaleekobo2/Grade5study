@@ -1,18 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Subjects Index</title>
+    <title>數學測驗索引</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const btn = document.getElementById('themeBtn');
+            if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+        });
+    </script>
 </head>
 <body>
-    <h1>Math Subjects Index</h1>
-    <ul>
-        <li><a href="unit1.html">Unit 1: Number and Operations</a></li>
-        <li><a href="unit2.html">Unit 2: Algebra</a></li>
-        <li><a href="unit3.html">Unit 3: Geometry</a></li>
-        <li><a href="unit4.html">Unit 4: Measurement</a></li>
-        <li><a href="unit5.html">Unit 5: Data Analysis</a></li>
-    </ul>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <h1>🔢 數學測驗目錄</h1>
+    
+    <div class="unit-section">
+        <ul>
+            <li><a href="unit1.html" class="quiz-link">📝 單元 1：整數與計算</a></li>
+            <li><a href="unit2.html" class="quiz-link">📝 單元 2：代數概念</a></li>
+            <li><a href="unit3.html" class="quiz-link">📝 單元 3：幾何圖形</a></li>
+            <li><a href="unit4.html" class="quiz-link">📝 單元 4：測量與單位</a></li>
+            <li><a href="unit5.html" class="quiz-link">📝 單元 5：資料與統計</a></li>
+        </ul>
+    </div>
+
+    <p><a href="index.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 回到首頁</a></p>
+</div>
 </body>
 </html>

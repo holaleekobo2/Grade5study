@@ -1,18 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Units Index</title>
+    <title>英文測驗索引</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const btn = document.getElementById('themeBtn');
+            if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+        });
+    </script>
 </head>
 <body>
-    <h1>English Subjects Index</h1>
-    <ul>
-        <li><a href="#unit1">Unit 1: Grammar</a></li>
-        <li><a href="#unit2">Unit 2: Literature</a></li>
-        <li><a href="#unit3">Unit 3: Writing Skills</a></li>
-        <li><a href="#unit4">Unit 4: Reading Comprehension</a></li>
-        <li><a href="#unit5">Unit 5: Vocabulary Development</a></li>
-    </ul>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <h1>🌍 英文測驗目錄</h1>
+    
+    <div class="unit-section">
+        <ul>
+            <li><a href="#unit1" class="quiz-link">📝 單元 1：常用語法</a></li>
+            <li><a href="#unit2" class="quiz-link">📝 單元 2：文學欣賞</a></li>
+            <li><a href="#unit3" class="quiz-link">📝 單元 3：寫作技巧</a></li>
+            <li><a href="#unit4" class="quiz-link">📝 單元 4：閱讀理解</a></li>
+            <li><a href="#unit5" class="quiz-link">📝 單元 5：字彙發展</a></li>
+        </ul>
+    </div>
+
+    <p><a href="index.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 回到首頁</a></p>
+</div>
 </body>
 </html>

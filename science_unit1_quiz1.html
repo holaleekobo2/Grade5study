@@ -4,29 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>單元一 測驗 1：探索星空的奧祕</title>
-    <style>
-        :root { --bg-color: #f0f4f8; --container-bg: #ffffff; --text-color: #2c3e50; --question-border: #eeeeee; --btn-bg: #3498db; --result-bg: #e8f6f3; --wrong-color: #e74c3c; --correct-color: #27ae60; }
-        [data-theme='dark'] { --bg-color: #1a1a2e; --container-bg: #16213e; --text-color: #e0e0e0; --question-border: #0f3460; --btn-bg: #0077b6; --result-bg: #1b262c; --wrong-color: #ff4d4d; --correct-color: #4ade80; }
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; line-height: 1.6; transition: all 0.3s ease; }
-        .theme-toggle { text-align: right; margin-bottom: 20px; }
-        #themeBtn { padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--btn-bg); background: transparent; color: var(--text-color); }
-        .container { max-width: 800px; margin: auto; background: var(--container-bg); padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        h1 { text-align: center; }
-        .question { margin-bottom: 25px; border-bottom: 1px solid var(--question-border); padding-bottom: 15px; }
-        .options { list-style: none; padding: 0; }
-        button#submitBtn { display: block; width: 100%; padding: 15px; background-color: var(--btn-bg); color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; }
-        #result { margin-top: 30px; display: none; padding: 20px; border-radius: 10px; border: 2px solid var(--btn-bg); background-color: var(--result-bg); }
-        .history-section { margin-top: 50px; padding-top: 20px; border-top: 2px dashed var(--question-border); }
-        .history-item { background: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--btn-bg); }
-        .correct { color: var(--correct-color); font-weight: bold; }
-        .wrong { color: var(--wrong-color); font-weight: bold; }
-        details summary { cursor: pointer; color: var(--btn-bg); font-weight: bold; margin-top: 10px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="theme-toggle">
-    <button id="themeBtn" onclick="toggleTheme()">🌙 暗色模式</button>
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
 </div>
 
 <div class="container">
