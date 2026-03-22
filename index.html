@@ -4,7 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>五年級自然測驗：探索星空的奧祕</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 定義顏色變數 */
+        :root {
+            --bg-color: #f0f4f8;
+            --container-bg: #ffffff;
+            --text-color: #2c3e50;
+            --question-border: #eeeeee;
+            --btn-bg: #3498db;
+            --result-bg: #e8f6f3;
+            --wrong-color: #e74c3c;
+            --correct-color: #27ae60;
+        }
+
+        /* 暗色模式變數 */
+        [data-theme='dark'] {
+            --bg-color: #1a1a2e; /* 深星空色 */
+            --container-bg: #16213e;
+            --text-color: #e0e0e0;
+            --question-border: #0f3460;
+            --btn-bg: #0077b6;
+            --result-bg: #1b262c;
+            --wrong-color: #ff4d4d;
+            --correct-color: #4ade80;
+        }
+
+        body { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            padding: 20px; 
+            line-height: 1.6; 
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle { text-align: right; margin-bottom: 20px; }
+        #themeBtn { padding: 8px 15px; cursor: pointer; border-radius: 20px; border: 1px solid var(--btn-bg); background: transparent; color: var(--text-color); }
+
+        .container { 
+            max-width: 800px; 
+            margin: auto; 
+            background: var(--container-bg); 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+        }
+
+        h1 { text-align: center; color: var(--text-color); }
+        .question { margin-bottom: 25px; border-bottom: 1px solid var(--question-border); padding-bottom: 15px; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 10px 0; }
+        
+        button#submitBtn { 
+            display: block; width: 100%; padding: 15px; 
+            background-color: var(--btn-bg); color: white; 
+            border: none; border-radius: 5px; font-size: 18px; cursor: pointer; 
+        }
+        button#submitBtn:hover { filter: brightness(1.1); }
+
+        #result { 
+            margin-top: 30px; display: none; padding: 20px; 
+            border-radius: 10px; border: 2px solid var(--btn-bg);
+            background-color: var(--result-bg); 
+        }
+
+        .correct { color: var(--correct-color); font-weight: bold; }
+        .wrong { color: var(--wrong-color); font-weight: bold; }
+    </style>
 </head>
 <body>
 
@@ -16,48 +82,41 @@
     <h1>🌠 五年級自然測驗：探索星空的奧祕</h1>
     <form id="quizForm">
         <div id="questionsContainer"></div>
-        <button type="button" onclick="calculateScore()">提交答案查看結果</button>
+        <button id="submitBtn" type="button" onclick="calculateScore()">提交答案查看結果</button>
     </form>
 
     <div id="result">
         <h2>測試結果</h2>
-        <p id="scoreText"></p>
+        <p id="scoreText" style="font-size: 1.5em;"></p>
         <div id="wrongAnswers"></div>
     </div>
 </div>
 
 <script>
-    // Dark mode toggle
+    // 主題切換邏輯
     function toggleTheme() {
         const html = document.documentElement;
         const btn = document.getElementById('themeBtn');
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
-        if (html.getAttribute('data-theme') === 'dark') {
-            html.setAttribute('data-theme', 'light');
-            btn.textContent = '🌙 暗色模式';
-            localStorage.setItem('theme', 'light');
-        } else {
-            html.setAttribute('data-theme', 'dark');
-            btn.textContent = '☀️ 亮色模式';
-            localStorage.setItem('theme', 'dark');
-        }
+        html.setAttribute('data-theme', newTheme);
+        btn.textContent = newTheme === 'dark' ? '☀️ 亮色模式' : '🌙 暗色模式';
+        localStorage.setItem('theme', newTheme);
     }
 
-    // Load saved theme preference
+    // 載入儲存的主題
     window.addEventListener('DOMContentLoaded', function() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
-        
         const btn = document.getElementById('themeBtn');
-        if (savedTheme === 'dark') {
-            btn.textContent = '☀️ 亮色模式';
-        }
+        if (savedTheme === 'dark') btn.textContent = '☀️ 亮色模式';
     });
 
     const quizData = [
         { q: "在晴朗的夜晚，我們看到的星星大多是什麼星？", a: ["行星", "恆星", "衛星", "流星"], correct: 1 },
         { q: "星星的顏色不同，主要是因為什麼原因？", a: ["距離遠近", "大小不同", "表面溫度不同", "亮暗程度"], correct: 2 },
-        { q: "古代人將相鄰的星星想像成各種圖形，稱為什麼？", a: ["星雲", "星系", "星座", "星團"], correct: 2 },
+        { q: "古代人將相鄰的星星想像成各種圖形，稱稱為？", a: ["星雲", "星系", "星座", "星團"], correct: 2 },
         { q: "使用星座盤觀測時，應該將星座盤如何放置？", a: ["平放在桌上", "垂直掛在牆上", "高舉過頭頂，盤面朝下", "貼在胸前"], correct: 2 },
         { q: "使用星座盤時，要先對準哪兩個資訊？", a: ["農曆日期與時間", "國曆日期與時間", "氣溫與濕度", "經度與緯度"], correct: 1 },
         { q: "在台灣，哪一顆星的位置幾乎固定不動，可用來辨認方位？", a: ["織女星", "天狼星", "北極星", "牛郎星"], correct: 2 },
@@ -69,7 +128,7 @@
         { q: "星星在天空中的方位通常是由哪裡轉向哪裡？", a: ["西向東", "東向西", "南向北", "北向南"], correct: 1 },
         { q: "造成星星東升西落現象的主要原因是？", a: ["地球公轉", "地球自轉", "星星在動", "月球繞地球"], correct: 1 },
         { q: "在同一個晚上，隨著時間變化，北極星的位置會如何？", a: ["由東向西移", "由西向東移", "幾乎不動", "繞著月亮轉"], correct: 2 },
-        { q: "不同季節看到的主要星座不同，主要是因為？", a: ["地球自轉", "地球公轉", "星星跑掉了", "月���遮擋"], correct: 1 },
+        { q: "不同季節看到的主要星座不同，主要是因為？", a: ["地球自轉", "地球公轉", "星星跑掉了", "月球遮擋"], correct: 1 },
         { q: "天空中星星的亮度等級稱為「星等」，請問幾等星最亮？", a: ["-1等星", "1等星", "3等星", "6等星"], correct: 0 },
         { q: "觀測星星時，應選擇什麼樣的地點？", a: ["市中心大樓屋頂", "燈光昏暗、視野開闊處", "森林茂密處", "百貨公司門口"], correct: 1 },
         { q: "星座盤上的透明橢圓形視窗代表什麼？", a: ["全天空的所有星星", "當時當地能看到的星空範圍", "銀河系", "太陽系"], correct: 1 },
@@ -83,7 +142,7 @@
             <p><strong>${index + 1}. ${data.q}</strong></p>
             <ul class="options">`;
         data.a.forEach((opt, i) => {
-            html += `<li><input type="radio" name="q${index}" value="${i}"> ${opt}</li>`;
+            html += `<li><label><input type="radio" name="q${index}" value="${i}"> ${opt}</label></li>`;
         });
         html += `</ul></div>`;
         container.innerHTML += html;
@@ -91,29 +150,32 @@
 
     function calculateScore() {
         let score = 0;
-        let wrongHtml = "<h3>錯誤題目檢視：</h3>";
+        let wrongHtml = "<h3>錯題複習：</h3>";
         let hasWrong = false;
 
         quizData.forEach((data, index) => {
             const selected = document.querySelector(`input[name="q${index}"]:checked`);
-            if (selected && parseInt(selected.value) === data.correct) {
+            const isCorrect = selected && parseInt(selected.value) === data.correct;
+            
+            if (isCorrect) {
                 score++;
             } else {
                 hasWrong = true;
                 const userChoice = selected ? data.a[selected.value] : "未作答";
-                wrongHtml += `<div class="question">
-                    <p>${index + 1}. ${data.q}</p>
+                wrongHtml += `<div class="question" style="border-left: 5px solid var(--wrong-color); padding-left: 10px;">
+                    <p><strong>${index + 1}. ${data.q}</strong></p>
                     <p class="wrong">你的答案：${userChoice}</p>
                     <p class="correct">正確答案：${data.a[data.correct]}</p>
                 </div>`;
             }
         });
 
+        const resultDiv = document.getElementById('result');
         document.getElementById('scoreText').innerHTML = `得分：<strong>${score}</strong> / ${quizData.length}`;
-        document.getElementById('wrongAnswers').innerHTML = hasWrong ? wrongHtml : "<p class='correct'>太棒了！全部正確！</p>";
-        document.getElementById('result').style.display = 'block';
-        document.getElementById('result').style.backgroundColor = score >= 12 ? '#e8f6f3' : '#fdedec';
-        window.scrollTo(0, document.body.scrollHeight);
+        document.getElementById('wrongAnswers').innerHTML = hasWrong ? wrongHtml : "<p class='correct'>完美！你對星座瞭如指掌！</p>";
+        
+        resultDiv.style.display = 'block';
+        window.scrollTo({ top: resultDiv.offsetTop, behavior: 'smooth' });
     }
 </script>
 
