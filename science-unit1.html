@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>五年級自然測驗：探索星空的奧祕</title>
     <style>
-        /* 定義顏色變數 */
+        /* [Existing Styles Kept...] */
         :root {
             --bg-color: #f0f4f8;
             --container-bg: #ffffff;
@@ -17,9 +17,8 @@
             --correct-color: #27ae60;
         }
 
-        /* 暗色模式變數 */
         [data-theme='dark'] {
-            --bg-color: #1a1a2e; /* 深星空色 */
+            --bg-color: #1a1a2e;
             --container-bg: #16213e;
             --text-color: #e0e0e0;
             --question-border: #0f3460;
@@ -68,8 +67,24 @@
             background-color: var(--result-bg); 
         }
 
+        .history-section {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--question-border);
+        }
+
+        .history-item {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--btn-bg);
+        }
+
         .correct { color: var(--correct-color); font-weight: bold; }
         .wrong { color: var(--wrong-color); font-weight: bold; }
+        
+        details summary { cursor: pointer; color: var(--btn-bg); font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -90,28 +105,25 @@
         <p id="scoreText" style="font-size: 1.5em;"></p>
         <div id="wrongAnswers"></div>
     </div>
+
+    <div class="history-section">
+        <h3>📊 測驗紀錄回顧 (教師專用)</h3>
+        <div id="historyList">尚無測驗紀錄</div>
+        <button onclick="clearHistory()" style="margin-top: 20px; background: var(--wrong-color); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">清除所有紀錄</button>
+    </div>
 </div>
 
 <script>
-    // 主題切換邏輯
+    // [Theme Logic Kept...]
     function toggleTheme() {
         const html = document.documentElement;
         const btn = document.getElementById('themeBtn');
         const currentTheme = html.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
         html.setAttribute('data-theme', newTheme);
         btn.textContent = newTheme === 'dark' ? '☀️ 亮色模式' : '🌙 暗色模式';
         localStorage.setItem('theme', newTheme);
     }
-
-    // 載入儲存的主題
-    window.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        const btn = document.getElementById('themeBtn');
-        if (savedTheme === 'dark') btn.textContent = '☀️ 亮色模式';
-    });
 
     const quizData = [
         { q: "在晴朗的夜晚，我們看到的星星大多是什麼星？", a: ["行星", "恆星", "衛星", "流星"], correct: 1 },
@@ -148,10 +160,47 @@
         container.innerHTML += html;
     });
 
+    function displayHistory() {
+        const history = JSON.parse(localStorage.getItem('science_unit1_results')) || [];
+        const listContainer = document.getElementById('historyList');
+        
+        if (history.length === 0) {
+            listContainer.innerHTML = "尚無測驗紀錄";
+            return;
+        }
+
+        // Show latest attempts first
+        listContainer.innerHTML = history.slice().reverse().map((item, idx) => `
+            <div class="history-item">
+                <strong>第 ${history.length - idx} 次測驗 - ${item.date}</strong><br>
+                得分：<span class="correct">${item.score} / ${item.total}</span>
+                <details>
+                    <summary>查看錯題細節</summary>
+                    <div style="margin-top: 10px; font-size: 0.9em;">
+                        ${item.mistakes.length > 0 ? item.mistakes.map(m => `
+                            <p style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">
+                                <strong>問：</strong>${m.question}<br>
+                                <span class="wrong">答：${m.userAnswer}</span> | <span class="correct">正：${m.correctAnswer}</span>
+                            </p>
+                        `).join('') : "完美！沒有錯題。"}
+                    </div>
+                </details>
+            </div>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm("確定要清除所有紀錄嗎？")) {
+            localStorage.removeItem('science_unit1_results');
+            displayHistory();
+        }
+    }
+
     function calculateScore() {
         let score = 0;
         let wrongHtml = "<h3>錯題複習：</h3>";
         let hasWrong = false;
+        let currentMistakes = [];
 
         quizData.forEach((data, index) => {
             const selected = document.querySelector(`input[name="q${index}"]:checked`);
@@ -162,21 +211,48 @@
             } else {
                 hasWrong = true;
                 const userChoice = selected ? data.a[selected.value] : "未作答";
+                const correctAnswer = data.a[data.correct];
+                
+                currentMistakes.push({
+                    question: data.q,
+                    userAnswer: userChoice,
+                    correctAnswer: correctAnswer
+                });
+
                 wrongHtml += `<div class="question" style="border-left: 5px solid var(--wrong-color); padding-left: 10px;">
                     <p><strong>${index + 1}. ${data.q}</strong></p>
                     <p class="wrong">你的答案：${userChoice}</p>
-                    <p class="correct">正確答案：${data.a[data.correct]}</p>
+                    <p class="correct">正確答案：${correctAnswer}</p>
                 </div>`;
             }
         });
+
+        // Save result to History
+        const history = JSON.parse(localStorage.getItem('science_unit1_results')) || [];
+        history.push({
+            date: new Date().toLocaleString(),
+            score: score,
+            total: quizData.length,
+            mistakes: currentMistakes
+        });
+        localStorage.setItem('science_unit1_results', JSON.stringify(history));
 
         const resultDiv = document.getElementById('result');
         document.getElementById('scoreText').innerHTML = `得分：<strong>${score}</strong> / ${quizData.length}`;
         document.getElementById('wrongAnswers').innerHTML = hasWrong ? wrongHtml : "<p class='correct'>完美！你對星座瞭如指掌！</p>";
         
         resultDiv.style.display = 'block';
+        displayHistory(); // Refresh the visible history
         window.scrollTo({ top: resultDiv.offsetTop, behavior: 'smooth' });
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const btn = document.getElementById('themeBtn');
+        if (savedTheme === 'dark') btn.textContent = '☀️ 亮色模式';
+        displayHistory();
+    });
 </script>
 
 </body>
