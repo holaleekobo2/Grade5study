@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五下社會：清帝國時期臺灣的發展與改變 - 單元二進階測驗</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+        .quiz-info { text-align: center; margin-bottom: 30px; color: #34495e; font-weight: bold; background: #e8f6f3; padding: 10px; border-radius: 6px; }
+        .section-title { background: #3498db; color: white; padding: 12px; border-radius: 4px; margin: 35px 0 15px 0; font-size: 1.1em; }
+        .question-block { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
+        .question-block:hover { background-color: #f9f9f9; }
+        .question-title { font-weight: bold; margin-bottom: 12px; display: block; }
+        .options label { display: block; margin: 10px 0; cursor: pointer; padding: 8px; border-radius: 5px; border: 1px solid transparent; }
+        .options label:hover { background-color: #ebf5fb; border-color: #3498db; }
+        input[type="radio"] { margin-right: 12px; transform: scale(1.3); }
+        .submit-btn { display: block; width: 280px; height: 65px; margin: 50px auto; background-color: #2980b9; color: white; border: none; border-radius: 35px; font-size: 22px; font-weight: bold; cursor: pointer; box-shadow: 0 6px 20px rgba(41,128,185,0.4); transition: 0.3s; }
+        .submit-btn:hover { background-color: #2471a3; transform: scale(1.05); }
+        #result { display: none; margin-top: 40px; padding: 30px; border-radius: 12px; border: 3px solid #27ae60; background-color: #f0fff4; }
+        #scoreText { font-size: 36px; text-align: center; color: #27ae60; margin-bottom: 25px; font-weight: 900; }
+        .wrong-item { background: #fee2e2; border-left: 8px solid #ef4444; padding: 25px; margin-top: 20px; border-radius: 10px; }
+        .correct-ans { color: #059669; font-weight: bold; margin: 8px 0; }
+        .user-ans-wrong { color: #dc2626; font-weight: bold; margin-bottom: 5px; }
+        .explanation { font-size: 0.95em; color: #4b5563; background: #ffffff; padding: 12px; border-radius: 6px; margin-top: 12px; border: 1px dashed #9ca3af; }
+        .back-link { display: block; margin-bottom: 25px; text-decoration: none; color: #2980b9; font-weight: bold; font-size: 1.1em; }
+
+        .history-section { margin-top: 60px; padding-top: 40px; border-top: 2px solid #ddd; }
+        .history-item { background: #ffffff; padding: 20px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .history-item strong { color: #1e40af; }
+        .clear-btn { background: #991b1b; color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+        .clear-btn:hover { background: #7f1d1d; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="society.html" class="back-link">⬅ 返回單元目錄</a>
+    <h1>社會科單元二：進階評量測驗</h1>
+    <p class="quiz-info">主題：清帝國時期臺灣的變遷、建設與文化發展</p>
+    
+    <form id="quizForm">
+        <div class="section-title">第一部分：是非題 (每題 2 分)</div>
+        <div id="tfContainer"></div>
+        
+        <div class="section-title">第二部分：選擇題 (每題 2 分)</div>
+        <div id="mcContainer"></div>
+        
+        <button type="button" class="submit-btn" onclick="submitQuiz()">確認提交並評分</button>
+    </form>
+
+    <div id="result">
+        <div id="scoreText"></div>
+        <div id="reviewArea"></div>
+    </div>
+
+    <div class="history-section">
+        <h3>🕰️ 歷史測驗紀錄 (Alan 專屬)</h3>
+        <div id="historyList">尚無測驗紀錄</div>
+        <button class="clear-btn" onclick="clearHistory()">清空歷史紀錄</button>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'society_unit2_quiz2_results';
+
+    const tfQuestions = [
+        { q: "清廷最初統治台灣時，為了維持社會穩定，曾禁止漢人私自進入山區開墾。", a: "T", ex: "為了防止漢人與原住民族發生領土與水源衝突，清廷曾畫界封山。" },
+        { q: "清朝統治初期，漢人來台發展主要分布在台灣的北部地區。", a: "F", ex: "初期發展多集中在南部的台南、高雄一帶，「一府」即指台南。" },
+        { q: "曹公圳是鳳山知縣曹謹在清代末年，為了讓軍隊運輸更快速而修築的水道。", a: "F", ex: "曹公圳是為了農業灌溉，解決高雄、屏東地區的乾旱而修築的。" },
+        { q: "「一府二鹿三艋舺」展現了清代台灣由南而北的開發順序。", a: "T", ex: "依序為：台南府城、彰化鹿港、台北艋舺。" },
+        { q: "台灣開港通商後，外國商人主要來台收購台灣的稻米和甘蔗銷往日本。", a: "F", ex: "1860年開港後，台灣出口的大宗商品變成了茶葉、樟腦與蔗糖。" },
+        { q: "清廷派沈葆楨來台加強防禦，是因為發生了鴉片戰爭。", a: "F", ex: "沈葆楨來台是因為日本藉「牡丹社事件」出軍進犯台灣。" },
+        { q: "劉銘傳在台灣推行現代化政策，建設了全中國第一條官辦鐵路（台北到基隆）。", a: "T", ex: "劉銘傳積極現代化，讓台灣成為當時清朝最先進的省分。" },
+        { q: "清代傳統私塾的老師稱為「夫子」，教授的科目包括英語和自然科學。", a: "F", ex: "私塾主要教授識字、《三字經》、四書五經等傳統儒家經典。" },
+        { q: "開港通商後，北部樟腦的出口帶動了山地的開發，但也加劇了與原住民族的矛盾。", a: "T", ex: "商人與軍隊入山採樟腦，侵犯原住民生活區域導致衝突頻繁。" },
+        { q: "馬偕博士是來自加拿大的傳教士，他在淡水建立了「滬尾醫館」。", a: "T", ex: "馬偕在醫療與教育（牛津學堂）上對北台灣影響深遠。" },
+        { q: "清代早期的「頂下郊拚」是一種類似政府舉辦的武術友誼賽。", a: "F", ex: "那是艋舺地區同安人與三邑地人間的群體械鬥（暴力衝突）。" },
+        { q: "台灣第一所女學堂由傳教士在淡水創辦，開啟了女性受教的先河。", a: "T", ex: "由馬偕創辦的淡水女學堂，鼓勵原本不讀書的女孩受教。" },
+        { q: "清廷因清法戰爭的威脅，深刻體會到台灣地位重要，於是在1885年宣佈台灣建省。", a: "T", ex: "清法戰爭中法國攻打淡水、基隆，讓清廷意識到必須加強治理。" },
+        { q: "杜聰明博士研究蛇毒與鴉片癮，是日治時期的第一位醫學博士。", a: "T", ex: "本題屬人物題，雖然其主要貢獻在日治，但背景緊接清末西醫傳入後。" },
+        { q: "清代台灣的發展中，糖廠的建設大多是為了滿足島內自給自足，並不出口。", a: "F", ex: "糖在清代一直是外銷的重要商品，主要銷往中國大陸與國外。" },
+        { q: "劉銘傳設置的「西學堂」，是專門教授西方科學、地理與英語的新式學校。", a: "T", ex: "為了培養人才處理外貿事務與外交工作。" },
+        { q: "沈葆楨來台時廢除了「渡台禁令」，主要是為了鼓勵更多漢人來台加強開發。", a: "T", ex: "採取「開山撫番」政策，並放寬移民限制以壯大台灣人口。" },
+        { q: "「下郊」在當時是指主要與中國北方進行貿易的商人組織。", a: "F", ex: "下郊主要指與廈門進行貿易的商人。" },
+        { q: "瑠公圳開鑿過程艱辛，甚至曾面臨原住民的反對與財力不足而停頓。", a: "T", ex: "郭錫瑠耗費家產並多次協調與原住民族的衝突，才克服萬難完工。" },
+        { q: "清代台灣的傳統建築中，常見的「三合院」是當時常見的民居形式。", a: "T", ex: "體現了注重宗族倫理與防衛的傳統社會特色。" },
+        { q: "沈葆楨在台南修建了「億載金城」，是為了防禦來自西方列強的侵略。", a: "T", ex: "它是台灣第一座配備阿姆斯壯大砲的新式圓形砲台。" },
+        { q: "清領時期引進的作物中，鳳梨與可可原本就是台灣的原生作物，不需引進。", a: "F", ex: "鳳梨等許多經濟作物是在清代或荷蘭時期陸續引進或推廣的。" },
+        { q: "清代晚期台灣北部因盛產茶葉，使得「茶」成為賺取外匯最多的出口物。", a: "T", ex: "烏龍茶最受歡迎，由外商洋行經大稻埕出口。" },
+        { q: "艋舺與大稻埕是清末台北最重要的兩大對外貿易港口與商業區。", a: "T", ex: "萬華（艋舺）開發在前，大稻埕（現在的大同區）緊接其後。" },
+        { q: "清領時期社會教育主要靠政府廣設公立學校，入學率達 90% 以上。", a: "F", ex: "教育主要依賴民間的私塾與書院，受教權集中在男性及有錢人家。" }
+    ];
+
+    const mcQuestions = [
+        { q: "關於「黑水溝」的敘述，下列哪一項是正確的？", options: ["指長江下游的淤泥區", "指台灣海峽流速較快的危險海域", "指阿里山上的汙染水源", "指基隆港外的港池"], a: 1, ex: "黑水溝即台灣海峽，水深流急，早期移民有「十去六死」的慘烈。" },
+        { q: "清領初期，為什麼清政府要實施「渡台禁令」？", options: ["因為船隻數量不足", "怕移民來台後密謀造反，難以管理", "因為台灣物資短缺", "怕原住民受驚擾"], a: 1, ex: "清初擔心台灣重演鄭氏政權反清復明的戲碼，限制居民移入。" },
+        { q: "哪一條水圳主要是引濁水溪水，灌溉當時的彰化平原？", options: ["瑠公圳", "曹公圳", "八堡圳", "嘉南大圳"], a: 2, ex: "施世榜集資興建的八堡圳，是彰化平原開發的命脈。" },
+        { q: "「一府二鹿三艋舺」中的「二鹿」是指現今哪一個地方？", options: ["南投縣鹿谷鄉", "台南市鹿耳門", "彰化縣鹿港鎮", "嘉義縣鹿草鄉"], a: 2, ex: "鹿港在清領中期是重要的對外通商口岸。" },
+        { q: "1860 年開港後，台灣產生的重大經濟改變不包括下列何者？", options: ["外商洋行紛紛設立", "出現像買辦、勞工等新興行業", "經濟重心逐漸向北部移轉", "政府禁止任何茶葉出口"], a: 3, ex: "開港後是「積極鼓勵」及依賴茶葉、樟腦出口賺錢。" },
+        { q: "沈葆楨在台期間最有名的現代化砲台遺址是哪一座？", options: ["安平古堡", "旗後砲台", "億載金城", "紅毛城"], a: 2, ex: "億載金城為西式防禦工事，是為了防禦日本進犯而建。" },
+        { q: "劉銘傳在台灣推行現代化事務，下列哪一項是他負責的建設？", options: ["修築八堡圳", "架設全台第一條電氣化火車線", "鋪設電報線與開創鐵路運輸", "建立西式大型醫院"], a: 2, ex: "電報、鐵路、郵政、路燈等均為劉巡撫的功績。" },
+        { q: "清代後期出口的「樟腦」，在國際上主要被用來製作什麼？", options: ["香精或防蟲藥品", "汽車輪胎", "電腦螢幕", "石油燃料"], a: 0, ex: "樟腦具備醫療、防蟲、甚至炸藥原料等多種工業用途。" },
+        { q: "下列哪一位西方傳教士以「一手拿聖經，一手拿拔牙鉗」描述其醫療服務？", options: ["巴克禮", "馬偕", "馬雅各", "蘭大衛"], a: 1, ex: "馬偕在淡水及北台灣四處宣教並免費拔牙行醫。" },
+        { q: "「械鬥」對台灣社會產生的負面影響不包括何者？", options: ["造成嚴重的生命財產損失", "造成人群間的隔閡與仇視", "破壞社會安定與治安", "促進了與外國的文化交流"], a: 3, ex: "械鬥是內部的暴力破壞，並無外交或文化交流作用。" },
+        { q: "清政府將台灣建為「台灣省」是在哪一場戰爭之後？", options: ["甲午戰爭", "清法戰爭", "牡丹社事件", "鴨片戰爭"], a: 1, ex: "1884年清法戰爭法軍侵台，讓慈禧太后體認防台之急。" },
+        { q: "劉銘傳所設立的電子通訊設施，主要是將電報線連接台北到哪裡？", options: ["到高雄和福州", "到基隆和香港", "到台南和鹿港", "到宜蘭和日本"], a: 0, ex: "電報系統加強了區域間的資訊聯繫與防務需求。" },
+        { q: "清代私塾教育的「四書」通常是指？", options: ["《詩》、《書》、《易》、《禮》", "《大學》、《中庸》、《論語》、《孟子》", "《老子》、《莊子》、《列子》、《墨子》", "《唐詩》、《宋詞》、《元曲》、《明清小說》"], a: 1, ex: "四書是儒家教育的最基本核心教材。" },
+        { q: "清代漢人移民常以「宗親」或「地緣」集結，這是為了？", options: ["為了跟流行", "為了參加科舉", "互相扶持、共同抵禦威脅或進行開墾", "為了集體報考海軍"], a: 2, ex: "移民初來乍到，缺乏保障，必須依賴同鄉或宗族力量。" },
+        { q: "下列關於郭錫瑠的敘述何者正確？", options: ["他是清朝派來巡邏的海軍大將", "他耗盡家財興建瑠公圳灌溉台北盆地", "他主持了億載金城的火炮設計", "他是淡水最知名的傳教士"], a: 1, ex: "郭錫瑠對台北地區的農業開拓有不可抹滅的功勞。" },
+        { q: "哪一項是 19 世紀中葉後，台灣北部大稻埕地區最主要的產業？", options: ["茶葉加工與外銷", "製造樟木家具", "採集金礦", "海水養殖"], a: 0, ex: "大稻埕因茶葉貿易發達，成為當時台灣最繁榮的商業中心。" },
+        { q: "關於沈葆楨的政策「開山撫番」，其目的為何？", options: ["為了跟部落建立休閒娛樂區", "為了採集更多熱帶水果", "為了打通前山與後山的交通，加強管轄東部", "為了讓軍隊去森林避暑"], a: 2, ex: "加強對後山的防衛與開墾，防止外國势力介入。" },
+        { q: "台灣的第一所現代化官辦小學「西學堂」是由誰創立的？", options: ["劉銘傳", "施琅", "沈葆楨", "馬偕"], a: 0, ex: "劉巡撫為了培養具有現代科學素質的接班人才而設。" },
+        { q: "下郊、頂郊或泉郊等組織，實質上就是當時的？", options: ["藝術表演團體", "體育校隊", "同業公會或商業貿易組織", "地下交通體系"], a: 2, ex: "「郊」是從事相同港口或產業貿易的商行聯盟。" },
+        { q: "清廷因牡丹社事件意识到防务不足，派沈葆楨任欽差大臣來台，沈氏最重要的政策變革是？", options: ["開始收門票", "由積極治台轉為消極不管", "由消極治台轉為積極經營與防務", "宣布全面禁茶"], a: 2, ex: "在此之前清廷長期對台灣採取消極、防範為主的管理方針。" },
+        { q: "下列哪一種情形不是清代早期台灣社會面臨的動盪？", options: ["民變頻傳", "與原住民族發生地權衝突", "械鬥事件", "大規模的外星人入侵事件"], a: 3, ex: "前三者皆為清領台灣史的重要社會課題。" },
+        { q: "淡水、基隆、安平、打狗是清末的四大開放口岸，其中的「打狗」是？", options: ["嘉義", "屏東", "高雄", "台南"], a: 2, ex: "「打狗」是早期對高雄地區的稱呼。" },
+        { q: "日治時期前，哪一個民間文化發展是當時最普及的休閒？", options: ["聽廣播", "參加廟會、演戲神", "看好萊塢電影", "打電玩"], a: 1, ex: "寺廟是宗教信仰中心，廟會與戲曲表演是當時重要的娛樂活動。" },
+        { q: "清領後期，台灣出口的樟腦量曾達到什麼紀錄？", options: ["世界第一", "亞洲最後一名", "僅能在村莊內販售", "全部被海水沖走"], a: 0, ex: "台灣在 19 世紀末的樟腦出口量曾領先全球。" },
+        { q: "劉銘傳建設的鐵道最早通車的路段是？", options: ["高雄到屏東", "台北到基隆", "嘉義到彰化", "台南到大湖"], a: 1, ex: "這條鐵路象徵台灣現代陸運轉型的開端。" }
+    ];
+
+    function init() {
+        const tfArea = document.getElementById('tfContainer');
+        tfQuestions.forEach((q, i) => {
+            tfArea.innerHTML += `
+                <div class="question-block">
+                    <span class="question-title">${i + 1}. ${q.q}</span>
+                    <div class="options">
+                        <label><input type="radio" name="tf${i}" value="T"> 正確 (○)</label>
+                        <label><input type="radio" name="tf${i}" value="F"> 錯誤 (╳)</label>
+                    </div>
+                </div>`;
+        });
+
+        const mcArea = document.getElementById('mcContainer');
+        mcQuestions.forEach((q, i) => {
+            let opts = q.options.map((opt, idx) => `
+                <label><input type="radio" name="mc${i}" value="${idx}"> ${idx+1}. ${opt}</label>
+            `).join('');
+            mcArea.innerHTML += `
+                <div class="question-block">
+                    <span class="question-title">${i + 1}. ${q.q}</span>
+                    <div class="options">${opts}</div>
+                </div>`;
+        });
+    }
+
+    function submitQuiz() {
+        let totalScore = 0;
+        let reviewHtml = '<h2>💡 錯題解析與加強學習</h2>';
+        let wrongCount = 0;
+        let mistakes = [];
+
+        tfQuestions.forEach((item, i) => {
+            const selected = document.querySelector(`input[name="tf${i}"]:checked`);
+            const userAns = selected ? selected.value : null;
+            if (userAns === item.a) {
+                totalScore += 2;
+            } else {
+                wrongCount++;
+                const userDisplay = userAns === "T" ? "○" : (userAns === "F" ? "╳" : "未選");
+                const correctDisplay = item.a === "T" ? "○" : "╳";
+                reviewHtml += createReviewItem(i+1, "是非題", item.q, userDisplay, correctDisplay, item.ex);
+                mistakes.push({ question: item.q, user: userDisplay, correct: correctDisplay });
+            }
+        });
+
+        mcQuestions.forEach((item, i) => {
+            const selected = document.querySelector(`input[name="mc${i}"]:checked`);
+            const userAns = selected ? parseInt(selected.value) : null;
+            if (userAns === item.a) {
+                totalScore += 2;
+            } else {
+                wrongCount++;
+                const userDisplay = userAns === null ? "未選" : item.options[userAns];
+                const correctDisplay = item.options[item.a];
+                reviewHtml += createReviewItem(i+1, "選擇題", item.q, userDisplay, correctDisplay, item.ex);
+                mistakes.push({ question: item.q, user: userDisplay, correct: correctDisplay });
+            }
+        });
+
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        history.push({
+            date: new Date().toLocaleString(),
+            score: totalScore,
+            total: 100,
+            mistakes: mistakes
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+        const scoreArea = document.getElementById('scoreText');
+        scoreArea.innerHTML = `得分：${totalScore} / 100`;
+        
+        const reviewArea = document.getElementById('reviewArea');
+        reviewArea.innerHTML = wrongCount > 0 ? reviewHtml : '<div style="color:#27ae60; text-align:center;"><h3>完美！你對清代台灣史瞭若指掌！</h3><img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h6Zzh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0Exk8nx5Z8S92A8g/giphy.gif" width="200"></div>';
+        
+        document.getElementById('result').style.display = 'block';
+        displayHistory();
+        window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function displayHistory() {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        const historyList = document.getElementById('historyList');
+        if (history.length === 0) {
+            historyList.innerHTML = "尚未有測驗紀錄。加油！";
+            return;
+        }
+        historyList.innerHTML = history.slice().reverse().map((item, idx) => `
+            <div class="history-item">
+                <div style="font-size: 0.9em; color: #64748b;">${item.date}</div>
+                <strong>第 ${history.length - idx} 次測驗結果</strong><br>
+                得分：<span style="color: #047857; font-size: 1.4em;">${item.score}</span> / ${item.total}
+                <details style="margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 10px;">
+                    <summary style="cursor: pointer; color: #3b82f6; font-size: 0.95em;">查看答錯細節...</summary>
+                    <div style="margin-top: 12px; font-size: 0.9em; line-height: 1.8;">
+                        ${item.mistakes.length > 0 ? item.mistakes.map(m => `
+                            <div style="margin-bottom: 12px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px;">
+                                <div style="font-weight: bold;">[原題] ${m.question}</div>
+                                <span style="color: #ef4444;">你答：${m.user}</span> | <span style="color: #059669;">正確：${m.correct}</span>
+                            </div>
+                        `).join('') : "無錯題。"}
+                    </div>
+                </details>
+            </div>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm("確定要清除所有測驗紀錄嗎？(無法復原)")) {
+            localStorage.removeItem(STORAGE_KEY);
+            displayHistory();
+        }
+    }
+
+    function createReviewItem(no, type, q, user, correct, ex) {
+        return `
+            <div class="wrong-item">
+                <strong>[${type} 第 ${no} 題]</strong><br> ${q}
+                <div class="user-ans-wrong">❌ 您的回答：${user}</div>
+                <div class="correct-ans">✅ 正確答案：${correct}</div>
+                <div class="explanation">📖 重點筆記：${ex}</div>
+            </div>`;
+    }
+
+    window.onload = function() {
+        init();
+        displayHistory();
+    };
+</script>
+
+</body>
+</html>
