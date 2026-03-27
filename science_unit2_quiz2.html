@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自然科學：鐵生鏽與防鏽的實驗挑戰</title>
+    <title>五年級社會：清領時期臺灣的發展（綜合測驗）</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .section-title {
             background: var(--bg-secondary);
             padding: 15px;
-            border-left: 6px solid var(--accent-success);
+            border-left: 6px solid var(--accent-primary);
             margin: 30px 0 20px 0;
             border-radius: 8px;
             font-size: 1.4rem;
@@ -38,7 +38,7 @@
             transition: all 0.2s;
         }
         .options label:hover {
-            border-color: var(--accent-success);
+            border-color: var(--accent-primary);
             background: var(--bg-secondary);
         }
         .input-inline {
@@ -59,7 +59,7 @@
             margin-top: 10px;
             border-radius: 10px;
             display: none;
-            border-left: 4px solid var(--accent-success);
+            border-left: 4px solid var(--accent-primary);
         }
         #result {
             display: none;
@@ -67,13 +67,13 @@
             padding: 30px;
             border-radius: 20px;
             background: var(--glass-bg);
-            border: 2px solid var(--accent-success);
+            border: 2px solid var(--accent-primary);
         }
-        .matching-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 15px;
+        #scoreText {
+            font-size: 2rem;
+            text-align: center;
+            font-weight: 800;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -84,8 +84,9 @@
 </div>
 
 <div class="container">
-    <p><a href="science.html" style="text-decoration: none; color: var(--accent-success); font-weight: bold;">⬅ 返回目錄</a></p>
-    <h1 style="background: linear-gradient(to right, var(--accent-success), #34d399); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">🧪 鐵生鏽與防鏽：實驗挑戰</h1>
+    <p><a href="science.html" style="text-decoration: none; color: var(--accent-primary); font-weight: bold;">⬅ 返回科學索引（社會內容）</a></p>
+    <h1>🏛️ 臺灣歷史：清領時期的發展與變遷</h1>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px;">(本測驗根據「社會小五」課綱編寫，用於跨學科練習)</p>
     
     <div class="info-section" style="display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
         <span>班級：<input type="text" class="input-inline" size="5"></span>
@@ -94,71 +95,48 @@
     </div>
 
     <form id="quizForm">
-        <div class="section-title">一、實驗觀測與分析 (共 30 分)</div>
-        <div class="question-block">
-            <p><strong>1. 在「鐵釘生鏽條件」實驗中，哪一組鐵釘生鏽情況最嚴重？</strong></p>
+        <div class="section-title">一、社會發展與建設 (選擇題)</div>
+        <div class="question-block" id="mc_0">
+            <p><strong>1. 清領初期，漢人橫渡臺灣海峽（黑水溝）來臺時，主要面臨的挑戰與限制不包括？</strong></p>
             <ul class="options">
-                <li><label><input type="radio" name="exp_1" value="0"> <span>A. 乾燥瓶中的鐵釘</span></label></li>
-                <li><label><input type="radio" name="exp_1" value="1"> <span>B. 完全浸入自來水的鐵釘</span></label></li>
-                <li><label><input type="radio" name="exp_1" value="2"> <span>C. 一半浸入鹽水，一半露出的鐵釘</span></label></li>
-                <li><label><input type="radio" name="exp_1" value="3"> <span>D. 放在夾鏈袋密封的鐵釘</span></label></li>
+                <li><label><input type="radio" name="mc_0" value="0"> <span>A. 海象凶險，常有船難</span></label></li>
+                <li><label><input type="radio" name="mc_0" value="1"> <span>B. 清廷實施「渡臺禁令」</span></label></li>
+                <li><label><input type="radio" name="mc_0" value="2"> <span>C. 臺灣島內缺乏任何耕地</span></label></li>
+                <li><label><input type="radio" name="mc_0" value="3"> <span>D. 到達後常因地緣或利益發生「械鬥」</span></label></li>
             </ul>
-            <div class="feedback" id="exp_fb_1">💡 解析：鹽水是電解質會加速生鏽，且接觸空氣（氧氣）更易反應。</div>
-            
-            <p style="margin-top: 20px;"><strong>2. 鋼絲絨生鏽實驗後，倒扣在水槽的廣口瓶「液面上升」，代表什麼？</strong></p>
-            <ul class="options">
-                <li><label><input type="radio" name="exp_2" value="0"> <span>A. 鐵會吸收水分</span></label></li>
-                <li><label><input type="radio" name="exp_2" value="1"> <span>B. 瓶內的氧氣被消耗了</span></label></li>
-                <li><label><input type="radio" name="exp_2" value="2"> <span>C. 瓶內的壓力變大了</span></label></li>
-                <li><label><input type="radio" name="exp_2" value="3"> <span>D. 鋼絲絨放出了二氧化碳</span></label></li>
-            </ul>
-            <div class="feedback" id="exp_fb_2">💡 解析：鐵生鏽消耗氧氣，瓶內氣壓降低，大氣壓力將水擠入瓶中。</div>
         </div>
 
-        <div class="section-title">二、是非判斷題 (共 20 分)</div>
+        <div class="question-block" id="mc_1">
+            <p><strong>2. 臺灣清領時期的「一府二鹿三艋舺」，其中「二鹿」指的是現在的？</strong></p>
+            <ul class="options">
+                <li><label><input type="radio" name="mc_1" value="0"> <span>A. 臺南安平</span></label></li>
+                <li><label><input type="radio" name="mc_1" value="1"> <span>B. 彰化鹿港</span></label></li>
+                <li><label><input type="radio" name="mc_1" value="2"> <span>C. 臺北萬華</span></label></li>
+                <li><label><input type="radio" name="mc_1" value="3"> <span>D. 屏東東港</span></label></li>
+            </ul>
+        </div>
+
+        <div class="section-title">二、基礎是非題 (共 20 分)</div>
         <div id="tfContainer"></div>
 
-        <div class="section-title">三、防鏽智慧考驗 (共 30 分)</div>
-        <div id="mcContainer"></div>
-
-        <div class="section-title">四、連連看：方法與實例 (共 20 分)</div>
+        <div class="section-title">三、近代化建設 (填空題)</div>
         <div class="question-block">
-            <p>請將防鏽方法與正確的實例配對 (填入代號)：</p>
-            <div class="matching-grid">
-                <div>
-                    <p><strong>防鏽方法</strong></p>
-                    <p>1. 表面鍍上其他金屬: ( )</p>
-                    <p>2. 塗抹防鏽油脂: ( )</p>
-                    <p>3. 保持通風乾燥: ( )</p>
-                    <p>4. 加上一層油漆: ( )</p>
-                </div>
-                <div>
-                    <p><strong>實例代號</strong></p>
-                    <p>A. 鐵橋或瓦斯桶</p>
-                    <p>B. 餅乾袋內的乾燥劑與架子擦乾</p>
-                    <p>C. 迴紋針或罐頭內壁</p>
-                    <p>D. 工具剪刀或腳踏車鏈條</p>
-                </div>
-            </div>
-            <div style="margin-top: 15px;">
-                1: <input type="text" id="match_1" class="input-inline" size="2"> 
-                2: <input type="text" id="match_2" class="input-inline" size="2"> 
-                3: <input type="text" id="match_3" class="input-inline" size="2"> 
-                4: <input type="text" id="match_4" class="input-inline" size="2">
-            </div>
+            <p><strong>請填入正確的歷史人物（沈葆楨 / 劉銘傳）：</strong></p>
+            <p>1. 牡丹社事件後，來臺加強防護、興建「億載金城」的官員是：<input type="text" id="blank_1" class="input-inline" size="10"></p>
+            <p style="margin-top: 15px;">2. 臺灣首任巡撫，建設鐵路、郵政、電報，推行現代化事務的官員是：<input type="text" id="blank_2" class="input-inline" size="10"></p>
         </div>
 
-        <button type="button" id="submitBtn" onclick="submitQuiz()" style="background: linear-gradient(to right, var(--accent-success), #10b981); color: white; padding: 15px; border-radius: 12px; border: none; width: 100%; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 20px;">提交答案並查看詳解</button>
+        <button type="button" id="submitBtn" onclick="submitQuiz()" style="background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary)); color: white; padding: 15px; border-radius: 12px; border: none; width: 100%; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 20px;">提交測驗</button>
     </form>
 
     <div id="result">
-        <h2 id="resultScore" style="text-align: center; font-size: 2.5rem; color: var(--accent-success);"></h2>
+        <h2 id="resultScore" style="text-align: center; font-size: 2.5rem; color: var(--accent-primary);"></h2>
         <div id="historyList"></div>
     </div>
 </div>
 
 <script>
-    const STORAGE_KEY = 'science_unit2_quiz2_v2_results';
+    const STORAGE_KEY = 'science_unit2_quiz2_society_results';
 
     function toggleTheme() {
         const html = document.documentElement;
@@ -171,28 +149,15 @@
     }
 
     const tfQuestions = [
-        "鐵生鏽後的鐵銹具有磁性，可以用磁鐵吸引。",
-        "真空包裝主要是為了移除氧氣，防止食品氧化變質。",
-        "不鏽鋼是一種完全不會生鏽的鐵製品，可以隨便放在水裡。",
-        "鋁製品生鏽後會產生紅褐色的粉末，容易剝落。",
-        "鐵生鏽需要「水分」與「氧氣」同時存在才會發生。",
-        "銅氧化後會產生青綠色的物質，俗稱「銅綠」。",
-        "將鐵釘完全浸入含有食鹽的水中，生鏽速度會減慢。",
-        "自行車的車架通常會塗上油漆來防止生鏽。",
-        "鐵生鏽的過程是緩慢的氧化反應，會消耗一部分的空氣。",
-        "鐵釘上的銹層非常堅實，可以保護內部不再繼續生鏽。"
+        "1860年臺灣開港通商後，茶葉、樟腦、蔗糖成為主要出口大宗。",
+        "「八堡圳」主要是為了灌溉臺北地區所興建的水利工程。",
+        "傳教士馬偕博士曾在淡水創辦醫館（滬尾醫館）與牛津學堂。",
+        "清領時期，臺灣唯一的教育場所是政府設立的現代化大學。",
+        "清法戰爭後，清廷體認臺灣地位重要，於是在1885年宣佈臺灣建省。"
     ];
-    const tfAnswers = ["X", "O", "X", "X", "O", "O", "X", "O", "O", "X"];
+    const tfAnswers = ["O", "X", "O", "X", "O"];
+    const tfFeedback = ["", "八堡圳位於彰化，灌溉彰化平原。", "", "當時主要為私塾與書院，劉銘傳才開始設立新式學堂。", ""];
 
-    const mcQuestions = [
-        { q: "下列哪一種情形不是為了隔絕空氣來防鏽？", opt: ["迴紋針鍍鋅", "鐵門上漆", "將菜刀洗淨擦乾", "罐頭鍍錫"], ans: 2 },
-        { q: "關於「鐵銹」與「鐵」的比較，何者正確？", opt: ["鐵銹顏色較亮", "鐵銹質地較鬆散", "鐵更能傳導熱能", "兩者都能被磁鐵吸住"], ans: 1 },
-        { q: "家中的不沾鍋表面有一層鐵氟龍塗層，其功能類似哪種防鏽方法？", opt: ["烘乾", "隔絕空氣與水", "電鍍", "改變材質"], ans: 1 },
-        { q: "為什麼在潮濕的地下室，鐵製品生鏽速度比客廳快？", opt: ["氧氣比較多", "水分充足", "環境比較暗", "風比較強"], ans: 1 },
-        { q: "若要進行對照實驗找出「水對鐵生鏽的影響」，哪項條件「不應該」改變？", opt: ["鐵釘的材質", "水的分量", "有無水分", "放置的地點(溫度)"], ans: 0 }
-    ];
-
-    // 初始化是非題
     const tfContainer = document.getElementById('tfContainer');
     tfQuestions.forEach((q, i) => {
         tfContainer.innerHTML += `
@@ -204,69 +169,29 @@
             </div>`;
     });
 
-    // 初始化選擇題
-    const mcContainer = document.getElementById('mcContainer');
-    mcQuestions.forEach((q, i) => {
-        let optionsHtml = '';
-        q.opt.forEach((o, oi) => {
-            optionsHtml += `<li><label><input type="radio" name="mc_${i}" value="${oi}"> <span>(${oi+1}) ${o}</span></label></li>`;
-        });
-        mcContainer.innerHTML += `
-            <div class="question-block" id="mc_div_${i}">
-                <p><strong>${i+1}. ${q.q}</strong></p>
-                <ul class="options">${optionsHtml}</ul>
-            </div>`;
-    });
-
     function submitQuiz() {
         let score = 0;
-        let mistakes = [];
+        
+        // MC
+        if(document.querySelector('input[name="mc_0"]:checked')?.value === "2") score += 15;
+        if(document.querySelector('input[name="mc_1"]:checked')?.value === "1") score += 15;
 
-        // 一、實驗計分 (2題, 每題15分)
-        const expAns = ["2", "1"];
-        expAns.forEach((ans, i) => {
-            let sel = document.querySelector(`input[name="exp_${i+1}"]:checked`);
-            document.getElementById('exp_fb_'+(i+1)).style.display = "block";
-            if(sel && sel.value === ans) score += 15;
-            else mistakes.push({ q: "實驗分析第"+(i+1)+"題", correct: "正確選項" });
-        });
-
-        // 二、是非計分 (每題 2 分)
+        // TF (5题, 每题10分 = 50)
         tfAnswers.forEach((ans, i) => {
-            let userAns = document.getElementById('tf_' + i).value;
-            if(userAns === ans) score += 2;
-            else {
-                document.getElementById('tf_div_'+i).style.borderColor = 'var(--accent-danger)';
-                mistakes.push({ q: "是非第"+(i+1)+"題", correct: ans });
-            }
+            if(document.getElementById('tf_'+i).value === ans) score += 10;
         });
 
-        // 三、選擇計分 (每題 6 分)
-        mcQuestions.forEach((q, i) => {
-            let sel = document.querySelector(`input[name="mc_${i}"]:checked`);
-            if(sel && parseInt(sel.value) === q.ans) score += 6;
-            else {
-                document.getElementById('mc_div_'+i).style.borderColor = 'var(--accent-danger)';
-                mistakes.push({ q: "選擇第"+(i+1)+"題", correct: q.opt[q.ans] });
-            }
-        });
-
-        // 四、連連看 (每題 5 分)
-        const matchAns = ["C", "D", "B", "A"];
-        for(let i=1; i<=4; i++) {
-            let val = document.getElementById('match_'+i).value.toUpperCase();
-            if(val === matchAns[i-1]) score += 5;
-            else mistakes.push({ q: "連連看第"+i+"題", correct: matchAns[i-1] });
-        }
-
-        // 紀錄與顯示
-        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        history.push({ date: new Date().toLocaleString(), score: score });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        // Blanks (2题, 每题10分 = 20)
+        if(document.getElementById('blank_1').value.trim().includes("沈葆楨")) score += 10;
+        if(document.getElementById('blank_2').value.trim().includes("劉銘傳")) score += 10;
 
         document.getElementById('result').style.display = 'block';
         document.getElementById('resultScore').innerHTML = `得分：${score} / 100`;
         window.scrollTo({ top: document.getElementById('result').offsetTop - 100, behavior: 'smooth' });
+        
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        history.push({ date: new Date().toLocaleString(), score: score });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
     }
 
     window.addEventListener('DOMContentLoaded', () => {
