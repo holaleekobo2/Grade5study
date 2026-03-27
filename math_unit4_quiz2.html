@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5下 數學測驗 - 扇形與圓心角 (第二回)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 16px;
+        }
+        .quiz-header span { font-weight: 600; font-size: 1rem; color: var(--text-secondary); }
+        .quiz-header input[type="text"] {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            width: 140px;
+        }
+        #finalScoreDisplay { font-weight: 700; color: var(--accent-primary); }
+
+        .section-block { margin-bottom: 32px; }
+        .section-title {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 8px 20px;
+            border-radius: 99px;
+            margin-bottom: 20px;
+            letter-spacing: 0.02em;
+        }
+
+        .question-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 22px 26px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        .question-card.incorrect { background: rgba(239,68,68,0.05); border-color: var(--accent-danger); }
+        .question-card p { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; }
+        .question-card p.ans-line { font-weight: 500; font-size: 1rem; }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        .options label:hover { border-color: var(--accent-primary); background: var(--bg-primary); }
+        .options input[type="radio"] { accent-color: var(--accent-primary); width: 18px; height: 18px; cursor: pointer; }
+
+        .fill-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .fill-input:focus { outline: none; border-color: var(--accent-primary); }
+        .fill-input.wide   { width: 90px; }
+        .fill-input.narrow { width: 52px; }
+        .fill-input.medium { width: 130px; }
+        .fill-input.xwide  { width: 110px; }
+
+        .feedback {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .feedback.correct { background: rgba(16,185,129,0.1); border-left: 5px solid var(--accent-success); color: var(--accent-success); }
+        .feedback.wrong   { background: rgba(239,68,68,0.08); border-left: 5px solid var(--accent-danger); color: var(--text-primary); }
+        .feedback.wrong strong { color: var(--accent-danger); }
+
+        .submit-btn {
+            display: block;
+            width: 220px;
+            margin: 36px auto 0;
+            padding: 16px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 99px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(99,102,241,0.35);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .submit-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 30px -5px rgba(99,102,241,0.45); }
+
+        .score-display {
+            display: none;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 28px 0 10px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link { display: inline-block; margin-bottom: 24px; text-decoration: none; font-weight: 600; color: var(--accent-primary); transition: opacity 0.2s; }
+        .back-link:hover { opacity: 0.75; }
+
+        /* ── History ── */
+        .history-section { margin-top: 60px; border-top: 2px solid var(--border-color); padding-top: 30px; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .history-header h2 { margin-bottom: 0; font-size: 1.4rem; }
+        .clear-btn { background: var(--accent-danger); color: white; border: none; padding: 8px 18px; border-radius: 99px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .clear-btn:hover { opacity: 0.8; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .history-table th, .history-table td { border: 1px solid var(--border-color); padding: 12px 16px; text-align: center; }
+        .history-table th { background: var(--bg-secondary); font-weight: 700; color: var(--text-secondary); }
+        .history-table td { color: var(--text-primary); }
+        .history-table tr:hover td { background: var(--glass-bg); }
+        .detail-btn { background: var(--accent-primary); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: opacity 0.2s; }
+        .detail-btn:hover { opacity: 0.8; }
+
+        /* ── Modal ── */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .modal-content { background: var(--bg-secondary); margin: 6% auto; padding: 30px; width: 85%; max-width: 640px; max-height: 78vh; overflow-y: auto; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        .modal-content h2 { margin-bottom: 20px; font-size: 1.3rem; }
+        .wrong-item { background: rgba(239,68,68,0.06); border-left: 4px solid var(--accent-danger); padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; color: var(--text-primary); font-size: 0.95rem; line-height: 1.7; }
+        .close-btn { margin-top: 20px; padding: 10px 24px; background: var(--text-secondary); color: white; border: none; border-radius: 99px; cursor: pointer; font-weight: 600; transition: opacity 0.2s; }
+        .close-btn:hover { opacity: 0.8; }
+        .empty-history { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 1rem; }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            if (saved === 'dark') document.getElementById('themeBtn').innerHTML = '<span>☀️</span> 亮色模式';
+            renderHistory();
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="math.html" class="back-link">⬅ 返回數學目錄</a>
+    <h1>📐 扇形與圓心角（第二回）</h1>
+
+    <div class="quiz-header">
+        <span>姓名：<input type="text" id="userName" placeholder="請輸入姓名"></span>
+        <span id="finalScoreDisplay">得分：____</span>
+    </div>
+
+    <form id="mathQuiz">
+
+        <!-- ══ 一、選擇題 (4題, 每題 8 分) ══ -->
+        <div class="section-block">
+            <span class="section-title">一、選擇題（每題 8 分）</span>
+
+            <!-- MC1 -->
+            <div class="question-card" id="q_mc1">
+                <p>1. 下列哪個圖形<strong>不是</strong>扇形？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc1" value="1"> ① 由圓心出發的兩條半徑與一段弧圍成的圖形</label>
+                    <label><input type="radio" name="mc1" value="2"> ② 一個完整的圓（360度）</label>
+                    <label><input type="radio" name="mc1" value="3"> ③ 圓心角為 90 度、半徑為 5 公分的扇形</label>
+                    <label><input type="radio" name="mc1" value="4"> ④ 圓心角為 180 度的半圓</label>
+                </div>
+                <div class="feedback" id="fb_mc1">
+                    <strong>【正確解答：②】</strong><br>
+                    學習建議：完整的圓（360度）是「圓」本身，不算扇形；扇形必須是圓的「一部分」，由兩條半徑與一段弧圍成。
+                </div>
+            </div>
+
+            <!-- MC2 -->
+            <div class="question-card" id="q_mc2">
+                <p>2. 一個圓被分成 3 個相等的扇形，每個扇形的圓心角是幾度？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc2" value="1"> ① 90 度</label>
+                    <label><input type="radio" name="mc2" value="2"> ② 100 度</label>
+                    <label><input type="radio" name="mc2" value="3"> ③ 120 度</label>
+                    <label><input type="radio" name="mc2" value="4"> ④ 180 度</label>
+                </div>
+                <div class="feedback" id="fb_mc2">
+                    <strong>【正確解答：③ 120 度】</strong><br>
+                    學習建議：360 ÷ 3 = 120 度。
+                </div>
+            </div>
+
+            <!-- MC3 -->
+            <div class="question-card" id="q_mc3">
+                <p>3. 扇形的圓心角為 72 度，這個扇形占整個圓的幾分之幾？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc3" value="1"> ① 1/3</label>
+                    <label><input type="radio" name="mc3" value="2"> ② 1/4</label>
+                    <label><input type="radio" name="mc3" value="3"> ③ 1/5</label>
+                    <label><input type="radio" name="mc3" value="4"> ④ 1/6</label>
+                </div>
+                <div class="feedback" id="fb_mc3">
+                    <strong>【正確解答：③ 1/5】</strong><br>
+                    學習建議：72 ÷ 360 = 1/5。
+                </div>
+            </div>
+
+            <!-- MC4 -->
+            <div class="question-card" id="q_mc4">
+                <p>4. 同一個圓中，有兩個扇形甲和乙，甲的圓心角是 60 度，乙的圓心角是 150 度。下列何者正確？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc4" value="1"> ① 甲的弧比乙長</label>
+                    <label><input type="radio" name="mc4" value="2"> ② 乙的面積比甲大</label>
+                    <label><input type="radio" name="mc4" value="3"> ③ 甲和乙的面積一樣</label>
+                    <label><input type="radio" name="mc4" value="4"> ④ 甲的弧與乙的弧等長</label>
+                </div>
+                <div class="feedback" id="fb_mc4">
+                    <strong>【正確解答：② 乙的面積比甲大】</strong><br>
+                    學習建議：在同一個圓中，圓心角越大，扇形面積越大，弧也越長；150 &gt; 60，所以乙的面積比甲大。
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ 二、填充題 (4題, 每題 10 分) ══ -->
+        <div class="section-block">
+            <span class="section-title">二、填充題（每題 10 分）</span>
+
+            <!-- F1 -->
+            <div class="question-card" id="q_f1">
+                <p>1. 一個圓被平分成 6 等份，其中 1 份扇形的圓心角是
+                    <input type="number" id="f1_val" class="fill-input wide" placeholder="？"> 度。
+                </p>
+                <div class="feedback" id="fb_f1">
+                    <strong>【正確解答：60 度】</strong><br>
+                    學習建議：360 ÷ 6 = 60。
+                </div>
+            </div>
+
+            <!-- F2 -->
+            <div class="question-card" id="q_f2">
+                <p>2. 圓心角是 90 度的扇形，是整個圓的
+                    <input type="text" id="f2_n" class="fill-input narrow" placeholder="？"> 分之
+                    <input type="text" id="f2_d" class="fill-input narrow" placeholder="？">。
+                </p>
+                <div class="feedback" id="fb_f2">
+                    <strong>【正確解答：四分之一（1/4）】</strong><br>
+                    學習建議：90 ÷ 360 = 1/4。
+                </div>
+            </div>
+
+            <!-- F3 -->
+            <div class="question-card" id="q_f3">
+                <p>3. 一個 2/5 圓的扇形，其圓心角是
+                    <input type="number" id="f3_val" class="fill-input wide" placeholder="？"> 度。
+                </p>
+                <div class="feedback" id="fb_f3">
+                    <strong>【正確解答：144 度】</strong><br>
+                    學習建議：360 × 2/5 = 144 度。
+                </div>
+            </div>
+
+            <!-- F4 -->
+            <div class="question-card" id="q_f4">
+                <p>4. 圓心角是 240 度的扇形，剩餘部分（未塗色）的圓心角是
+                    <input type="number" id="f4_val" class="fill-input wide" placeholder="？"> 度，
+                    占整個圓的
+                    <input type="text" id="f4_frac_n" class="fill-input narrow" placeholder="？"> 分之
+                    <input type="text" id="f4_frac_d" class="fill-input narrow" placeholder="？">。
+                </p>
+                <div class="feedback" id="fb_f4">
+                    <strong>【正確解答：120 度；三分之一（1/3）】</strong><br>
+                    學習建議：360 - 240 = 120；120 ÷ 360 = 1/3。
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ 三、應用題 (4題, 每題 10 分) ══ -->
+        <div class="section-block">
+            <span class="section-title">三、應用題（每題 10 分）</span>
+
+            <!-- A1 -->
+            <div class="question-card" id="q_a1">
+                <p>1. 小明用量角器量了一個扇形，圓心角是 45 度。這個扇形是整個圓的幾分之幾？</p>
+                <p class="ans-line">答：<input type="text" id="a1_ans" class="fill-input medium" placeholder="幾分之幾"> 圓。</p>
+                <div class="feedback" id="fb_a1">
+                    <strong>【正確解答：1/8 圓（八分之一）】</strong><br>
+                    學習建議：45 ÷ 360 = 1/8。
+                </div>
+            </div>
+
+            <!-- A2 -->
+            <div class="question-card" id="q_a2">
+                <p>2. 一個圓形蛋糕被分成 3 份，第一份圓心角 90 度，第二份圓心角 150 度。請問第三份的圓心角是幾度？</p>
+                <p class="ans-line">答：第三份圓心角是 <input type="number" id="a2_ans" class="fill-input wide" placeholder="？"> 度。</p>
+                <div class="feedback" id="fb_a2">
+                    <strong>【正確解答：120 度】</strong><br>
+                    學習建議：360 - 90 - 150 = 120 度。
+                </div>
+            </div>
+
+            <!-- A3 -->
+            <div class="question-card" id="q_a3">
+                <p>3. 一塊 3/4 圓的扇形，圓心角是多少度？這個扇形缺少的部分（其餘扇形）圓心角是多少度？</p>
+                <p class="ans-line">
+                    答：3/4 圓的圓心角是 <input type="number" id="a3_full" class="fill-input wide" placeholder="？"> 度；
+                    缺少部分圓心角是 <input type="number" id="a3_rest" class="fill-input wide" placeholder="？"> 度。
+                </p>
+                <div class="feedback" id="fb_a3">
+                    <strong>【正確解答：270 度；90 度】</strong><br>
+                    學習建議：360 × 3/4 = 270；360 - 270 = 90 度。
+                </div>
+            </div>
+
+            <!-- A4 -->
+            <div class="question-card" id="q_a4">
+                <p>4. 學校的圓形花圃，分成「玫瑰區」和「向日葵區」。玫瑰區占花圃的 2/5 圓，向日葵區的圓心角是幾度？</p>
+                <p class="ans-line">答：向日葵區的圓心角是 <input type="number" id="a4_ans" class="fill-input wide" placeholder="？"> 度。</p>
+                <div class="feedback" id="fb_a4">
+                    <strong>【正確解答：216 度】</strong><br>
+                    學習建議：玫瑰區 = 360 × 2/5 = 144 度；向日葵區 = 360 - 144 = 216 度。
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="calculateScore()">交卷看結果 ✅</button>
+    </form>
+
+    <div class="score-display" id="scoreBoard"></div>
+
+    <!-- ── 測驗紀錄 ── -->
+    <div class="history-section">
+        <div class="history-header">
+            <h2>📊 測驗紀錄（教師專用）</h2>
+            <button class="clear-btn" onclick="clearHistory()">🗑 清除紀錄</button>
+        </div>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>日期時間</th>
+                    <th>姓名</th>
+                    <th>得分</th>
+                    <th>詳情</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+        </table>
+        <div id="emptyHistory" class="empty-history" style="display:none;">尚無測驗紀錄</div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="detailModal" class="modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+        <h2 id="modalTitle">錯題詳情</h2>
+        <div id="modalBody"></div>
+        <button class="close-btn" onclick="closeModal()">關閉</button>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'mathU4Q2History';
+
+// Total max score: MC 4×8=32, Fill 4×10=40, Apply 4×10=40 → but let's normalise to 100
+// Per-question points: MC=8, Fill=10 (f4 partial so treat as one 10pt), Apply=10 → 32+40+40=112 raw
+// We'll round to nearest whole when displaying
+const PTS_MC    = 8;
+const PTS_FILL  = 10;
+const PTS_APPLY = 10;
+
+function calculateScore() {
+    let score = 0;
+    const mistakes = [];
+    const form = document.getElementById('mathQuiz');
+
+    document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('incorrect'));
+
+    // ── Selection ──
+    const mc1 = form.querySelector('input[name="mc1"]:checked');
+    grade(mc1 && mc1.value === "2", 'mc1', PTS_MC, '②（完整的圓不是扇形）', mistakes, v => score += v);
+
+    const mc2 = form.querySelector('input[name="mc2"]:checked');
+    grade(mc2 && mc2.value === "3", 'mc2', PTS_MC, '③ 120 度', mistakes, v => score += v);
+
+    const mc3 = form.querySelector('input[name="mc3"]:checked');
+    grade(mc3 && mc3.value === "3", 'mc3', PTS_MC, '③ 1/5', mistakes, v => score += v);
+
+    const mc4 = form.querySelector('input[name="mc4"]:checked');
+    grade(mc4 && mc4.value === "2", 'mc4', PTS_MC, '② 乙的面積比甲大', mistakes, v => score += v);
+
+    // ── Fill ──
+    const f1 = document.getElementById('f1_val').value;
+    grade(f1 === "60", 'f1', PTS_FILL, '60 度', mistakes, v => score += v);
+
+    const f2n = document.getElementById('f2_n').value.trim();
+    const f2d = document.getElementById('f2_d').value.trim();
+    const f2ok = (f2n === "四" || f2n === "4") && (f2d === "一" || f2d === "1");
+    grade(f2ok, 'f2', PTS_FILL, '四分之一（1/4）', mistakes, v => score += v);
+
+    const f3 = document.getElementById('f3_val').value;
+    grade(f3 === "144", 'f3', PTS_FILL, '144 度', mistakes, v => score += v);
+
+    // F4 has 3 inputs; give full credit only if all correct
+    const f4a = document.getElementById('f4_val').value;
+    const f4fn = document.getElementById('f4_frac_n').value.trim();
+    const f4fd = document.getElementById('f4_frac_d').value.trim();
+    const f4ok = f4a === "120" && (f4fn === "三" || f4fn === "3") && (f4fd === "一" || f4fd === "1");
+    grade(f4ok, 'f4', PTS_FILL, '120 度；三分之一（1/3）', mistakes, v => score += v);
+
+    // ── Apply ──
+    const a1 = document.getElementById('a1_ans').value.trim();
+    grade(a1 === "1/8" || a1 === "八分之一", 'a1', PTS_APPLY, '1/8 圓（八分之一）', mistakes, v => score += v);
+
+    const a2 = document.getElementById('a2_ans').value;
+    grade(a2 === "120", 'a2', PTS_APPLY, '120 度', mistakes, v => score += v);
+
+    const a3f = document.getElementById('a3_full').value;
+    const a3r = document.getElementById('a3_rest').value;
+    grade(a3f === "270" && a3r === "90", 'a3', PTS_APPLY, '270 度；90 度', mistakes, v => score += v);
+
+    const a4 = document.getElementById('a4_ans').value;
+    grade(a4 === "216", 'a4', PTS_APPLY, '216 度', mistakes, v => score += v);
+
+    // Show score (cap at 100 for display clarity)
+    const maxScore = PTS_MC*4 + PTS_FILL*4 + PTS_APPLY*4; // 32+40+40=112
+    const percent = Math.round(score / maxScore * 100);
+    const board = document.getElementById('scoreBoard');
+    board.style.display = 'block';
+    board.innerHTML = `🎉 測驗完成！原始分：${score}/${maxScore} 分（約 ${percent} 分）`;
+    document.getElementById('finalScoreDisplay').innerHTML =
+        `得分：<span style="color:var(--accent-secondary)">${score}/${maxScore}</span>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const name = document.getElementById('userName').value.trim() || '無名氏';
+    saveRecord({ name, score, maxScore, percent, date: new Date().toLocaleString('zh-TW'), mistakes });
+    renderHistory();
+}
+
+function grade(correct, id, pts, correctLabel, mistakes, addScore) {
+    if (correct) {
+        addScore(pts);
+        showFeedback(id, true);
+    } else {
+        showFeedback(id, false);
+        mistakes.push({ label: questionLabel(id), correct: correctLabel });
+    }
+}
+
+function questionLabel(id) {
+    const map = {
+        mc1: '選擇題 1', mc2: '選擇題 2', mc3: '選擇題 3', mc4: '選擇題 4',
+        f1: '填充題 1', f2: '填充題 2', f3: '填充題 3', f4: '填充題 4',
+        a1: '應用題 1', a2: '應用題 2', a3: '應用題 3', a4: '應用題 4',
+    };
+    return map[id] || id;
+}
+
+function showFeedback(id, isCorrect) {
+    const fb = document.getElementById('fb_' + id);
+    const q  = document.getElementById('q_' + id);
+    fb.style.display = 'block';
+    if (isCorrect) { fb.className = 'feedback correct'; fb.innerHTML = '✅ 恭喜答對！'; }
+    else { fb.className = 'feedback wrong'; q.classList.add('incorrect'); }
+}
+
+function saveRecord(record) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    history.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const tbody = document.getElementById('historyBody');
+    const empty = document.getElementById('emptyHistory');
+    if (history.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    const reversed = [...history].reverse();
+    tbody.innerHTML = reversed.map((rec, i) => `
+        <tr>
+            <td>${rec.date}</td>
+            <td>${rec.name}</td>
+            <td><strong>${rec.score}/${rec.maxScore || 112}</strong> 分</td>
+            <td><button class="detail-btn" onclick="showDetail(${history.length - 1 - i})">查看詳情</button></td>
+        </tr>
+    `).join('');
+}
+
+function showDetail(index) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const rec = history[index];
+    document.getElementById('modalTitle').textContent =
+        `${rec.name} 的錯題分析（得分：${rec.score}/${rec.maxScore || 112} 分）`;
+    const body = document.getElementById('modalBody');
+    if (!rec.mistakes || rec.mistakes.length === 0) {
+        body.innerHTML = "<p style='color:var(--accent-success);font-weight:700;'>🎊 太棒了！全對！</p>";
+    } else {
+        body.innerHTML = rec.mistakes.map(m => `
+            <div class="wrong-item">
+                <strong>${m.label}</strong><br>
+                正確解答：<strong>${m.correct}</strong>
+            </div>
+        `).join('');
+    }
+    document.getElementById('detailModal').style.display = 'block';
+}
+
+function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
+
+function clearHistory() {
+    if (confirm('確定要清除所有測驗紀錄嗎？此動作無法復原。')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHistory();
+    }
+}
+</script>
+
+</body>
+</html>
