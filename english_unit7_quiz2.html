@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G5 English Unit 7 Grammar Quiz 1</title>
+    <title>G5 English Unit 7 Grammar Quiz 2</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .input-box {
@@ -33,7 +33,7 @@
 
 <div class="container">
     <p><a href="english.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回目錄</a></p>
-    <h1>🌍 Unit 7 Grammar Quiz 1: Will/Won't</h1>
+    <h1>🌍 Unit 7 Grammar Quiz 2: Will/Won't</h1>
     
     <div style="margin-bottom: 2rem; padding: 20px; background: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border-color);">
         <p><strong>Name:</strong> ________________ &nbsp;&nbsp;&nbsp; <strong>Number:</strong> _______ &nbsp;&nbsp;&nbsp; <strong>Grade:</strong> 5</p>
@@ -58,7 +58,7 @@
 </div>
 
 <script>
-    const STORAGE_KEY = 'english_unit7_advanced_results';
+    const STORAGE_KEY = 'english_unit7_quiz2_results';
 
     function toggleTheme() {
         const html = document.documentElement;
@@ -72,31 +72,31 @@
 
     const quizSections = [
         {
-            title: "A. Sentence Transformation",
+            title: "A. Sentence Transformation (Will/Won't)",
             questions: [
-                { q: "We will have gas cars in the future. (Change to Negative using a short form)", correct: ["We won't have gas cars in the future.", "We won't have gas cars in the future"] },
-                { q: "The weather is changing. (Change to Future Prediction using \"will\")", correct: ["The weather will change.", "The weather will change"] },
-                { q: "There will be floods. (Change to a Question)", correct: ["Will there be floods?", "Will there be floods"] },
-                { q: "They will make electricity from water. (Change to a Question)", correct: ["Will they make electricity from water?", "Will they make electricity from water"] }
+                { q: "The sun shines every day. (Change to a Future Prediction using \"will\")", correct: ["The sun will shine every day.", "The sun will shine every day"] },
+                { q: "Robots will do all the housework. (Change to Negative using a short form)", correct: ["Robots won't do all the housework.", "Robots won't do all the housework"] },
+                { q: "We will travel by flying car. (Change to a Question)", correct: ["Will we travel by flying car?", "Will we travel by flying car"] },
+                { q: "I will be a doctor when I grow up. (Change to Negative using a short form)", correct: ["I won't be a doctor when I grow up.", "I won't be a doctor when I grow up"] }
             ]
         },
         {
             title: "B. Error Correction",
             instructions: "Each sentence has ONE mistake. Type the CORRECT word in the box.",
             questions: [
-                { q: "I think we 's use energy from the sun next year.", correct: ["'ll", "will"] },
-                { q: "Will the ice melts in the future?", correct: ["melt"] },
-                { q: "No, there not will be any pollution.", correct: ["won't", "will not"] },
-                { q: "Do you will save energy tonight?", correct: ["Will"] }
+                { q: "We will to go to the moon next month.", correct: ["go"] },
+                { q: "They will not coming to the party.", correct: ["come"] },
+                { q: "Will he be rich? Yes, he do.", correct: ["will"] },
+                { q: "There won't being any trees left.", correct: ["be"] }
             ]
         },
         {
             title: "C. Sentence Unscrambling",
             questions: [
-                { q: "won't / the / world / any / gas / be / there / in / .", correct: ["There won't be any gas in the world.", "There won't be any gas in the world"] },
-                { q: "we / energy / use / from / will / water / ?", correct: ["Will we use energy from water?", "Will we use energy from water"] },
-                { q: "be / the / will / cleaner / air / .", correct: ["The air will be cleaner.", "The air will be cleaner"] },
-                { q: "planet / save / we / will / the / .", correct: ["We will save the planet.", "We will save the planet"] }
+                { q: "be / soon / here / will / spring / .", correct: ["Spring will be here soon.", "Spring will be here soon"] },
+                { q: "cities / many / there / won't / be / underwater / .", correct: ["There won't be many underwater cities.", "There won't be many underwater cities"] },
+                { q: "planets / other / will / live / people / on / ?", correct: ["Will people live on other planets?", "Will people live on other planets"] },
+                { q: "environment / technology / will / the / help / .", correct: ["Technology will help the environment.", "Technology will help the environment"] }
             ]
         }
     ];
@@ -149,7 +149,6 @@
             const inputField = document.querySelector(`input[name="q${index}"]`);
             const userInput = inputField.value.trim().toLowerCase().replace(/[.?!]$/, '');
             
-            // Check against all possible correct answers
             const isCorrect = data.correct.some(ans => {
                 const normalizedAns = ans.trim().toLowerCase().replace(/[.?!]$/, '');
                 return userInput === normalizedAns;
