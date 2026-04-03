@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 7 Vocabulary Spelling Quiz 4</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .quiz-item {
+            background: var(--bg-primary);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .quiz-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+        .sentence { font-size: 1.25rem; font-weight: 600; margin-bottom: 12px; }
+        .hint { 
+            display: block; 
+            color: var(--text-secondary); 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 1.1rem; 
+            margin-bottom: 12px; 
+            letter-spacing: 2px;
+        }
+        .input-box {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1.15rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .hidden { display: none; }
+        
+        .result-row {
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 16px;
+            border-left: 6px solid #ccc;
+            background: var(--bg-secondary);
+        }
+        .correct { border-left-color: var(--accent-success); background: rgba(16, 185, 129, 0.1); }
+        .incorrect { border-left-color: var(--accent-danger); background: rgba(239, 68, 68, 0.1); }
+        .score { font-size: 2.5rem; font-weight: 800; color: var(--accent-primary); text-align: center; margin-bottom: 2rem; }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        const vocabulary = [
+            { word: "future", sentence: "Will we travel to other stars in the ______?" },
+            { word: "save", sentence: "We can ______ time by taking the shortcut." },
+            { word: "travel", sentence: "My family will ______ to Taichung by train." },
+            { word: "gas", sentence: "Helium is a ______ that makes balloons float." },
+            { word: "turn off", sentence: "You should ______ the tap while washing your hands." },
+            { word: "light", sentence: "The sun gives us ______ to see during the day." },
+            { word: "electricity", sentence: "The power cut means there is no ______ today." },
+            { word: "energy", sentence: "Wind turbines catch wind to make clean ______." },
+            { word: "another", sentence: "I lost my pencil, so I had to find ______." },
+            { word: "pollution", sentence: "Riding bicycles is a great way to stop air ______." },
+            { word: "imagine", sentence: "It is fun to ______ living in a magic castle." },
+            { word: "poem", sentence: "She wrote a lovely ______ for her mother's birthday." },
+            { word: "website", sentence: "We bought the concert tickets from a secure ______." },
+            { word: "begin", sentence: "It is time to ______ the cooking class now." },
+            { word: "competition", sentence: "Who won the running ______ at the sports day?" },
+            { word: "topic", sentence: "Animal habitats is an interesting ______ to study." },
+            { word: "planet", sentence: "Venus is a very hot ______ near the sun." },
+            { word: "change", sentence: "The frog will ______ from a tadpole to an adult." },
+            { word: "hurricane", sentence: "Many people lost their homes in the terrible ______." },
+            { word: "glacier", sentence: "The ship saw a giant piece of ______ break off into the sea." },
+            { word: "melt", sentence: "Putting ice in warm water makes it ______ quickly." },
+            { word: "flood", sentence: "The heavy typhoon might cause a ______ in low areas." },
+            { word: "weather", sentence: "The sunny ______ is perfect for going to the beach." },
+            { word: "reason", sentence: "Eating too much candy is the ______ you have a stomachache." },
+            { word: "extremely", sentence: "The math puzzle was ______ hard to solve." },
+            { word: "storm", sentence: "Look at the dark clouds, a ______ is on the way." },
+            { word: "recycle", sentence: "We ______ glass bottles to make new ones." },
+            { word: "listen", sentence: "______ to the birds singing in the trees!" },
+            { word: "possible", sentence: "Is it ______ to build a robot that can dance?" },
+            { word: "polar bear", sentence: "A ______ has a thick coat of fur to stay warm." },
+            { word: "puffin", sentence: "The little ______ flew over the cold ocean waves." },
+            { word: "flamingo", sentence: "You can see the tall pink ______ wading in the water." },
+            { word: "geography", sentence: "Learning about mountains and oceans is a part of ______." },
+            { word: "volcano", sentence: "The whole island shook when the ______ woke up." },
+            { word: "capital", sentence: "Tokyo is the busy ______ city of Japan." },
+            { word: "quiz", sentence: "Review your notes so you do well on the ______." },
+            { word: "concert", sentence: "My sister plays the violin in the orchestra ______." },
+            { word: "neatly", sentence: "Pack your books ______ into your school bag." },
+            { word: "quietly", sentence: "We whispered ______ during the movie." },
+            { word: "patiently", sentence: "Sit ______ while the dentist checks your teeth." },
+            { word: "carefully", sentence: "The artist painted the picture very ______." },
+            { word: "loudly", sentence: "The alarm clock rang ______ and woke everyone up." },
+            { word: "clearly", sentence: "He wrote his answer ______ on the whiteboard." },
+            { word: "clap", sentence: "If you are happy and you know it, ______ your hands!" },
+            { word: "noise", sentence: "Do not make any ______ when the baby is sleeping." },
+            { word: "way", sentence: "Please make ______ for the ambulance to pass." },
+            { word: "event", sentence: "The magic show was the best ______ of the weekend." },
+            { word: "have to", sentence: "You ______ eat your vegetables to grow strong." }
+        ];
+
+        function generateHint(word) {
+            return word.split(' ').map(part => {
+                if (part.length <= 1) return part;
+                if (part.length === 2) return part[0] + "_";
+                return part[0] + "_".repeat(part.length - 2) + part[part.length - 1];
+            }).join(' ');
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initQuiz() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+            vocabulary.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-item';
+                div.id = `item${index}`;
+                div.innerHTML = `
+                    <div class="sentence">${index + 1}. ${item.sentence.replace('______', '<span style="text-decoration: underline; padding: 0 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>')}</div>
+                    <span class="hint">Hint: ${generateHint(item.word)}</span>
+                    <input type="text" class="input-box" id="q${index}" placeholder="Type your answer here...">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkResults() {
+            let score = 0;
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';
+
+            vocabulary.forEach((item, index) => {
+                const input = document.getElementById(`q${index}`);
+                const userInput = input.value.trim();
+                const isCorrect = userInput.toLowerCase() === item.word.toLowerCase();
+                if (isCorrect) {
+                  score++;
+                  input.style.borderColor = "var(--accent-success)";
+                } else {
+                  input.style.borderColor = "var(--accent-danger)";
+                }
+
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `result-row ${isCorrect ? 'correct' : 'incorrect'}`;
+                resultDiv.innerHTML = `
+                    <p style="margin-bottom: 8px;"><strong>Question ${index + 1}:</strong> ${item.sentence.replace('______', '<u>' + (userInput || '____') + '</u>')}</p>
+                    <p style="margin-bottom: 4px; font-size: 0.95rem;"><strong>Correct Word:</strong> <span style="color: var(--accent-success); font-weight: 700;">${item.word}</span></p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;"><strong>Your Answer:</strong> ${userInput || '(blank)'}</p>
+                `;
+                resultsList.appendChild(resultDiv);
+            });
+
+            document.getElementById('score-display').innerText = `Your Score: ${score} / ${vocabulary.length}`;
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('results-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            document.getElementById('quiz-view').classList.remove('hidden');
+            document.getElementById('results-view').classList.add('hidden');
+            shuffleArray(vocabulary);
+            initQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const btn = document.getElementById('themeBtn');
+            if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+            shuffleArray(vocabulary);
+            initQuiz();
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <div id="quiz-view">
+        <p><a href="english_vocab.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回單字庫</a></p>
+        <h1>✍️ Vocabulary Spelling Quiz 4</h1>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Fill in the missing words based on the hints provided!</p>
+        
+        <div id="questions-container"></div>
+        
+        <button id="submitBtn" onclick="checkResults()">Submit & Check Results</button>
+    </div>
+
+    <div id="results-view" class="hidden">
+        <h1>📊 Quiz Summary</h1>
+        <div id="score-display" class="score"></div>
+        <div id="results-list"></div>
+        <button id="submitBtn" onclick="restartQuiz()" style="margin-top: 2rem;">Restart Quiz</button>
+        <p style="text-align: center; margin-top: 1.5rem;"><a href="english_vocab.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回單字庫</a></p>
+    </div>
+</div>
+
+</body>
+</html>
