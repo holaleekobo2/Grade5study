@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>臺灣史填充挑戰 - 清末的開發與現代化</title>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #0e7490;
+            --accent: #22d3ee;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: "Inter", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(at 0% 0%, hsla(202,100%,95%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(190,100%,95%,1) 0, transparent 50%);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.02);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .quiz-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: var(--secondary);
+            border-left: 6px solid var(--accent);
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #f0fdfa, transparent);
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .question-block:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .options-label {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .options-label:hover {
+            background-color: #f1f5f9;
+            border-color: var(--border);
+        }
+
+        input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .order-input, .match-input {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 8px;
+            color: var(--primary);
+        }
+
+        .order-input:focus, .match-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            font-size: 16px;
+            background: #f8fafc;
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .bank {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde68a;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: #92400e;
+        }
+
+        #submit-btn {
+            display: block;
+            width: 300px;
+            margin: 60px auto 40px;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #submit-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.4);
+        }
+
+        #result-area {
+            margin-top: 40px;
+            padding: 40px;
+            border-radius: 24px;
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .history-section {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 2px dashed var(--border);
+        }
+
+        .history-item {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .history-item strong {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .clear-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .clear-btn:hover {
+            background: #dc2626;
+            opacity: 0.9;
+        }
+
+        .wrong-item {
+            background: #fef2f2;
+            border-left: 6px solid var(--error);
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+        .correct-ans {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .user-ans {
+            color: var(--error);
+            font-weight: 700;
+        }
+
+        details summary {
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 10px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 25px; }
+            h1 { font-size: 1.8rem; }
+            #submit-btn { width: 100%; }
+            .order-input, .match-input { width: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="society.html" class="back-link">← 返回單元目錄</a>
+    <h1>臺灣史填充挑戰</h1>
+    <p class="quiz-subtitle">清末的開發與現代化：沈葆楨、劉銘傳與各項建設</p>
+
+    <form id="quizForm">
+        <!-- Section 1 -->
+        <h2>一、是非題 (每題 2 分)</h2>
+        <div id="section1">
+            <div class="question-block">1. 陶德 (John Dodd) 鼓勵農民在臺灣北部種植茶葉並推廣至海外。<br>
+                <label class="options-label"><input type="radio" name="q1" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q1" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">2. 馬雅各醫師在臺灣南部建立醫院，透過醫療服務來傳教。<br>
+                <label class="options-label"><input type="radio" name="q2" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q2" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">3. 馬偕博士在淡水創辦了「牛津學堂」，推廣西方科學知識。<br>
+                <label class="options-label"><input type="radio" name="q3" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q3" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">4. 沈葆楨是因為「牡丹社事件」發生後，才被派往臺灣加強防禦。<br>
+                <label class="options-label"><input type="radio" name="q4" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q4" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">5. 劉銘傳是臺灣建省後的第一任巡撫。<br>
+                <label class="options-label"><input type="radio" name="q5" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q5" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">6. 臺灣第一條鐵路是由劉銘傳興建，當時僅完成基隆到新竹段。<br>
+                <label class="options-label"><input type="radio" name="q6" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q6" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">7. 清朝在英法聯軍之役後，被迫開放淡水、安平、打狗與雞籠等港口。<br>
+                <label class="options-label"><input type="radio" name="q7" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q7" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">8. 沈葆楨開山撫番，是為了加強對東臺灣的開發與統治。<br>
+                <label class="options-label"><input type="radio" name="q8" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q8" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">9. 劉銘傳在臺灣設置了郵政總局，並發行郵票，是中國最早的現代化郵政之一。<br>
+                <label class="options-label"><input type="radio" name="q9" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q9" value="X"> ╳ 錯誤</label>
+            </div>
+            <div class="question-block">10. 開港通商前，臺灣的主要出口商品是茶葉、樟腦。<br>
+                <label class="options-label"><input type="radio" name="q10" value="O"> ○ 正確</label>
+                <label class="options-label"><input type="radio" name="q10" value="X"> ╳ 錯誤</label>
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <h2>二、選擇題 (每題 2 分)</h2>
+        <div id="section2">
+            <div class="question-block">1. 誰被譽為「臺灣茶葉之父」？<br>
+                <label class="options-label"><input type="radio" name="q11" value="A"> A. 馬偕</label>
+                <label class="options-label"><input type="radio" name="q11" value="B"> B. 陶德</label>
+                <label class="options-label"><input type="radio" name="q11" value="C"> C. 沈葆楨</label>
+                <label class="options-label"><input type="radio" name="q11" value="D"> D. 劉銘傳</label>
+            </div>
+            <div class="question-block">2. 哪一位傳教士在臺南設立了臺灣第一座西式醫院？<br>
+                <label class="options-label"><input type="radio" name="q12" value="A"> A. 馬雅各</label>
+                <label class="options-label"><input type="radio" name="q12" value="B"> B. 馬偕</label>
+                <label class="options-label"><input type="radio" name="q12" value="C"> C. 巴克禮</label>
+                <label class="options-label"><input type="radio" name="q12" value="D"> D. 甘為霖</label>
+            </div>
+            <div class="question-block">3. 沈葆楨為了防禦日軍再次侵略，在臺南興建了哪座砲台？<br>
+                <label class="options-label"><input type="radio" name="q13" value="A"> A. 紅毛城</label>
+                <label class="options-label"><input type="radio" name="q13" value="B"> B. 安平古堡</label>
+                <label class="options-label"><input type="radio" name="q13" value="C"> C. 億載金城</label>
+                <label class="options-label"><input type="radio" name="q13" value="D"> D. 滬尾砲台</label>
+            </div>
+            <div class="question-block">4. 1874 年發生的哪一個事件，讓清廷意識到臺灣戰略地位的重要性？<br>
+                <label class="options-label"><input type="radio" name="q14" value="A"> A. 鴉片戰爭</label>
+                <label class="options-label"><input type="radio" name="q14" value="B"> B. 英法聯軍</label>
+                <label class="options-label"><input type="radio" name="q14" value="C"> C. 牡丹社事件</label>
+                <label class="options-label"><input type="radio" name="q14" value="D"> D. 甲午戰爭</label>
+            </div>
+            <div class="question-block">5. 劉銘傳推行現代化建設時，將行政重心移到了哪裡？<br>
+                <label class="options-label"><input type="radio" name="q15" value="A"> A. 臺南</label>
+                <label class="options-label"><input type="radio" name="q15" value="B"> B. 高雄</label>
+                <label class="options-label"><input type="radio" name="q15" value="C"> C. 彰化</label>
+                <label class="options-label"><input type="radio" name="q15" value="D"> D. 臺北</label>
+            </div>
+            <div class="question-block">6. 以下哪一項不是劉銘傳在臺灣的現代化建設？<br>
+                <label class="options-label"><input type="radio" name="q16" value="A"> A. 興建高速公路</label>
+                <label class="options-label"><input type="radio" name="q16" value="B"> B. 架設電報線</label>
+                <label class="options-label"><input type="radio" name="q16" value="C"> C. 鋪設鐵路</label>
+                <label class="options-label"><input type="radio" name="q16" value="D"> D. 創辦現代化學校</label>
+            </div>
+            <div class="question-block">7. 19世紀末臺灣出口最旺盛、產值最高的商品是什麼？<br>
+                <label class="options-label"><input type="radio" name="q17" value="A"> A. 稻米</label>
+                <label class="options-label"><input type="radio" name="q17" value="B"> B. 甘蔗</label>
+                <label class="options-label"><input type="radio" name="q17" value="C"> C. 茶葉</label>
+                <label class="options-label"><input type="radio" name="q17" value="D"> D. 鹿皮</label>
+            </div>
+            <div class="question-block">8. 馬偕博士傳教的範圍主要是在臺灣的哪個區域？<br>
+                <label class="options-label"><input type="radio" name="q18" value="A"> A. 南部</label>
+                <label class="options-label"><input type="radio" name="q18" value="B"> B. 北部</label>
+                <label class="options-label"><input type="radio" name="q18" value="C"> C. 東部</label>
+                <label class="options-label"><input type="radio" name="q18" value="D"> D. 離島</label>
+            </div>
+            <div class="question-block">9. 臺灣是在哪一年正式由行政院（清朝時期）核准單獨設省？<br>
+                <label class="options-label"><input type="radio" name="q19" value="A"> A. 1860年</label>
+                <label class="options-label"><input type="radio" name="q19" value="B"> B. 1874年</label>
+                <label class="options-label"><input type="radio" name="q19" value="C"> C. 1885年</label>
+                <label class="options-label"><input type="radio" name="q19" value="D"> D. 1895年</label>
+            </div>
+            <div class="question-block">10. 關於「樟腦」，下列敘述何者正確？<br>
+                <label class="options-label"><input type="radio" name="q20" value="A"> A. 產地位於平原地區</label>
+                <label class="options-label"><input type="radio" name="q20" value="B"> B. 當時可用於製造無煙火藥與賽璐珞</label>
+                <label class="options-label"><input type="radio" name="q20" value="C"> C. 是劉銘傳最早引進的作物</label>
+                <label class="options-label"><input type="radio" name="q20" value="D"> D. 產量主要分佈於南部沿海</label>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <h2>三、排出順序 (每題 9 分)</h2>
+        <div class="question-block">
+            1. 請將下列事件依照「發生時間」先後順序填入代號 (A, B, C)：<br>
+            (A) 臺灣正式建省 (B) 清廷被迫開港通商 (C) 牡丹社事件與沈葆楨來臺<br>
+            <div style="margin-top: 15px;">
+                順序：<input type="text" class="order-input" name="order1_1" placeholder="?"> → 
+                <input type="text" class="order-input" name="order1_2" placeholder="?"> → 
+                <input type="text" class="order-input" name="order1_3" placeholder="?">
+            </div>
+        </div>
+        <div class="question-block">
+            2. 請將下列人物依照「主要在臺活動時間」先後順序排列：<br>
+            (A) 第一任巡撫劉銘傳 (B) 來臺積極備戰的沈葆楨 (C) 引進大稻埕茶業的陶德<br>
+            <div style="margin-top: 15px;">
+                順序：<input type="text" class="order-input" name="order2_1" placeholder="?"> → 
+                <input type="text" class="order-input" name="order2_2" placeholder="?"> → 
+                <input type="text" class="order-input" name="order2_3" placeholder="?">
+            </div>
+        </div>
+
+        <!-- Section 4 -->
+        <h2>四、圈圈看 (每題 6 分)</h2>
+        <div class="question-block">
+            1. 臺灣開港通商後，產地位於丘陵地區的 (
+            <select name="circle1">
+                <option value="">請選擇</option>
+                <option value="tea">茶葉</option>
+                <option value="rice">稻米</option>
+            </select> ) 成為北部重要的經濟作物。
+        </div>
+        <div class="question-block">
+            2. 1874 年，日軍藉口原住民殺害琉球船員而發動侵臺戰爭，史稱 (
+            <select name="circle2">
+                <option value="">請選擇</option>
+                <option value="mudan">牡丹社事件</option>
+                <option value="french">中法戰爭</option>
+            </select> )。
+        </div>
+        <div class="question-block">
+            3. ( <select name="circle3">
+                <option value="">請選擇</option>
+                <option value="shen">沈葆楨</option>
+                <option value="liu">劉銘傳</option>
+            </select> ) 興建了第一條鐵路。
+        </div>
+        <div class="question-block">
+            4. 傳教士 ( <select name="circle4">
+                <option value="">請選擇</option>
+                <option value="mackay">馬偕</option>
+                <option value="maxwell">馬雅各</option>
+            </select> ) 深入北部山區傳教，也幫民眾拔牙。
+        </div>
+        <div class="question-block">
+            5. 清廷廢除「渡臺禁令」，是 (
+            <select name="circle5">
+                <option value="">請選擇</option>
+                <option value="shen">沈葆楨</option>
+                <option value="dodd">陶德</option>
+            </select> ) 所推行的政策。
+        </div>
+
+        <!-- Section 5 -->
+        <h2>五、配合題 (每格 2 分)</h2>
+        <div class="bank">
+            <span>(A) 陶德</span><span>(B) 馬偕</span><span>(C) 馬雅各</span><span>(D) 沈葆楨</span><span>(E) 劉銘傳</span><span>(F) 牡丹社事件</span>
+        </div>
+        <table>
+            <tr>
+                <th>歷史描述</th>
+                <th>填入代號</th>
+            </tr>
+            <tr>
+                <td>1. 在淡水建立牛津學堂，開啟北部的現代教育。</td>
+                <td><input type="text" class="match-input" name="match1" maxlength="1"></td>
+            </tr>
+            <tr>
+                <td>2. 興建億載金城，配置昂貴的大砲以防禦敵軍。</td>
+                <td><input type="text" class="match-input" name="match2" maxlength="1"></td>
+            </tr>
+            <tr>
+                <td>3. 推動臺灣第一條鐵路的建設。</td>
+                <td><input type="text" class="match-input" name="match3" maxlength="1"></td>
+            </tr>
+            <tr>
+                <td>4. 在大稻埕開設茶行，帶動北部繁榮。</td>
+                <td><input type="text" class="match-input" name="match4" maxlength="1"></td>
+            </tr>
+            <tr>
+                <td>5. 日軍侵臺，促使清廷改變消極政策。</td>
+                <td><input type="text" class="match-input" name="match5" maxlength="1"></td>
+            </tr>
+            <tr>
+                <td>6. 在臺南開設醫館，南部傳教的先驅。</td>
+                <td><input type="text" class="match-input" name="match6" maxlength="1"></td>
+            </tr>
+        </table>
+
+        <button type="button" id="submit-btn" onclick="checkAnswers()">提交考卷並查看分數</button>
+    </form>
+
+    <div id="result-area">
+        <div class="score-display" id="finalScore"></div>
+        <div id="feedback-msg" style="text-align:center; font-size:1.2rem; margin-bottom:30px;"></div>
+        <div id="review-details"></div>
+    </div>
+
+    <div class="history-section">
+        <h3>📊 測驗紀錄回顧</h3>
+        <div id="historyList">尚無測驗紀錄</div>
+        <button class="clear-btn" onclick="clearHistory()">清除所有紀錄</button>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'society_unit2_part2_3_results';
+
+    function checkAnswers() {
+        let score = 0;
+        let mistakes = [];
+        const form = document.getElementById('quizForm');
+
+        // 1. True/False
+        const q1_10 = {q1:"O", q2:"O", q3:"O", q4:"O", q5:"O", q6:"O", q7:"O", q8:"O", q9:"O", q10:"X"};
+        const q1_10_texts = {
+            q1: "陶德鼓勵北部茶葉種植", q2: "馬雅各建立南部醫院", q3: "馬偕創辦牛津學堂",
+            q4: "沈葆楨因牡丹社事件來台", q5: "劉銘傳為首任巡撫", q6: "第一條鐵路基隆到新竹",
+            q7: "英法聯軍後開放港口", q8: "沈葆楨開山撫番", q9: "劉銘傳設置郵政總局", q10: "開港通商前主要出口為茶葉、樟腦"
+        };
+        for(let i=1; i<=10; i++){
+            let ans = document.querySelector(`input[name="q${i}"]:checked`);
+            let userVal = ans ? ans.value : "未答";
+            if(userVal === q1_10[`q${i}`]){
+                score += 2;
+            } else {
+                mistakes.push({
+                    q: `是非題 ${i}: ${q1_10_texts[`q${i}`]}`,
+                    user: userVal === "O" ? "正確" : (userVal === "X" ? "錯誤" : "未答"),
+                    correct: q1_10[`q${i}`] === "O" ? "正確" : "錯誤"
+                });
+            }
+        }
+
+        // 2. Multi Choice
+        const q11_20 = {q11:"B", q12:"A", q13:"C", q14:"C", q15:"D", q16:"A", q17:"C", q18:"B", q19:"C", q20:"B"};
+        const q11_20_texts = {
+            q11: "臺灣茶葉之父", q12: "臺南第一座西式醫院", q13: "沈葆楨興建的砲台", q14: "意識臺灣戰略地位的事件",
+            q15: "劉銘傳將行政重心移往", q16: "非劉銘傳建設", q17: "19世紀末最高產值商品", q18: "馬偕傳教範圍",
+            q19: "臺灣正式設省年度", q20: "關於樟腦的正確敘述"
+        };
+        const q11_20_options = {
+            q11: {A:"馬偕", B:"陶德", C:"沈葆楨", D:"劉銘傳"},
+            q12: {A:"馬雅各", B:"馬偕", C:"巴克禮", D:"甘為霖"},
+            q13: {A:"紅毛城", B:"安平古堡", C:"億載金城", D:"滬尾砲台"},
+            q14: {A:"鴉片戰爭", B:"英法聯軍", C:"牡丹社事件", D:"甲午戰爭"},
+            q15: {A:"臺南", B:"高雄", C:"彰化", D:"臺北"},
+            q16: {A:"興建高速公路", B:"架設電報線", C:"鋪設鐵路", D:"創辦學堂"},
+            q17: {A:"稻米", B:"甘蔗", C:"茶葉", D:"鹿皮"},
+            q18: {A:"南部", B:"北部", C:"東部", D:"離島"},
+            q19: {A:"1860年", B:"1874年", C:"1885年", D:"1895年"},
+            q20: {A:"產地位於平原", B:"軍事/工業用途", C:"劉首引進", D:"產量及於南部"}
+        };
+        for(let i=11; i<=20; i++){
+            let ans = document.querySelector(`input[name="q${i}"]:checked`);
+            let userVal = ans ? ans.value : null;
+            if(userVal === q11_20[`q${i}`]){
+                score += 2;
+            } else {
+                mistakes.push({
+                    q: `選擇題 ${i-10}: ${q11_20_texts[`q${i}`]}`,
+                    user: userVal ? q11_20_options[`q${i}`][userVal] : "未答",
+                    correct: q11_20_options[`q${i}`][q11_20[`q${i}`]]
+                });
+            }
+        }
+
+        // 3. Ordering
+        const order1_ans = ["B", "C", "A"];
+        const order2_ans = ["C", "B", "A"];
+        let order1_correct = true;
+        let order1_user = [];
+        for(let j=1; j<=3; j++) {
+            let val = form[`order1_${j}`].value.toUpperCase();
+            order1_user.push(val || "_");
+            if(val !== order1_ans[j-1]) order1_correct = false;
+        }
+        if(order1_correct) score += 9;
+        else mistakes.push({ q: "排序題 1 (事件先後)", user: order1_user.join("→"), correct: order1_ans.join("→") });
+
+        let order2_correct = true;
+        let order2_user = [];
+        for(let j=1; j<=3; j++) {
+            let val = form[`order2_${j}`].value.toUpperCase();
+            order2_user.push(val || "_");
+            if(val !== order2_ans[j-1]) order2_correct = false;
+        }
+        if(order2_correct) score += 9;
+        else mistakes.push({ q: "排序題 2 (人物先後)", user: order2_user.join("→"), correct: order2_ans.join("→") });
+
+        // 4. Dropdowns
+        const c_ans = {circle1:"tea", circle2:"mudan", circle3:"liu", circle4:"mackay", circle5:"shen"};
+        const c_labels = {tea:"茶葉", rice:"稻米", mudan:"牡丹社事件", french:"中法戰爭", shen:"沈葆楨", liu:"劉銘傳", mackay:"馬偕", maxwell:"馬雅各", dodd:"陶德"};
+        const c_questions = ["丘陵地區經濟作物", "1874年日軍侵台事件", "興建第一條鐵路者", "深入北部傳教拔牙", "廢除渡臺禁令者"];
+        for(let i=1; i<=5; i++){
+            let val = form[`circle${i}`].value;
+            if(val === c_ans[`circle${i}`]){
+                score += 6;
+            } else {
+                mistakes.push({ q: `圈選題 ${i}: ${c_questions[i-1]}`, user: c_labels[val] || "未選", correct: c_labels[c_ans[`circle${i}`]] });
+            }
+        }
+
+        // 5. Matching
+        const m_ans = ["B", "D", "E", "A", "F", "C"];
+        const m_labels = {A:"陶德", B:"馬偕", C:"馬雅各", D:"沈葆楨", E:"劉銘傳", F:"牡丹社事件"};
+        const m_questions = ["淡水建立牛津學堂", "興建億載金城", "推動第一條鐵路", "大稻埕開設茶行", "日軍侵臺促治", "臺南開設醫館"];
+        for(let i=1; i<=6; i++){
+            let val = form[`match${i}`].value.toUpperCase();
+            if(val === m_ans[i-1]){
+                score += 2;
+            } else {
+                mistakes.push({ q: `配合題 ${i}: ${m_questions[i-1]}`, user: val || "未填", correct: m_ans[i-1] + " (" + m_labels[m_ans[i-1]] + ")" });
+            }
+        }
+
+        // Save to History
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        history.push({
+            date: new Date().toLocaleString(),
+            score: score,
+            total: 100,
+            mistakes: mistakes
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+        // Result Display
+        const res = document.getElementById('result-area');
+        res.style.display = "block";
+        res.style.backgroundColor = score >= 60 ? "#f0fdf4" : "#fef2f2";
+        res.style.border = "2px solid " + (score >= 60 ? "#22c55e" : "#ef4444");
+
+        document.getElementById('finalScore').innerHTML = `得分：${score} / 100`;
+        let msg = score === 100 ? "太棒了！滿分！你是臺灣史小博士！" : (score >= 60 ? "及格了，繼續努力！" : "再複習一下吧，加油！");
+        document.getElementById('feedback-msg').innerHTML = msg;
+
+        // Review Details
+        let reviewHtml = "";
+        if(mistakes.length > 0) {
+            reviewHtml = "<h3>🔍 錯題回顧與解析</h3>";
+            mistakes.forEach(m => {
+                reviewHtml += `
+                    <div class="wrong-item">
+                        <strong>${m.q}</strong><br>
+                        你的答案：<span class="user-ans">${m.user}</span><br>
+                        正確答案：<span class="correct-ans">${m.correct}</span>
+                    </div>
+                `;
+            });
+        } else {
+            reviewHtml = "<div style='color:#16a34a; font-weight:700; text-align:center;'>恭喜！全對！</div>";
+        }
+        document.getElementById('review-details').innerHTML = reviewHtml;
+
+        displayHistory();
+        window.scrollTo({ top: res.offsetTop - 50, behavior: 'smooth' });
+    }
+
+    function displayHistory() {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        const historyList = document.getElementById('historyList');
+        if (history.length === 0) {
+            historyList.innerHTML = "尚無測驗紀錄";
+            return;
+        }
+        historyList.innerHTML = history.slice().reverse().map((item, idx) => `
+            <div class="history-item">
+                <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">${item.date}</div>
+                <strong>第 ${history.length - idx} 次測驗 - 得分：<span style="color: #0ea5e9;">${item.score}</span> / 100</strong>
+                <details>
+                    <summary>查看詳情</summary>
+                    <div style="margin-top: 10px; font-size: 0.9rem;">
+                        ${item.mistakes.length > 0 ? item.mistakes.map(m => `
+                            <p style="margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px;">
+                                <strong>問：</strong>${m.q}<br>
+                                <span style="color:#ef4444;">答：${m.user}</span> | <span style="color:#22c55e;">正：${m.correct}</span>
+                            </p>
+                        `).join('') : "全部正確！"}
+                    </div>
+                </details>
+            </div>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm("確定要清除所有測驗紀錄嗎？")) {
+            localStorage.removeItem(STORAGE_KEY);
+            displayHistory();
+        }
+    }
+
+    window.onload = function() {
+        displayHistory();
+    };
+</script>
+
+</body>
+</html>
