@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國小社會科測驗：清代臺灣的轉變與現代化</title>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #0e7490;
+            --accent: #22d3ee;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: "Inter", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(at 0% 0%, hsla(202,100%,95%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(190,100%,95%,1) 0, transparent 50%);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.02);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .quiz-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: var(--secondary);
+            border-left: 6px solid var(--accent);
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #f0fdfa, transparent);
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .question-block:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .options-label {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .options-label:hover {
+            background-color: #f1f5f9;
+            border-color: var(--border);
+        }
+
+        input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .order-input, .match-input {
+            width: 60px;
+            text-align: center;
+            margin: 0 8px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            font-size: 16px;
+            background: #f8fafc;
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .bank {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde68a;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: #92400e;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+        }
+
+        #submit-btn {
+            display: block;
+            width: 300px;
+            margin: 60px auto 40px;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #submit-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.4);
+        }
+
+        #result-area {
+            margin-top: 40px;
+            padding: 40px;
+            border-radius: 24px;
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .history-section {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 2px dashed var(--border);
+        }
+
+        .history-item {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .history-item strong {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .clear-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .clear-btn:hover {
+            background: #dc2626;
+            opacity: 0.9;
+        }
+
+        .wrong-item {
+            background: #fef2f2;
+            border-left: 6px solid var(--error);
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+        .correct-ans {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .user-ans {
+            color: var(--error);
+            font-weight: 700;
+        }
+
+        details summary {
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 10px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 25px; }
+            h1 { font-size: 1.8rem; }
+            #submit-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="society.html" class="back-link">← 返回單元目錄</a>
+    <h1>國小社會科測驗</h1>
+    <p class="quiz-subtitle">清代臺灣的轉變與現代化</p>
+
+    <!-- 第一部分：是非題 -->
+    <div id="section1">
+        <h2>第一部分：是非題 (每題2分，共20分)</h2>
+        <p style="color: var(--text-light); margin-bottom: 1rem;">請判斷下列敘述是否正確，正確選「O」，錯誤選「X」。</p>
+        <div id="q1-container"></div>
+    </div>
+
+    <!-- 第二部分：選擇題 -->
+    <div id="section2">
+        <h2>第二部分：選擇題 (每題2分，共20分)</h2>
+        <div id="q2-container"></div>
+    </div>
+
+    <!-- 第三部分：排序題 -->
+    <div id="section3">
+        <h2>第三部分：排序題 (每題10分，共20分)</h2>
+
+        <div class="question-block">
+            <p><strong>1. 歷史事件時間先後排序</strong>：請依照歷史事件發生的先後順序，填入字母 A、B、C、D。</p>
+            <p>A. 臺灣建省 | B. 牡丹社事件 | C. 臺灣納入清帝國版圖 | D. 開通四大港口</p>
+            <div class="diagram">
+                <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                    <line x1="50" y1="80" x2="750" y2="80" stroke="#333" stroke-width="4"/>
+                    <polygon points="750,70 770,80 750,90" fill="#333"/>
+                    <circle cx="150" cy="80" r="8" fill="#d9534f"/><text x="150" y="60" text-anchor="middle" font-size="14" font-weight="bold">1684年</text>
+                    <circle cx="350" cy="80" r="8" fill="#5cb85c"/><text x="350" y="60" text-anchor="middle" font-size="14" font-weight="bold">1860年代</text>
+                    <circle cx="500" cy="80" r="8" fill="#f0ad4e"/><text x="500" y="60" text-anchor="middle" font-size="14" font-weight="bold">1874年</text>
+                    <circle cx="650" cy="80" r="8" fill="#5bc0de"/><text x="650" y="60" text-anchor="middle" font-size="14" font-weight="bold">1885年</text>
+                </svg>
+            </div>
+            <div style="font-weight: bold; text-align: center; margin-top: 10px;">
+                順序：<input type="text" id="order1" placeholder="例: ABCD" style="width: 150px; text-transform: uppercase;">
+            </div>
+        </div>
+
+        <div class="question-block">
+            <p><strong>2. 港口位置由北到南排序</strong>：請將港口由最北方排列到最南方，填入代號 甲、乙、丙、丁。</p>
+            <p>甲. 打狗 | 乙. 雞籠 | 丙. 安平 | 丁. 鹿港</p>
+            <div class="diagram">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; max-height: 300px;">
+                    <path d="M 250,50 C 270,80 300,150 280,250 C 260,350 200,400 180,420 C 150,400 120,300 110,200 C 100,100 180,60 250,50 Z" fill="#d4ebd0" stroke="#8cb783" stroke-width="2"/>
+                    <circle cx="260" cy="65" r="5" fill="red"/><text x="270" y="70" font-size="16" font-weight="bold">雞籠</text>
+                    <circle cx="130" cy="180" r="5" fill="red"/><text x="80" y="185" font-size="16" font-weight="bold">鹿港</text>
+                    <circle cx="135" cy="320" r="5" fill="red"/><text x="80" y="325" font-size="16" font-weight="bold">安平</text>
+                    <circle cx="150" cy="360" r="5" fill="red"/><text x="100" y="365" font-size="16" font-weight="bold">打狗</text>
+                </svg>
+            </div>
+            <div style="font-weight: bold; text-align: center; margin-top: 10px;">
+                順序：<input type="text" id="order2" placeholder="例: 甲乙丙丁" style="width: 150px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- 第四部分：圈選與改錯 -->
+    <div id="section4">
+        <h2>第四部分：改錯與選擇 (共20分)</h2>
+        <div class="question-block">
+            <p><strong>A. 短文改錯 (每格 5 分)</strong></p>
+            <div style="background: #fdf2e9; padding: 15px; border-radius: 8px; border-left: 4px solid #e67e22; margin-bottom: 20px;">
+                「清法戰爭後，清帝國意識到臺灣的重要性，宣布臺灣建省，並指派 <strong>沈葆楨</strong> 為首任臺灣巡撫。他在臺灣推動了許多現代化建設，例如修築基隆到 <strong>臺南</strong> 的鐵路、開辦新式郵政等。」
+            </div>
+            <p>1. 錯誤一：<span style="font-weight: bold; color: var(--error);">沈葆楨</span> 應改為 <input type="text" id="error1" placeholder="正確答案"></p>
+            <p>2. 錯誤二：<span style="font-weight: bold; color: var(--error);">臺南</span> 應改為 <input type="text" id="error2" placeholder="正確答案"></p>
+        </div>
+
+        <div class="question-block">
+            <p><strong>B. 詞彙二選一 (每題 2 分)</strong></p>
+            <div id="q4b-container"></div>
+        </div>
+    </div>
+
+    <!-- 第五部分：配對題 -->
+    <div id="section5">
+        <h2>第五部分：人物與事蹟配對 (每題5分，共20分)</h2>
+        <p style="color: var(--text-light); margin-bottom: 1rem;">請將事蹟代號填入人物旁的括號中。</p>
+        
+        <div class="bank">
+            <span>(A) 創立淡水女學堂客，幫民眾拔牙</span>
+            <span>(B) 興建恆春城，解除渡臺禁令</span><br>
+            <span>(C) 首任巡撫，引進騰雲號</span>
+            <span>(D) 將烏龍茶銷往美國</span>
+        </div>
+
+        <table>
+            <tr><th>人物</th><th>事蹟代號</th></tr>
+            <tr><td>1. 馬偕 (George Mackay)</td><td><input type="text" class="match-input" id="match1" maxlength="1"></td></tr>
+            <tr><td>2. 沈葆楨</td><td><input type="text" class="match-input" id="match2" maxlength="1"></td></tr>
+            <tr><td>3. 劉銘傳</td><td><input type="text" class="match-input" id="match3" maxlength="1"></td></tr>
+            <tr><td>4. 約翰·陶德 (John Dodd)</td><td><input type="text" class="match-input" id="match4" maxlength="1"></td></tr>
+        </table>
+    </div>
+
+    <button type="button" id="submit-btn" onclick="calculateScore()">繳卷並計算分數</button>
+
+    <div id="result-area">
+        <div class="score-display" id="score-text"></div>
+        <div id="feedback-msg" style="text-align:center; font-size:1.2rem; margin-bottom:30px;"></div>
+        <div id="review-details"></div>
+    </div>
+
+    <div class="history-section">
+        <h3>📊 測驗紀錄回顧</h3>
+        <div id="historyList">尚無測驗紀錄</div>
+        <button class="clear-btn" onclick="clearHistory()">清除所有紀錄</button>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'society_unit2_part2_3_quiz2_results';
+
+    const tfQuestions = [
+        "臺灣開港前，西部的三大貿易港口俗稱「一府二鹿三艋舺」，其中「艋舺」位在南臺灣。",
+        "1860年代由於英法聯軍的關係，清帝國被迫開放淡水、雞籠、安平、打狗四個通商港口。",
+        "臺灣開港後，最主要的出口商品轉變為稻米與鹿皮。",
+        "英國商人約翰·陶德與臺灣商人李春生合作，將臺灣烏龍茶銷往美國。",
+        "傳教士馬偕在南臺灣傳教，並在臺南創立了看西街醫館。",
+        "牡丹社事件的起因是琉球人發生船難漂流到臺灣南部，遭到殺害。",
+        "牡丹社事件後，沈葆楨來臺，廢除了漢人渡臺以及進入山區的限制。",
+        "清法戰爭後，清帝國宣布臺灣建省（1885年）。",
+        "劉銘傳在臺灣推動現代化建設，修築了臺北到高雄的鐵路。",
+        "清帝國後期為了開採樟腦，發生了與原住民衝突的「大嵙崁戰役」。"
+    ];
+    const tfAnswers = ["X", "O", "X", "O", "X", "O", "O", "O", "X", "O"];
+
+    const mcQuestions = [
+        { q: "關於臺灣開港通商後的變化，下列哪一項正確？", options: ["經濟重心南移", "外商設立「洋行」", "主要進口五金", "出口最大宗是水產"], a: 1 },
+        { q: "開港後北部山區因為哪兩項作物興起？", options: ["稻米、蔗糖", "茶葉、樟腦", "蔗糖、樟腦", "茶葉、稻米"], a: 1 },
+        { q: "哪位傳教士在北臺灣拔牙並創立「淡水女學堂」？", options: ["馬雅各", "陶德", "馬偕", "沈葆楨"], a: 2 },
+        { q: "沈葆楨來臺興建了哪座知名砲臺？", options: ["二鯤鯓砲臺", "新式郵政", "騰雲號", "新式學堂"], a: 0 },
+        { q: "1884年清法戰爭時，帶領軍隊抵抗法軍的官員是？", options: ["沈葆楨", "鄭成功", "施琅", "劉銘傳"], a: 3 },
+        { q: "首任臺灣巡撫是誰？", options: ["沈葆楨", "劉銘傳", "丁日昌", "馬雅各"], a: 1 },
+        { q: "清帝國官員侵犯原住民空間引起的反抗稱為？", options: ["牡丹社事件", "大港口事件", "大嵙崁戰役", "林爽文事件"], a: 1 },
+        { q: "下列何者「不是」劉銘傳的政策？", options: ["鐵路", "郵政", "看西街醫館", "新式學堂"], a: 2 },
+        { q: "二二八公園保存的蒸汽火車頭名稱是？", options: ["獅球嶺號", "騰雲號", "自強號", "復興號"], a: 1 },
+        { q: "下列哪一個港口在「開港」後「不屬於」通商港口？", options: ["淡水", "鹿港", "安平", "打狗"], a: 1 }
+    ];
+
+    const bQuestions = [
+        { q: "開港後進口到臺灣的主要商品之一（對健康有害）：", options: ["鴉片", "蔗糖"], a: 0 },
+        { q: "臺灣經濟重心的轉移方向：", options: ["北往南", "南往北"], a: 1 },
+        { q: "在「南臺灣」行醫傳教的西方醫師：", options: ["馬偕", "馬雅各"], a: 1 },
+        { q: "沈葆楨在臺南興建的建設：", options: ["二鯤鯓砲臺", "獅球嶺隧道"], a: 0 },
+        { q: "約翰·陶德引進並推廣的作物：", options: ["烏龍茶", "鐵觀音"], a: 0 }
+    ];
+
+    // 初始化是非題
+    const q1Container = document.getElementById('q1-container');
+    tfQuestions.forEach((q, i) => {
+        q1Container.innerHTML += `
+            <div class="question-block">
+                <p><strong>${i+1}. ${q}</strong></p>
+                <label class="options-label"><input type="radio" name="tf${i}" value="O"> O</label>
+                <label class="options-label"><input type="radio" name="tf${i}" value="X"> X</label>
+            </div>`;
+    });
+
+    // 初始化選擇題
+    const q2Container = document.getElementById('q2-container');
+    mcQuestions.forEach((q, i) => {
+        q2Container.innerHTML += `
+            <div class="question-block">
+                <p><strong>${i+1}. ${q.q}</strong></p>
+                ${q.options.map((opt, idx) => `
+                    <label class="options-label"><input type="radio" name="mc${i}" value="${idx}"> ${idx+1}. ${opt}</label>
+                `).join('')}
+            </div>`;
+    });
+
+    // 初始化詞彙選擇
+    const q4bContainer = document.getElementById('q4b-container');
+    bQuestions.forEach((q, i) => {
+        q4bContainer.innerHTML += `
+            <div style="margin-top: 15px;">
+                ${i+1}. ${q.q}
+                <select id="b${i}" style="margin-left: 10px;">
+                    <option value="">請選擇</option>
+                    ${q.options.map((opt, idx) => `<option value="${idx}">${opt}</option>`).join('')}
+                </select>
+            </div>`;
+    });
+
+    function calculateScore() {
+        let score = 0;
+        let mistakes = [];
+
+        // Section 1: TF (2 pts each)
+        tfAnswers.forEach((ans, i) => {
+            const userAns = document.querySelector(`input[name="tf${i}"]:checked`);
+            if (userAns && userAns.value === ans) {
+                score += 2;
+            } else {
+                mistakes.push({
+                    q: `是非題 ${i+1}: ${tfQuestions[i]}`,
+                    user: userAns ? userAns.value : "未答",
+                    correct: ans
+                });
+            }
+        });
+
+        // Section 2: MC (2 pts each)
+        mcQuestions.forEach((q, i) => {
+            const userAns = document.querySelector(`input[name="mc${i}"]:checked`);
+            if (userAns && parseInt(userAns.value) === q.a) {
+                score += 2;
+            } else {
+                mistakes.push({
+                    q: `選擇題 ${i+1}: ${q.q}`,
+                    user: userAns ? q.options[parseInt(userAns.value)] : "未答",
+                    correct: q.options[q.a]
+                });
+            }
+        });
+
+        // Section 3: Ordering (10 pts each)
+        let o1 = document.getElementById('order1').value.toUpperCase().replace(/\\s/g, '');
+        if (o1 === "CDBA") {
+            score += 10;
+        } else {
+            mistakes.push({ q: "排序題 1 (歷史事件時間先後)", user: o1 || "未答", correct: "CDBA" });
+        }
+
+        let o2 = document.getElementById('order2').value.replace(/\\s/g, '');
+        if (o2 === "乙丁丙甲") {
+            score += 10;
+        } else {
+            mistakes.push({ q: "排序題 2 (港口位置由北到南)", user: o2 || "未答", correct: "乙丁丙甲" });
+        }
+
+        // Section 4A: Corrections (5 pts each)
+        let err1 = document.getElementById('error1').value.trim();
+        if (err1 === "劉銘傳") {
+            score += 5;
+        } else {
+            mistakes.push({ q: "短文改錯 1: 指派沈葆楨為首任巡撫", user: err1 || "未答", correct: "劉銘傳" });
+        }
+
+        let err2 = document.getElementById('error2').value.trim();
+        if (err2 === "新竹") {
+            score += 5;
+        } else {
+            mistakes.push({ q: "短文改錯 2: 修築基隆到臺南的鐵路", user: err2 || "未答", correct: "新竹" });
+        }
+
+        // Section 4B: Vocab (2 pts each)
+        bQuestions.forEach((q, i) => {
+            const userAns = document.getElementById(`b${i}`).value;
+            if (userAns !== "" && parseInt(userAns) === q.a) {
+                score += 2;
+            } else {
+                mistakes.push({
+                    q: `詞彙二選一 ${i+1}: ${q.q}`,
+                    user: userAns !== "" ? q.options[parseInt(userAns)] : "未答",
+                    correct: q.options[q.a]
+                });
+            }
+        });
+
+        // Section 5: Matching (5 pts each)
+        const mAns = ["A", "B", "C", "D"];
+        const mNames = ["馬偕", "沈葆楨", "劉銘傳", "約翰·陶德"];
+        const mTasks = ["(A) 創立淡水女學堂客，幫民眾拔牙", "(B) 興建恆春城，解除渡臺禁令", "(C) 首任巡撫，引進騰雲號", "(D) 將烏龍茶銷往美國"];
+        
+        for(let i=1; i<=4; i++) {
+            let val = document.getElementById(`match${i}`).value.toUpperCase();
+            if (val === mAns[i-1]) {
+                score += 5;
+            } else {
+                mistakes.push({
+                    q: `人物配對 ${i}: ${mNames[i-1]}`,
+                    user: val || "未填",
+                    correct: mTasks[i-1]
+                });
+            }
+        }
+
+        // Save to History
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        history.push({
+            date: new Date().toLocaleString(),
+            score: score,
+            total: 100,
+            mistakes: mistakes
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+        // Result display
+        const resArea = document.getElementById('result-area');
+        const scoreText = document.getElementById('score-text');
+        resArea.style.display = "block";
+        scoreText.innerText = `得分：${score} / 100`;
+
+        resArea.style.backgroundColor = score >= 60 ? "#f0fdf4" : "#fef2f2";
+        resArea.style.border = "2px solid " + (score >= 60 ? "#22c55e" : "#ef4444");
+
+        let msg = score === 100 ? "太棒了！滿分！你是臺灣史小博士！" : (score >= 60 ? "及格了，繼續努力！" : "再複習一下吧，加油！");
+        document.getElementById('feedback-msg').innerHTML = msg;
+
+        // Review Details
+        let reviewHtml = "";
+        if(mistakes.length > 0) {
+            reviewHtml = "<h3>🔍 錯題回顧與解析</h3>";
+            mistakes.forEach(m => {
+                reviewHtml += `
+                    <div class="wrong-item">
+                        <strong>${m.q}</strong><br>
+                        你的答案：<span class="user-ans">${m.user}</span><br>
+                        正確答案：<span class="correct-ans">${m.correct}</span>
+                    </div>
+                `;
+            });
+        } else {
+            reviewHtml = "<div style='color:#16a34a; font-weight:700; text-align:center;'>恭喜！全對！</div>";
+        }
+        document.getElementById('review-details').innerHTML = reviewHtml;
+
+        displayHistory();
+        window.scrollTo({ top: resArea.offsetTop - 50, behavior: 'smooth' });
+    }
+
+    function displayHistory() {
+        const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        const historyList = document.getElementById('historyList');
+        if (history.length === 0) {
+            historyList.innerHTML = "尚無測驗紀錄";
+            return;
+        }
+        historyList.innerHTML = history.slice().reverse().map((item, idx) => `
+            <div class="history-item">
+                <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 5px;">${item.date}</div>
+                <strong>第 ${history.length - idx} 次測驗 - 得分：<span style="color: #0ea5e9;">${item.score}</span> / 100</strong>
+                <details>
+                    <summary>查看詳情</summary>
+                    <div style="margin-top: 10px; font-size: 0.9rem;">
+                        ${item.mistakes.length > 0 ? item.mistakes.map(m => `
+                            <p style="margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px;">
+                                <strong>問：</strong>${m.q}<br>
+                                <span style="color:#ef4444;">答：${m.user}</span> | <span style="color:#22c55e;">正：${m.correct}</span>
+                            </p>
+                        `).join('') : "全部正確！"}
+                    </div>
+                </details>
+            </div>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm("確定要清除所有測驗紀錄嗎？")) {
+            localStorage.removeItem(STORAGE_KEY);
+            displayHistory();
+        }
+    }
+
+    window.onload = function() {
+        displayHistory();
+    };
+</script>
+
+</body>
+</html>
