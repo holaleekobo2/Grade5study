@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5下 數學測驗 - 單元 5：體積測驗 (卷三)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Quiz-specific overrides ── */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 16px;
+        }
+        .quiz-header span { font-weight: 600; font-size: 1rem; color: var(--text-secondary); }
+        .quiz-header input[type="text"] {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            width: 140px;
+        }
+        #finalScoreDisplay { font-weight: 700; color: var(--accent-primary); }
+
+        .section-block { margin-bottom: 32px; }
+        .section-title {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 8px 20px;
+            border-radius: 99px;
+            margin-bottom: 20px;
+            letter-spacing: 0.02em;
+        }
+
+        .question-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 22px 26px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        .question-card.incorrect {
+            background: rgba(239,68,68,0.05);
+            border-color: var(--accent-danger);
+        }
+        .question-card p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .svg-container {
+            text-align: center;
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border-color);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .q-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .fill-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            width: 80px;
+            margin: 0 4px;
+        }
+        .fill-input:focus { outline: none; border-color: var(--accent-primary); }
+        
+        select.fill-input {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .feedback.correct { background: rgba(16,185,129,0.1); border-left: 5px solid var(--accent-success); color: var(--accent-success); }
+        .feedback.wrong   { background: rgba(239,68,68,0.08); border-left: 5px solid var(--accent-danger); color: var(--text-primary); }
+        .feedback.wrong strong { color: var(--accent-danger); }
+
+        .submit-btn {
+            display: block;
+            width: 220px;
+            margin: 36px auto 0;
+            padding: 16px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 99px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(99,102,241,0.35);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .submit-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 30px -5px rgba(99,102,241,0.45); }
+
+        .score-display {
+            display: none;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 28px 0 10px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link { display: inline-block; margin-bottom: 24px; text-decoration: none; font-weight: 600; color: var(--accent-primary); transition: opacity 0.2s; }
+        .back-link:hover { opacity: 0.75; }
+
+        /* ── History Section ── */
+        .history-section {
+            margin-top: 60px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 30px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .history-header h2 { margin-bottom: 0; font-size: 1.4rem; }
+        .clear-btn {
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .clear-btn:hover { opacity: 0.8; }
+
+        .history-table-container { overflow-x: auto; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .history-table th, .history-table td { border: 1px solid var(--border-color); padding: 12px 16px; text-align: center; }
+        .history-table th { background: var(--bg-secondary); font-weight: 700; color: var(--text-secondary); }
+        .history-table td { color: var(--text-primary); }
+        .history-table tr:hover td { background: var(--glass-bg); }
+
+        .detail-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .detail-btn:hover { opacity: 0.8; }
+
+        /* ── Modal ── */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            margin: 6% auto;
+            padding: 30px;
+            width: 85%;
+            max-width: 640px;
+            max-height: 78vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+        .modal-content h2 { margin-bottom: 20px; font-size: 1.3rem; }
+        .wrong-item {
+            background: rgba(239,68,68,0.06);
+            border-left: 4px solid var(--accent-danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: var(--text-secondary);
+            color: white;
+            border: none;
+            border-radius: 99px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .close-btn:hover { opacity: 0.8; }
+
+        .empty-history { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 1rem; }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            if (saved === 'dark') document.getElementById('themeBtn').innerHTML = '<span>☀️</span> 亮色模式';
+            renderHistory();
+            initSvgs();
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="math.html" class="back-link">⬅ 返回數學目錄</a>
+    <h1>📏 單元 5：體積 (測驗卷三)</h1>
+    
+    <div class="quiz-header">
+        <span>姓名：<input type="text" id="userName" placeholder="請輸入姓名"></span>
+        <span id="finalScoreDisplay">得分：____</span>
+    </div>
+
+    <form id="mathQuiz">
+        
+        <!-- 一、看圖填填看 -->
+        <div class="section-block">
+            <span class="section-title">一、看圖填填看 (每個積木是 1 立方公分)</span>
+            <div class="q-grid">
+                <div class="question-card" id="q_s1q1">
+                    <div class="svg-container"><svg id="s1q1_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>1. 這長方體每層有 <input type="number" id="s1q1_a" class="fill-input"> 個，共有 <input type="number" id="s1q1_b" class="fill-input"> 層，體積是 <input type="number" id="s1q1_c" class="fill-input"> 立方公分。</p>
+                    <div class="feedback" id="fb_s1q1">學習建議：每層 (長×寬) = 3×2=6 個；共 2 層；體積 6×2=12。</div>
+                </div>
+                <div class="question-card" id="q_s1q2">
+                    <div class="svg-container"><svg id="s1q2_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>2. 這長方體每層有 <input type="number" id="s1q2_a" class="fill-input"> 個，共有 <input type="number" id="s1q2_b" class="fill-input"> 層，體積是 <input type="number" id="s1q2_c" class="fill-input"> 立方公分。</p>
+                    <div class="feedback" id="fb_s1q2">學習建議：每層 4×3=12 個；共 3 層；體積 12×3=36。</div>
+                </div>
+                <div class="question-card" id="q_s1q3">
+                    <div class="svg-container"><svg id="s1q3_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>3. 這長方體每層有 <input type="number" id="s1q3_a" class="fill-input"> 個，共有 <input type="number" id="s1q3_b" class="fill-input"> 層，體積是 <input type="number" id="s1q3_c" class="fill-input"> 立方公分。</p>
+                    <div class="feedback" id="fb_s1q3">學習建議：每層 5×2=10 個；共 4 層；體積 10×4=40。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 二、下面形體的體積是多少？ -->
+        <div class="section-block">
+            <span class="section-title">二、下面形體的體積是多少？ (每個積木是 1 cm³)</span>
+            <div class="q-grid">
+                <div class="question-card" id="q_s2q1">
+                    <div class="svg-container"><svg id="s2q1_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>1. <input type="number" id="s2q1" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q1">正確：27 (3×3×3)</div>
+                </div>
+                <div class="question-card" id="q_s2q2">
+                    <div class="svg-container"><svg id="s2q2_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>2. <input type="number" id="s2q2" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q2">正確：20 (5×2×2)</div>
+                </div>
+                <div class="question-card" id="q_s2q3">
+                    <div class="svg-container"><svg id="s2q3_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>3. <input type="number" id="s2q3" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q3">正確：9 (數積木)</div>
+                </div>
+                <div class="question-card" id="q_s2q4">
+                    <div class="svg-container"><svg id="s2q4_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>4. <input type="number" id="s2q4" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q4">正確：7 (數積木)</div>
+                </div>
+                <div class="question-card" id="q_s2q5">
+                    <div class="svg-container"><svg id="s2q5_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>5. <input type="number" id="s2q5" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q5">正確：16 (3×3×2 - 2)</div>
+                </div>
+                <div class="question-card" id="q_s2q6">
+                    <div class="svg-container"><svg id="s2q6_svg" width="160" height="160" xmlns="http://www.w3.org/2000/svg"></svg></div>
+                    <p>6. <input type="number" id="s2q6" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s2q6">正確：14 (數每層：9+4+1)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 三、看圖想一想，填入正確的答案 -->
+        <div class="section-block">
+            <span class="section-title">三、看圖填入正確的答案</span>
+            <div class="q-grid">
+                <div class="question-card" id="q_s3q1">
+                    <div class="svg-container">
+                        <svg width="220" height="160" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 60 60 L 160 40 L 110 20 L 10 40 Z" fill="#f0f0f0" stroke="#333"/>
+                            <path d="M 10 40 L 60 60 L 60 130 L 10 110 Z" fill="#e0e0e0" stroke="#333"/>
+                            <path d="M 60 60 L 160 40 L 160 110 L 60 130 Z" fill="#cccccc" stroke="#333"/>
+                            <text x="110" y="135" font-size="14" fill="#333">15 cm</text>
+                            <text x="15" y="80" font-size="14" fill="#333">10 cm</text>
+                            <text x="170" y="80" font-size="14" fill="#333">8 cm</text>
+                        </svg>
+                    </div>
+                    <p>1. 體積是 <input type="number" id="s3q1" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s3q1">正確：1200 (15×10×8)</div>
+                </div>
+                <div class="question-card" id="q_s3q2">
+                    <div class="svg-container">
+                        <svg width="220" height="160" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 80 50 L 140 35 L 90 20 L 30 35 Z" fill="#f0f0f0" stroke="#333"/>
+                            <path d="M 30 35 L 80 50 L 80 110 L 30 95 Z" fill="#e0e0e0" stroke="#333"/>
+                            <path d="M 80 50 L 140 35 L 140 95 L 80 110 Z" fill="#cccccc" stroke="#333"/>
+                            <text x="110" y="120" font-size="14" fill="#333">12 m</text>
+                            <text x="40" y="80" font-size="14" fill="#333">12 m</text>
+                            <text x="150" y="70" font-size="14" fill="#333">12 m</text>
+                        </svg>
+                    </div>
+                    <p>2. 體積是 <input type="number" id="s3q2" class="fill-input"> 立方公尺</p>
+                    <div class="feedback" id="fb_s3q2">正確：1728 (12×12×12)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 四、計算下面形體的體積 (單位：公分) -->
+        <div class="section-block">
+            <span class="section-title">四、計算下面形體的體積 (單位：公分)</span>
+            <div class="q-grid">
+                <div class="question-card" id="q_s4q1">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 50 20 L 80 10 L 130 10 L 100 20 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 100 60 L 130 50 L 180 50 L 150 60 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 150 100 L 180 90 L 180 50 L 150 60 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 100 60 L 130 50 L 130 10 L 100 20 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 50 100 L 150 100 L 150 60 L 100 60 L 100 20 L 50 20 Z" fill="#cccccc" stroke="#222"/>
+                                <text x="95" y="115" font-size="12">10</text>
+                                <text x="35" y="65" font-size="12">8</text>
+                                <text x="120" y="85" font-size="12">5</text>
+                                <text x="160" y="80" font-size="12">4</text>
+                                <text x="55" y="10" font-size="12">4</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>1. <input type="number" id="s4q1" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q1">正確：240 (切割：10×5×4 + 4×5×4 = 200+40=240)</div>
+                </div>
+                <div class="question-card" id="q_s4q2">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 40 40 L 60 30 L 90 30 L 70 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 110 40 L 130 30 L 160 30 L 140 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 70 80 L 90 70 L 130 70 L 110 80 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 70 40 L 90 30 L 90 70 L 70 80 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 140 100 L 160 90 L 160 30 L 140 40 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 40 100 L 140 100 L 140 40 L 110 40 L 110 80 L 70 80 L 70 40 L 40 40 Z" fill="#cccccc" stroke="#222"/>
+                                <text x="85" y="115" font-size="12">10</text>
+                                <text x="25" y="75" font-size="12">6</text>
+                                <text x="50" y="30" font-size="12">3</text>
+                                <text x="145" y="30" font-size="12">5</text>
+                                <text x="85" y="95" font-size="12">4</text>
+                                <text x="115" y="65" font-size="12">4</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>2. <input type="number" id="s4q2" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q2">正確：220 (10×6×5 - 4×4×5 = 300 - 80 = 220)</div>
+                </div>
+                <div class="question-card" id="q_s4q3">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 80 40 L 100 30 L 120 30 L 100 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 40 80 L 60 70 L 100 70 L 80 80 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 100 80 L 120 70 L 160 70 L 140 80 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 100 40 L 120 30 L 120 70 L 100 80 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 140 100 L 160 90 L 160 70 L 140 80 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 40 100 L 140 100 L 140 80 L 100 80 L 100 40 L 80 40 L 80 80 L 40 80 Z" fill="#cccccc" stroke="#222"/>
+                                <text x="85" y="115" font-size="12">10</text>
+                                <text x="85" y="35" font-size="12">2</text>
+                                <text x="25" y="95" font-size="12">2</text>
+                                <text x="110" y="25" font-size="12">5</text>
+                                <text x="65" y="60" font-size="12">4</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>3. <input type="number" id="s4q3" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q3">正確：140 (10×2×5 + 2×4×5 = 100 + 40 = 140)</div>
+                </div>
+                <div class="question-card" id="q_s4q4">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 40 40 L 60 30 L 160 30 L 140 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 70 80 L 90 70 L 130 70 L 110 80 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 140 100 L 160 90 L 160 30 L 140 40 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 70 80 L 70 60 L 90 50 L 90 70 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 40 100 L 140 100 L 140 40 L 40 40 Z M 70 80 L 110 80 L 110 60 L 70 60 Z" fill="#cccccc" stroke="#222" fill-rule="evenodd"/>
+                                <text x="85" y="115" font-size="12">10</text>
+                                <text x="25" y="75" font-size="12">6</text>
+                                <text x="85" y="95" font-size="12">4</text>
+                                <text x="60" y="75" font-size="12">2</text>
+                                <text x="150" y="30" font-size="12">8</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>4. <input type="number" id="s4q4" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q4">正確：416 (10×6×8 - 4×2×8 = 480 - 64 = 416)</div>
+                </div>
+                <div class="question-card" id="q_s4q5">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 40 40 L 60 30 L 140 30 L 120 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 60 80 L 80 70 L 140 70 L 120 80 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 120 60 L 140 50 L 140 30 L 120 40 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 120 100 L 140 90 L 140 70 L 120 80 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 60 80 L 80 70 L 80 50 L 60 60 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 40 100 L 120 100 L 120 80 L 60 80 L 60 60 L 120 60 L 120 40 L 40 40 Z" fill="#cccccc" stroke="#222"/>
+                                <text x="75" y="115" font-size="12">16</text>
+                                <text x="20" y="75" font-size="12">12</text>
+                                <text x="125" y="95" font-size="12">4</text>
+                                <text x="125" y="55" font-size="12">4</text>
+                                <text x="45" y="30" font-size="12">4</text>
+                                <text x="135" y="35" font-size="12">5</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>5. <input type="number" id="s4q5" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q5">正確：720 (16×12×5 - (16-4)×(12-4-4)×5 = 960 - 12×4×5 = 960-240=720)</div>
+                </div>
+                <div class="question-card" id="q_s4q6">
+                    <div class="svg-container">
+                        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 10)">
+                                <path d="M 40 40 L 60 30 L 110 30 L 90 40 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 90 80 L 140 80 L 180 60 L 80 60 L 60 70 L 110 70 Z" fill="#f4f4f4" stroke="#222"/>
+                                <path d="M 90 80 L 110 70 L 110 30 L 90 40 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 140 100 L 180 80 L 180 60 L 140 80 Z" fill="#e2e2e2" stroke="#222"/>
+                                <path d="M 40 100 L 140 100 L 140 80 L 90 80 L 90 40 L 40 40 Z" fill="#cccccc" stroke="#222"/>
+                                <text x="85" y="115" font-size="12">10</text>
+                                <text x="165" y="75" font-size="12">10</text>
+                                <text x="145" y="95" font-size="12">2</text>
+                                <text x="60" y="45" font-size="12">5</text>
+                                <text x="100" y="30" font-size="12">5</text>
+                                <text x="95" y="65" font-size="12">4</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p>6. <input type="number" id="s4q6" class="fill-input"> 立方公分</p>
+                    <div class="feedback" id="fb_s4q6">正確：300 (10×4×5 + 10×5×2 = 200+100=300)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 五、在 ( ) 裡填入正確的數或單位 -->
+        <div class="section-block">
+            <span class="section-title">五、在 ( ) 裡填入正確的數或單位</span>
+            <div class="q-grid">
+                <div class="question-card" id="q_s5q1">
+                    <p>1. 5 m³ = ( <input type="number" id="s5q1" class="fill-input wide" style="width:120px"> ) cm³</p>
+                    <div class="feedback" id="fb_s5q1">正確：5000000</div>
+                </div>
+                <div class="question-card" id="q_s5q2">
+                    <p>2. 3000000 cm³ = ( <input type="number" id="s5q2" class="fill-input"> ) m³</p>
+                    <div class="feedback" id="fb_s5q2">正確：3</div>
+                </div>
+                <div class="question-card" id="q_s5q3">
+                    <p>3. 12 m³ = ( <input type="number" id="s5q3" class="fill-input wide" style="width:120px"> ) cm³</p>
+                    <div class="feedback" id="fb_s5q3">正確：12000000</div>
+                </div>
+                <div class="question-card" id="q_s5q4">
+                    <p>4. 8000000 cm³ = ( <input type="number" id="s5q4" class="fill-input"> ) m³</p>
+                    <div class="feedback" id="fb_s5q4">正確：8</div>
+                </div>
+                <div class="question-card" id="q_s5q5">
+                    <p>5. 2 m³ 50000 cm³ = ( <input type="number" id="s5q5" class="fill-input wide" style="width:120px"> ) cm³</p>
+                    <div class="feedback" id="fb_s5q5">正確：2050000</div>
+                </div>
+                <div class="question-card" id="q_s5q6">
+                    <p>6. 8060000 cm³ = ( <input type="number" id="s5q6_a" class="fill-input"> ) m³ ( <input type="number" id="s5q6_b" class="fill-input"> ) cm³</p>
+                    <div class="feedback" id="fb_s5q6">正確：8 m³ 60000 cm³</div>
+                </div>
+                <div class="question-card" id="q_s5q7">
+                    <p>7. 冰箱的體積大約是 2 ( <select id="s5q7" class="fill-input"><option value="">請選擇</option><option value="cm3">立方公分 (cm³)</option><option value="m3">立方公尺 (m³)</option></select> )</p>
+                    <div class="feedback" id="fb_s5q7">正確：立方公尺 (m³)</div>
+                </div>
+                <div class="question-card" id="q_s5q8">
+                    <p>8. 鉛筆盒的體積大約是 300 ( <select id="s5q8" class="fill-input"><option value="">請選擇</option><option value="cm3">立方公分 (cm³)</option><option value="m3">立方公尺 (m³)</option></select> )</p>
+                    <div class="feedback" id="fb_s5q8">正確：立方公分 (cm³)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六、把做法和答案記下來 -->
+        <div class="section-block">
+            <span class="section-title">六、解決難題 (Word Problems)</span>
+            <div class="question-card" id="q_s6q1">
+                <p>1. 裡面長 20 公分、寬 15 公分、高 10 公分的長方體盒子，容積是多少立方公分？</p>
+                <p>答：<input type="number" id="s6q1" class="fill-input wide"> 立方公分</p>
+                <div class="feedback" id="fb_s6q1">正確：3000 (20×15×10)</div>
+            </div>
+            <div class="question-card" id="q_s6q2">
+                <p>2. 一個邊長 15 公分的正方體，體積是多少立方公分？</p>
+                <p>答：<input type="number" id="s6q2" class="fill-input wide"> 立方公分</p>
+                <div class="feedback" id="fb_s6q2">正確：3375 (15×15×15)</div>
+            </div>
+            <div class="question-card" id="q_s6q3">
+                <p>3. 一個房間長 5 公尺、寬 4 公尺、高 3 公尺，體積是多少立方公尺？</p>
+                <p>答：<input type="number" id="s6q3" class="fill-input wide"> 立方公尺</p>
+                <div class="feedback" id="fb_s6q3">正確：60 (5×4×3)</div>
+            </div>
+            <div class="question-card" id="q_s6q4">
+                <p>4. 一個體積為 2 m³ 的水槽，底面積是 40000 cm²，水槽的高是多少公分？</p>
+                <p>答：<input type="number" id="s6q4" class="fill-input wide"> 公分</p>
+                <div class="feedback" id="fb_s6q4">正確：50 (2000000 ÷ 40000 = 50)</div>
+            </div>
+            <div class="question-card" id="q_s6q5">
+                <p>5. 在一個長 30 公分、寬 20 公分的水族箱中放入一塊石頭完全沉沒，水面上升了 5 公分。這塊石頭的體積是多少立方公分？</p>
+                <p>答：<input type="number" id="s6q5" class="fill-input wide"> 立方公分</p>
+                <div class="feedback" id="fb_s6q5">正確：3000 (30×20×5)</div>
+            </div>
+            <div class="question-card" id="q_s6q6">
+                <p>6. 將兩個長方體積木黏在一起，積木A長 10 公分、寬 10 公分、高 10 公分，積木B長 20 公分、寬 10 公分、高 5 公分。全部的體積是多少立方公分？</p>
+                <p>答：<input type="number" id="s6q6" class="fill-input wide"> 立方公分</p>
+                <div class="feedback" id="fb_s6q6">正確：2000 (10×10×10 + 20×10×5 = 1000+1000=2000)</div>
+            </div>
+            <div class="question-card" id="q_s6q7">
+                <p>7. 用 1000000 個 1 cm³ 的小正方體可以剛好堆成一個大正方體，這個大正方體的邊長是多少公尺？</p>
+                <p>答：<input type="number" id="s6q7" class="fill-input wide"> 公尺</p>
+                <div class="feedback" id="fb_s6q7">正確：1 (1000000 cm³ = 1 m³)</div>
+            </div>
+            <div class="question-card" id="q_s6q8">
+                <p>8. 有一個長木塊，長 12 公分、寬 10 公分、高 8 公分，如果把它切成邊長 2 公分的小正方體，最多可以切出幾個？</p>
+                <p>答：<input type="number" id="s6q8" class="fill-input wide"> 個</p>
+                <div class="feedback" id="fb_s6q8">正確：120 ( (12÷2)×(10÷2)×(8÷2) = 6×5×4 = 120)</div>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="submitQuiz()">交卷 / 計算成績 ✅</button>
+    </form>
+
+    <div class="score-display" id="scoreBoard"></div>
+
+    <!-- ── 測驗紀錄 ── -->
+    <div class="history-section">
+        <div class="history-header">
+            <h2>📊 測驗紀錄（教師專用）</h2>
+            <button class="clear-btn" onclick="clearHistory()">🗑 清除紀錄</button>
+        </div>
+        <div class="history-table-container">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>日期時間</th>
+                        <th>姓名</th>
+                        <th>得分</th>
+                        <th>詳情</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+        <div id="emptyHistory" class="empty-history" style="display:none;">尚無測驗紀錄</div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="detailModal" class="modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+        <h2 id="modalTitle">錯題詳情</h2>
+        <div id="modalBody"></div>
+        <button class="close-btn" onclick="closeModal()">關閉</button>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'mathU5Q3History';
+
+const answers = {
+s1q1_a: 6, s1q1_b: 2, s1q1_c: 12,
+s1q2_a: 12, s1q2_b: 3, s1q2_c: 36,
+s1q3_a: 10, s1q3_b: 4, s1q3_c: 40,
+s2q1: 27, s2q2: 20, s2q3: 9, s2q4: 7, s2q5: 16, s2q6: 14,
+s3q1: 1200, s3q2: 1728,
+s4q1: 240, s4q2: 220, s4q3: 140, s4q4: 416, s4q5: 720, s4q6: 300,
+s5q1: 5000000, s5q2: 3, s5q3: 12000000, s5q4: 8, s5q5: 2050000, s5q6_a: 8, s5q6_b: 60000, s5q7: "m3", s5q8: "cm3",
+s6q1: 3000, s6q2: 3375, s6q3: 60, s6q4: 50, s6q5: 3000, s6q6: 2000, s6q7: 1, s6q8: 120
+};
+
+// SVG data for unit blocks
+const svgData = {
+'s1q1_svg': { dim: [3, 2, 2] },
+'s1q2_svg': { dim: [4, 3, 3] },
+'s1q3_svg': { dim: [5, 2, 4] },
+'s2q1_svg': { dim: [3, 3, 3] },
+'s2q2_svg': { dim: [5, 2, 2] },
+'s2q3_svg': { blocks: [[0,0,0],[1,0,0],[2,0,0],[0,1,0],[1,1,0],[2,1,0],[0,1,1],[1,1,1],[2,1,1]] },
+'s2q4_svg': { blocks: [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[0,0,2],[0,0,3]] },
+'s2q5_svg': { dim: [3, 3, 2], minus: [[2,0,0],[2,0,1]] },
+'s2q6_svg': { blocks: [[0,0,0],[1,0,0],[2,0,0],[0,1,0],[1,1,0],[2,1,0],[0,2,0],[1,2,0],[2,2,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1],[0,0,2]] }
+};
+
+function genBlocks(cfg) {
+    let blks = [];
+    if (cfg.dim) {
+        for(let x=0; x<cfg.dim[0]; x++) {
+            for(let y=0; y<cfg.dim[1]; y++) {
+                for(let z=0; z<cfg.dim[2]; z++) {
+                    let drop = false;
+                    if (cfg.minus) {
+                        cfg.minus.forEach(m => { if(m[0]===x && m[1]===y && m[2]===z) drop=true; });
+                    }
+                    if (!drop) blks.push([x,y,z]);
+                }
+            }
+        }
+    } else {
+        blks = cfg.blocks;
+    }
+    blks.sort((a,b) => b[1]-a[1] || a[0]-b[0] || a[2]-b[2]);
+    return blks;
+}
+
+function initSvgs() {
+    for(let id in svgData) {
+        let blks = genBlocks(svgData[id]);
+        let svg = document.getElementById(id);
+        if(!svg) continue;
+        let defs = '<defs><g id="cube"><path d="M 20 0 L 40 10 L 20 20 L 0 10 Z" fill="#ffffff" stroke="#333" stroke-width="1" stroke-linejoin="round"/><path d="M 0 10 L 20 20 L 20 40 L 0 30 Z" fill="#e0e0e0" stroke="#333" stroke-width="1" stroke-linejoin="round"/><path d="M 20 20 L 40 10 L 40 30 L 20 40 Z" fill="#cccccc" stroke="#333" stroke-width="1" stroke-linejoin="round"/></g></defs>';
+        let content = defs;
+
+        let minX = 999, maxX = -999, minY = 999, maxY = -999;
+        blks.forEach(b => {
+            let px = 20 * b[0] - 20 * b[1];
+            let py = 10 * b[0] + 10 * b[1] - 20 * b[2];
+            if (px < minX) minX = px; if (px > maxX) maxX = px;
+            if (py < minY) minY = py; if (py > maxY) maxY = py;
+        });
+
+        let offsetX = (160 - (maxX - minX + 40)) / 2 - minX;
+        let offsetY = (160 - (maxY - minY + 40)) / 2 - minY;
+
+        blks.forEach(b => {
+            let px = offsetX + 20 * b[0] - 20 * b[1];
+            let py = offsetY + 10 * b[0] + 10 * b[1] - 20 * b[2];
+            content += `<use href="#cube" x="${px}" y="${py}"/>`;
+        });
+        svg.innerHTML = content;
+    }
+}
+
+function submitQuiz() {
+    let score = 0;
+    let mistakes = [];
+    let totalQuestions = Object.keys(answers).length;
+
+    // Reset styles
+    document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('incorrect'));
+
+    for(let key in answers) {
+        let el = document.getElementById(key);
+        if(!el) continue;
+        let val = el.value.trim();
+        let isCorrect = (val == answers[key]);
+
+        // Find parent question card
+        let card = el.closest('.question-card');
+        let feedback = card ? card.querySelector('.feedback') : null;
+
+        if(isCorrect) {
+            score++;
+            el.style.backgroundColor = 'rgba(16,185,129,0.1)';
+        } else {
+            el.style.backgroundColor = 'rgba(239,68,68,0.1)';
+            if(card) card.classList.add('incorrect');
+            if(feedback) feedback.style.display = 'block';
+            mistakes.push({ label: key, correct: answers[key] });
+        }
+    }
+
+    let finalScore = Math.round((score / totalQuestions) * 100);
+    const board = document.getElementById('scoreBoard');
+    board.style.display = 'block';
+    
+    let msg = `🎉 你的總分是：${finalScore} 分 (${score}/${totalQuestions})。`;
+    if(finalScore === 100) msg += " 太棒了！完全正確！";
+    else if(finalScore >= 80) msg += " 表現不錯！繼續加油！";
+    else if(finalScore >= 60) msg += " 及格了，但還有進步空間。";
+    else msg += " 需要再多加練習喔，加油！";
+    
+    board.innerHTML = msg;
+    document.getElementById('finalScoreDisplay').innerHTML = `得分：<span style="color:var(--accent-secondary)">${finalScore}</span>`;
+    board.scrollIntoView({ behavior: 'smooth' });
+
+    // Save record
+    const name = document.getElementById('userName').value.trim() || '無名氏';
+    saveRecord({ name, score: finalScore, date: new Date().toLocaleString('zh-TW'), mistakes });
+    renderHistory();
+}
+
+function saveRecord(record) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    history.push(record);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const tbody = document.getElementById('historyBody');
+    const empty = document.getElementById('emptyHistory');
+    if (history.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+    const reversed = [...history].reverse();
+    tbody.innerHTML = reversed.map((rec, i) => `
+        <tr>
+            <td>${rec.date}</td>
+            <td>${rec.name}</td>
+            <td><strong>${rec.score}</strong> 分</td>
+            <td><button class="detail-btn" onclick="showDetail(${history.length - 1 - i})">查看詳情</button></td>
+        </tr>
+    `).join('');
+}
+
+function showDetail(index) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const rec = history[index];
+    document.getElementById('modalTitle').textContent = `${rec.name} 的錯題分析（得分：${rec.score} 分）`;
+    const body = document.getElementById('modalBody');
+    if (!rec.mistakes || rec.mistakes.length === 0) {
+        body.innerHTML = "<p style='color:var(--accent-success);font-weight:700;'>🎊 太棒了！全對！</p>";
+    } else {
+        body.innerHTML = rec.mistakes.map(m => `
+            <div class="wrong-item">
+                <strong>題目 ID: ${m.label}</strong><br>
+                正確解答：<strong>${m.correct}</strong>
+            </div>
+        `).join('');
+    }
+    document.getElementById('detailModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('detailModal').style.display = 'none';
+}
+
+function clearHistory() {
+    if (confirm('確定要清除所有測驗紀錄嗎？此動作無法復原。')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHistory();
+    }
+}
+</script>
+</body>
+</html>
