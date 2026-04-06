@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自然科學小測驗：空氣與燃燒</title>
+<style>
+:root {
+--primary-color: #4a90e2;
+--secondary-color: #f5a623;
+--success-color: #27ae60;
+--error-color: #e74c3c;
+--bg-color: #f0f7ff;
+--card-bg: #ffffff;
+--text-color: #333;
+}
+
+body {
+font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+background-color: var(--bg-color);
+color: var(--text-color);
+line-height: 1.6;
+margin: 0;
+padding: 20px;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+background: var(--card-bg);
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+text-align: center;
+color: var(--primary-color);
+border-bottom: 3px solid var(--primary-color);
+padding-bottom: 10px;
+}
+
+.section {
+margin-bottom: 40px;
+padding: 20px;
+border: 1px solid #e1e8ed;
+border-radius: 10px;
+}
+
+.section-title {
+font-size: 1.2rem;
+font-weight: bold;
+color: #2c3e50;
+margin-bottom: 15px;
+background: #eef2f7;
+padding: 8px 15px;
+border-left: 5px solid var(--primary-color);
+}
+
+/* Session I: Table */
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 10px;
+}
+
+table th, table td {
+border: 1px solid #ddd;
+padding: 12px;
+text-align: center;
+}
+
+table th {
+background-color: #f8f9fa;
+}
+
+input[type="number"], input[type="text"] {
+padding: 5px;
+width: 80px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+/* Session II & III: Questions */
+.question-item {
+margin-bottom: 15px;
+padding: 10px;
+}
+
+.options label {
+display: block;
+margin: 5px 0;
+cursor: pointer;
+}
+
+/* Session IV: SVG Triangle */
+.diagram-container {
+text-align: center;
+position: relative;
+}
+
+.triangle-svg {
+width: 300px;
+height: 260px;
+}
+
+.triangle-labels {
+display: flex;
+justify-content: space-around;
+margin-top: 10px;
+}
+
+.label-input-group {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* Feedback Styles */
+.correct { color: var(--success-color); font-weight: bold; }
+.wrong { color: var(--error-color); font-weight: bold; }
+
+.btn-submit {
+display: block;
+width: 200px;
+margin: 30px auto;
+padding: 15px;
+background-color: var(--primary-color);
+color: white;
+border: none;
+border-radius: 50px;
+font-size: 1.1rem;
+cursor: pointer;
+transition: background 0.3s;
+}
+
+.btn-submit:hover {
+background-color: #357abd;
+}
+
+#result-area {
+display: none;
+text-align: center;
+padding: 20px;
+margin-top: 20px;
+border-radius: 10px;
+background: #e8f5e9;
+}
+
+.explanation {
+font-size: 0.9rem;
+color: #666;
+margin-top: 5px;
+display: none;
+}
+
+@media (max-width: 600px) {
+.container { padding: 15px; }
+.triangle-svg { width: 100%; height: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>自然科學小測驗：空氣與燃燒</h1>
+
+<!-- Session I: Observation -->
+<div class="section">
+<div class="section-title">第一部分：觀察與填空 (空氣成份比例)</div>
+<p>請根據空氣的主要成份，填入大約的體積百分比（%）：</p>
+<div style="text-align:center; margin-bottom: 20px;">
+<svg width="150" height="150" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="45" fill="#ddd" />
+<path d="M 50 50 L 50 5 A 45 45 0 1 1 7.1 63.9 Z" fill="#4a90e2" /> <!-- Nitrogen 78% -->
+<path d="M 50 50 L 7.1 63.9 A 45 45 0 0 1 45 5.2 Z" fill="#27ae60" /> <!-- Oxygen 21% -->
+<path d="M 50 50 L 45 5.2 A 45 45 0 0 1 50 5 Z" fill="#f5a623" /> <!-- Others 1% -->
+</svg>
+</div>
+<table>
+<tr>
+<th>氣體名稱</th>
+<th>性質描述</th>
+<th>估計百分比 (%)</th>
+</tr>
+<tr>
+<td>氮氣</td>
+<td>含量最多，常用於食品包裝</td>
+<td><input type="number" id="q1_1" min="0" max="100"> %</td>
+</tr>
+<tr>
+<td>氧氣</td>
+<td>具有助燃性，維持生物呼吸</td>
+<td><input type="number" id="q1_2" min="0" max="100"> %</td>
+</tr>
+<tr>
+<td>其他(如二氧化碳、氬等)</td>
+<td>包含溫室氣體及稀有氣體</td>
+<td><input type="number" id="q1_3" min="0" max="100"> %</td>
+</tr>
+</table>
+</div>
+
+<!-- Session II: True/False -->
+<div class="section">
+<div class="section-title">第二部分：是非題</div>
+<div class="question-item">
+<p>1. 氧氣「本身」具有可燃性，可以直接被點燃。</p>
+<div class="options">
+<label><input type="radio" name="q2_1" value="F"> ❌ 錯誤</label>
+<label><input type="radio" name="q2_1" value="T"> ⭕ 正確</label>
+</div>
+</div>
+<div class="question-item">
+<p>2. 二氧化碳可以用來滅火，是因為它不助燃且比空氣重，能隔絕氧氣。</p>
+<div class="options">
+<label><input type="radio" name="q2_2" value="T"> ⭕ 正確</label>
+<label><input type="radio" name="q2_2" value="F"> ❌ 錯誤</label>
+</div>
+</div>
+<div class="question-item">
+<p>3. 自然界中的空氣是一種混合物，主要由氮氣和氧氣組成。</p>
+<div class="options">
+<label><input type="radio" name="q2_3" value="T"> ⭕ 正確</label>
+<label><input type="radio" name="q2_3" value="F"> ❌ 錯誤</label>
+</div>
+</div>
+<div class="question-item">
+<p>4. 燃燒一定要有火苗才能發生，只有高溫但沒有火源是不會自燃的。</p>
+<div class="options">
+<label><input type="radio" name="q2_4" value="F"> ❌ 錯誤</label>
+<label><input type="radio" name="q2_4" value="T"> ⭕ 正確</label>
+</div>
+</div>
+<div class="question-item">
+<p>5. 實驗製造氧氣時，加入金針菇可以幫助加速反應，金針菇在實驗中扮演「催化劑」的角色。</p>
+<div class="options">
+<label><input type="radio" name="q2_5" value="T"> ⭕ 正確</label>
+<label><input type="radio" name="q2_5" value="F"> ❌ 錯誤</label>
+</div>
+</div>
+</div>
+
+<!-- Session III: Multiple Choice -->
+<div class="section">
+<div class="section-title">第三部分：選擇題</div>
+<div class="question-item">
+<p>1. 植物進行光合作用時，主要吸收哪種氣體來製造養分？</p>
+<div class="options">
+<label><input type="radio" name="q3_1" value="A"> (A) 氮氣</label>
+<label><input type="radio" name="q3_1" value="B"> (B) 氧氣</label>
+<label><input type="radio" name="q3_1" value="C"> (C) 二氧化碳</label>
+</div>
+</div>
+<div class="question-item">
+<p>2. 哪一種實驗現象可以用來證明收集到的氣體是「氧氣」？</p>
+<div class="options">
+<label><input type="radio" name="q3_2" value="A"> (A) 使澄清石灰水變混濁</label>
+<label><input type="radio" name="q3_2" value="B"> (B) 使快要熄滅的線香重新劇烈燃燒</label>
+<label><input type="radio" name="q3_2" value="C"> (C) 使潮濕的藍色石蕊試紙變紅色</label>
+</div>
+</div>
+<div class="question-item">
+<p>3. 關於「乾冰」的敘述，下列何者正確？</p>
+<div class="options">
+<label><input type="radio" name="q3_3" value="A"> (A) 它是固態的二氧化碳，溫度極低</label>
+<label><input type="radio" name="q3_3" value="B"> (B) 它在室溫下會直接融化成液態水</label>
+<label><input type="radio" name="q3_3" value="C"> (C) 它是天然生成的冰塊，可以直接用手抓取</label>
+</div>
+</div>
+<div class="question-item">
+<p>4. 發生油鍋起火時，最正確且安全的處理方式是？</p>
+<div class="options">
+<label><input type="radio" name="q3_4" value="A"> (A) 立刻往鍋裡倒入大量的冷水</label>
+<label><input type="radio" name="q3_4" value="B"> (B) 用扇子用力扇風，試圖吹熄火苗</label>
+<label><input type="radio" name="q3_4" value="C"> (C) 冷靜蓋上鍋蓋隔絕空氣，並關閉瓦斯</label>
+</div>
+</div>
+<div class="question-item">
+<p>5. 在消防安全教育中，下列何者「不是」燃燒三要素之一？</p>
+<div class="options">
+<label><input type="radio" name="q3_5" value="A"> (A) 可燃物 (如木材、汽油)</label>
+<label><input type="radio" name="q3_5" value="B"> (B) 滅火器 (如乾粉、泡沫)</label>
+<label><input type="radio" name="q3_5" value="C"> (C) 助燃物 (如氧氣)</label>
+</div>
+</div>
+</div>
+
+<!-- Session IV: Diagram -->
+<div class="section">
+<div class="section-title">第四部分：圖表應用題 (燃燒三角形)</div>
+<p>燃燒需要同時具備三個要素，缺一不可。請從下拉選單中選出正確的要素名稱：</p>
+<div class="diagram-container">
+<svg class="triangle-svg" viewBox="0 0 100 100">
+<polygon points="50,15 90,85 10,85" stroke="#e74c3c" stroke-width="2" fill="#fff5f5" />
+<text x="50" y="60" text-anchor="middle" fill="#e74c3c" font-size="8" font-weight="bold">持續燃燒</text>
+</svg>
+<div class="triangle-labels">
+<div class="label-input-group">
+<span>左邊：</span>
+<select id="q4_1">
+<option value="">選擇要素...</option>
+<option value="A">二氧化碳</option>
+<option value="B">可燃物</option>
+</select>
+</div>
+<div class="label-input-group">
+<span>下邊：</span>
+<select id="q4_3">
+<option value="">選擇要素...</option>
+<option value="A">達到燃點</option>
+<option value="B">強風</option>
+</select>
+</div>
+<div class="label-input-group">
+<span>右邊：</span>
+<select id="q4_2">
+<option value="">選擇要素...</option>
+<option value="A">氧氣</option>
+<option value="B">氮氣</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+
+<button class="btn-submit" onclick="checkAnswers()">提交我的答案</button>
+
+<div id="result-area">
+<h2 id="score-display"></h2>
+<p id="feedback-text"></p>
+<button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">重新挑戰</button>
+</div>
+</div>
+
+<script>
+function checkAnswers() {
+let score = 0;
+const totalQuestions = 16;
+
+// Part 1: Table (3 points)
+if (document.getElementById('q1_1').value == "78") score++;
+if (document.getElementById('q1_2').value == "21") score++;
+if (document.getElementById('q1_3').value == "1") score++;
+
+// Part 2: TF (5 points)
+const q2Ans = { q2_1: 'F', q2_2: 'T', q2_3: 'T', q2_4: 'F', q2_5: 'T' };
+for (let key in q2Ans) {
+let selected = document.querySelector(`input[name="${key}"]:checked`);
+if (selected && selected.value === q2Ans[key]) score++;
+}
+
+// Part 3: MC (5 points)
+const q3Ans = { q3_1: 'C', q3_2: 'B', q3_3: 'A', q3_4: 'C', q3_5: 'B' };
+for (let key in q3Ans) {
+let selected = document.querySelector(`input[name="${key}"]:checked`);
+if (selected && selected.value === q3Ans[key]) score++;
+}
+
+// Part 4: Diagram (3 points)
+if (document.getElementById('q4_1').value === 'B') score++;
+if (document.getElementById('q4_2').value === 'A') score++;
+if (document.getElementById('q4_3').value === 'A') score++;
+
+// Result Display
+const resultArea = document.getElementById('result-area');
+const scoreDisplay = document.getElementById('score-display');
+const feedbackText = document.getElementById('feedback-text');
+
+resultArea.style.display = 'block';
+const percentage = Math.round((score / totalQuestions) * 100);
+scoreDisplay.innerHTML = `得分：${percentage} 分 (${score}/${totalQuestions})`;
+
+if (percentage === 100) {
+feedbackText.innerHTML = "太棒了！你是自然科學小天才！🌟";
+} else if (percentage >= 70) {
+feedbackText.innerHTML = "不錯喔！你對空氣與燃燒已經有很好的理解了！👍";
+} else {
+feedbackText.innerHTML = "再加油！可以試著多讀幾遍課本的關鍵概念喔！💪";
+}
+
+window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
