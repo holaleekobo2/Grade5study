@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P5 English Mastery: Unit 7 & Conjunctions</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #eef2f7; color: #333; padding: 20px; }
+        .quiz-card { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { color: #1a73e8; text-align: center; font-size: 2em; margin-bottom: 10px; }
+        .section-header { background: #1a73e8; color: white; padding: 12px 20px; border-radius: 10px; margin-top: 30px; font-size: 1.2em; }
+        .question-box { margin: 25px 0; padding: 20px; border: 1px solid #dfe1e5; border-radius: 12px; transition: 0.3s; }
+        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-item { border: 2px solid #f1f3f4; padding: 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; }
+        .option-item:hover { border-color: #1a73e8; background: #f8fbff; }
+        input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
+        .reading-passage { background: #fff9c4; border-left: 5px solid #fbc02d; padding: 20px; margin: 20px 0; line-height: 1.8; font-size: 1.05em; }
+        button#submit-btn { display: block; width: 100%; padding: 20px; background: #34a853; color: white; border: none; border-radius: 12px; font-size: 1.3em; font-weight: bold; cursor: pointer; margin-top: 40px; }
+        #results-area { display: none; margin-top: 40px; text-align: center; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 8px; font-size: 0.95em; line-height: 1.5; }
+        .correct-bg { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .incorrect-bg { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card">
+    <h1>P5 English Practice: Unit 7</h1>
+    <p style="text-align:center; color:#666;">Focus: Future Tense (Predictions & Questions) & Coordinating Conjunctions</p>
+
+    <div class="section-header">Part A: Grammar & Usage (Future Predictions)</div>
+    
+    <div class="question-box" data-ans="B">
+        <div class="question-text">1. Scientists predict that the weather ______ warmer next year, ______ the ice will melt faster.</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q1" value="A"> will be / or</label>
+            <label class="option-item"><input type="radio" name="q1" value="B"> will be / and</label>
+            <label class="option-item"><input type="radio" name="q1" value="C"> won't be / but</label>
+            <label class="option-item"><input type="radio" name="q1" value="D"> will being / and</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="C">
+        <div class="question-text">2. "______ we still have enough water in the future?" — "No, we ______."</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q2" value="A"> Do / won't</label>
+            <label class="option-item"><input type="radio" name="q2" value="B"> Will / will</label>
+            <label class="option-item"><input type="radio" name="q2" value="C"> Will / won't</label>
+            <label class="option-item"><input type="radio" name="q2" value="D"> Are / won't</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="A">
+        <div class="question-text">3. Which sentence is grammatically correct?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q3" value="A"> I think we'll make electricity with wind energy.</label>
+            <label class="option-item"><input type="radio" name="q3" value="B"> I think we'll to make electricity with wind energy.</label>
+            <label class="option-item"><input type="radio" name="q3" value="C"> I think we'll making electricity with wind energy.</label>
+            <label class="option-item"><input type="radio" name="q3" value="D"> I think we will makes electricity with wind energy.</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="D">
+        <div class="question-text">4. There won't ______ any pollution if we ______ use gas.</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q4" value="A"> being / don't</label>
+            <label class="option-item"><input type="radio" name="q4" value="B"> be / will</label>
+            <label class="option-item"><input type="radio" name="q4" value="C"> been / won't</label>
+            <label class="option-item"><input type="radio" name="q4" value="D"> be / don't</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="section-header">Part B: Coordinating Conjunctions (and, or, but)</div>
+
+    <div class="question-box" data-ans="C">
+        <div class="question-text">5. I want to save the planet, ______ I don't know how to start.</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q5" value="A"> and</label>
+            <label class="option-item"><input type="radio" name="q5" value="B"> or</label>
+            <label class="option-item"><input type="radio" name="q5" value="C"> but</label>
+            <label class="option-item"><input type="radio" name="q5" value="D"> so</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="B">
+        <div class="question-text">6. Should we turn off the lights ______ turn off the TV first?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q6" value="A"> and</label>
+            <label class="option-item"><input type="radio" name="q6" value="B"> or</label>
+            <label class="option-item"><input type="radio" name="q6" value="C"> but</label>
+            <label class="option-item"><input type="radio" name="q6" value="D"> with</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="A">
+        <div class="question-text">7. In the future, the air will be clean ______ the water will be fresh.</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q7" value="A"> and</label>
+            <label class="option-item"><input type="radio" name="q7" value="B"> but</label>
+            <label class="option-item"><input type="radio" name="q7" value="C"> or</label>
+            <label class="option-item"><input type="radio" name="q7" value="D"> then</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="B">
+        <div class="question-text">8. We can travel by bike ______ by bus; both are better than cars.</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q8" value="A"> but</label>
+            <label class="option-item"><input type="radio" name="q8" value="B"> or</label>
+            <label class="option-item"><input type="radio" name="q8" value="C"> and</label>
+            <label class="option-item"><input type="radio" name="q8" value="D"> with</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="section-header">Part C: Sentence Transformation & Error Identification</div>
+
+    <div class="question-box" data-ans="B">
+        <div class="question-text">9. Change the statement to a question: "Computers will be much bigger in the future."</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q9" value="A"> Do computers will be bigger in the future?</label>
+            <label class="option-item"><input type="radio" name="q9" value="B"> Will computers be much bigger in the future?</label>
+            <label class="option-item"><input type="radio" name="q9" value="C"> Will be computers much bigger in the future?</label>
+            <label class="option-item"><input type="radio" name="q9" value="D"> Are computers will be much bigger in the future?</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="A">
+        <div class="question-text">10. Find the error: "I (A) believe (B) that we (C) won't to have (D) cars one day."</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q10" value="A"> (A)</label>
+            <label class="option-item"><input type="radio" name="q10" value="B"> (B)</label>
+            <label class="option-item"><input type="radio" name="q10" value="C"> (C)</label>
+            <label class="option-item"><input type="radio" name="q10" value="D"> (D)</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="C">
+        <div class="question-text">11. Combine these sentences: "The glacier is melting. We must save energy."</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q11" value="A"> The glacier is melting or we must save energy.</label>
+            <label class="option-item"><input type="radio" name="q11" value="B"> The glacier is melting but we must save energy.</label>
+            <label class="option-item"><input type="radio" name="q11" value="C"> The glacier is melting, and we must save energy.</label>
+            <label class="option-item"><input type="radio" name="q11" value="D"> The glacier is melting, and we will save energy.</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="B">
+        <div class="question-text">12. Choose the correct negative response: "Will there be floods?"</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="q12" value="A"> No, they won't.</label>
+            <label class="option-item"><input type="radio" name="q12" value="B"> No, there won't.</label>
+            <label class="option-item"><input type="radio" name="q12" value="C"> No, it won't.</label>
+            <label class="option-item"><input type="radio" name="q12" value="D"> No, there aren't.</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="section-header">Part D: Reading Logic & Comprehension</div>
+    <div class="reading-passage">
+        <b>Save Energy, Save the Future!</b><br>
+        In many countries, cars use gas, but this creates pollution. In the future, Luke and Mia believe we won’t use gas anymore. We will use energy from the sun or water instead. The air will be cleaner, but we must act now. If we don’t turn off the lights and recycle garbage, the glaciers will continue to melt and there will be floods. Will you help save the planet?
+    </div>
+
+    <div class="question-box" data-ans="B">
+        <div class="question-text">13. According to the text, why is gas a problem?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="r1" value="A"> Because it is expensive.</label>
+            <label class="option-item"><input type="radio" name="r1" value="B"> Because it creates pollution.</label>
+            <label class="option-item"><input type="radio" name="r1" value="C"> Because it will never run out.</label>
+            <label class="option-item"><input type="radio" name="r1" value="D"> Because we won't use it in the future.</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="A">
+        <div class="question-text">14. What are the two alternative energy sources mentioned?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="r2" value="A"> Sun and water</label>
+            <label class="option-item"><input type="radio" name="r2" value="B"> Sun and gas</label>
+            <label class="option-item"><input type="radio" name="r2" value="C"> Water and garbage</label>
+            <label class="option-item"><input type="radio" name="r2" value="D"> Gas and electricity</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="D">
+        <div class="question-text">15. What will happen if we do NOT act now?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="r3" value="A"> The air will be cleaner.</label>
+            <label class="option-item"><input type="radio" name="r3" value="B"> We will use more gas.</label>
+            <label class="option-item"><input type="radio" name="r3" value="C"> Glaciers will stop melting.</label>
+            <label class="option-item"><input type="radio" name="r3" value="D"> There will be floods.</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-box" data-ans="C">
+        <div class="question-text">16. The text says "we will save energy, ______ we must act now." What is the best conjunction?</div>
+        <div class="options-grid">
+            <label class="option-item"><input type="radio" name="r4" value="A"> and</label>
+            <label class="option-item"><input type="radio" name="r4" value="B"> or</label>
+            <label class="option-item"><input type="radio" name="r4" value="C"> but</label>
+            <label class="option-item"><input type="radio" name="r4" value="D"> with</label>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <button id="submit-btn" onclick="gradeQuiz()">Submit Answers</button>
+
+    <div id="results-area">
+        <h2 id="final-score"></h2>
+        <p>Review the explanations for each question below.</p>
+    </div>
+</div>
+
+<script>
+    const explanations = {
+        q1: "We use 'will be' for a prediction and 'and' to link the similar result of the weather getting warmer.",
+        q2: "Future questions start with 'Will'. The negative short answer must be 'won't'[cite: 582, 585].",
+        q3: "After 'will/won't', always use the base form of the verb without 'to' or '-ing'[cite: 447, 495].",
+        q4: "Use 'be' as the base verb after 'won't'. 'Don't' is used for a current condition[cite: 447].",
+        q5: "Use 'but' to link contrasting ideas: wanting to help vs. not knowing how.",
+        q6: "Use 'or' to present an alternative choice between two actions.",
+        q7: "Use 'and' to link two similar, positive future predictions.",
+        q8: "Use 'or' because you are choosing between two alternative methods of travel.",
+        q9: "To form a question, move 'Will' to the beginning of the sentence[cite: 601].",
+        q10: "The error is 'to have'. We never use 'to' after will/won't[cite: 495].",
+        q11: "These are two related facts about the environment, so 'and' is the best link.",
+        q12: "The question uses 'there', so the answer must use 'there won't'[cite: 587, 672].",
+        r1: "The text explicitly states that using gas 'creates pollution'[cite: 479, 560].",
+        r2: "The text mentions using 'energy from the sun or water' as alternatives[cite: 446, 487].",
+        r3: "The reading states if we don't act, 'there will be floods'[cite: 616, 671].",
+        r4: " 'But' is used here because it shows the contrast between the goal (saving energy) and the necessary urgent action."
+    };
+
+    function gradeQuiz() {
+        let score = 0;
+        const total = 16;
+        const boxes = document.querySelectorAll('.question-box');
+
+        boxes.forEach((box, index) => {
+            const correctAns = box.getAttribute('data-ans');
+            const selected = box.querySelector('input:checked');
+            const feedback = box.querySelector('.feedback');
+            const qKey = selected ? selected.name : `q${index+1}`; // Handle q1-q12 and r1-r4
+
+            feedback.style.display = 'block';
+            if (selected && selected.value === correctAns) {
+                score++;
+                feedback.innerHTML = `<b>Correct!</b> ${explanations[selected.name] || explanations[selected.name.replace('r','q')]}`;
+                feedback.className = "feedback correct-bg";
+            } else {
+                feedback.innerHTML = `<b>Incorrect.</b> The correct answer is ${correctAns}. ${explanations[selected ? selected.name : box.querySelector('input').name]}`;
+                feedback.className = "feedback incorrect-bg";
+            }
+        });
+
+        document.getElementById('final-score').innerText = `You scored ${score} out of ${total}!`;
+        document.getElementById('results-area').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
