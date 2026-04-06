@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>五年級數學練習卷 - 考查(1)</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #fcfcfc; padding: 20px; line-height: 1.8; color: #333; }
+        .quiz-wrapper { max-width: 880px; margin: auto; background: white; padding: 40px; border: 2px solid #333; box-shadow: 5px 5px 0px #888; }
+        header { text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
+        .student-info { display: flex; justify-content: space-around; margin-bottom: 15px; font-weight: bold; }
+        
+        .section-title { font-weight: bold; font-size: 1.1em; background: #f0f0f0; padding: 5px 10px; margin-top: 20px; border: 1px solid #000; }
+        .questions { display: flex; flex-wrap: wrap; padding: 10px 0; }
+        .q-item { width: 48%; padding: 8px; box-sizing: border-box; }
+        .full-width { width: 100%; }
+
+        /* 標準分數顯示：分子/線/分母 */
+        .fraction { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.9em; line-height: 1.1; margin: 0 5px; }
+        .num { border-bottom: 1px solid #000; padding: 0 4px; }
+        .den { padding: 0 4px; }
+        .mixed { display: inline-flex; align-items: center; }
+
+        input[type="text"] { border: none; border-bottom: 1px solid #000; text-align: center; width: 80px; font-size: 16px; background: #fffde7; }
+        input[type="text"]:focus { outline: none; background: #fff59d; }
+
+        .btn-submit { display: block; width: 100%; padding: 15px; background: #333; color: #fff; border: none; font-size: 1.2em; cursor: pointer; margin-top: 30px; }
+        .btn-submit:hover { background: #555; }
+
+        #report-card { display: none; margin-top: 30px; padding: 20px; border: 3px double #e74c3c; background: #fff9f9; }
+        .error-item { margin-bottom: 15px; border-bottom: 1px solid #ffcfcf; padding-bottom: 10px; }
+        .ans-correct { color: #27ae60; font-weight: bold; }
+        .ans-wrong { color: #c0392b; font-weight: bold; }
+        .tip { font-size: 0.9em; color: #7f8c8d; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-wrapper">
+    <header>
+        <p>南一版 數學 5 下</p>
+        <h1>第一次成績考查練習 (單元 1 - 5)</h1>
+        <div class="student-info">
+            <span>五年 ___ 班 ___ 號</span>
+            <span>姓名：__________</span>
+            <span>得分：<span id="score-val">0</span></span>
+        </div>
+    </header>
+
+    <div class="section-title">一、填填看。每格 1 分</div>
+    <div class="questions">
+        <div class="q-item">(1) 0.3146 &times; 1000 = ( <input type="text" id="a1_1"> )</div>
+        <div class="q-item">(2) <div class="fraction"><span class="num">5</span><span class="den">7</span></div> 個披薩的 <div class="fraction"><span class="num">1</span><span class="den">2</span></div> 是 ( <input type="text" id="a1_2"> ) 個。</div>
+        <div class="q-item">(3) 已知 345.07 &times; □ = 34507，□ = ( <input type="text" id="a1_3"> )</div>
+        <div class="q-item full-width">(4) 6個十兆、5個百億、8個十億、3個億合起來是 ( <input type="text" id="a1_4" style="width:180px;"> )</div>
+        <div class="q-item full-width">(5) 138.065 = 100 &times; 1 + 10 &times; 3 + 1 &times; 8 + 0.1 &times; 0 + 0.01 &times; ( <input type="text" id="a1_5"> ) + 0.001 &times; 5</div>
+        <div class="q-item">(6) 1632 &times; 0.001 的積是將 1632 的小數點向左移 ( <input type="text" id="a1_6"> ) 位。</div>
+    </div>
+
+    <div class="section-title">二、用直式算算看。每題 3 分</div>
+    <div class="questions">
+        <div class="q-item">(1) 4.2 &times; 5.15 = ( <input type="text" id="a2_1"> )</div>
+        <div class="q-item">(2) 12 &times; 0.684 = ( <input type="text" id="a2_2"> )</div>
+    </div>
+
+    <div class="section-title">三、算算看。每題 3 分</div>
+    <div class="questions">
+        <div class="q-item">(1) <div class="mixed">3 <div class="fraction"><span class="num">3</span><span class="den">7</span></div></div> &times; <div class="fraction"><span class="num">5</span><span class="den">8</span></div> = ( <input type="text" id="a3_1"> )</div>
+        <div class="q-item">(2) 36 &times; <div class="fraction"><span class="num">5</span><span class="den">9</span></div> = ( <input type="text" id="a3_2"> )</div>
+        <div class="q-item">(3) <div class="mixed">4 <div class="fraction"><span class="num">4</span><span class="den">5</span></div></div> &divide; 8 = ( <input type="text" id="a3_3"> )</div>
+    </div>
+
+    <div class="section-title">四、算出體積。每題 3 分</div>
+    <div class="questions">
+        <div class="q-item">(1) 邊長 20 公分的正方體：( <input type="text" id="a4_1"> ) cm³</div>
+        <div class="q-item">(2) 長 10m, 寬 5m, 高 2m 的長方體：( <input type="text" id="a4_2"> ) m³</div>
+    </div>
+
+    <div class="section-title">五、在 □ 中填入 >、< 或 =。每題 1 分</div>
+    <div class="questions">
+        <div class="q-item">(1) <div class="fraction"><span class="num">8</span><span class="den">9</span></div> &times; <div class="fraction"><span class="num">9</span><span class="den">8</span></div> □ 1 ( <input type="text" id="a5_1" style="width:40px;"> )</div>
+        <div class="q-item">(2) 38 &times; 0.015 □ 38 ( <input type="text" id="a5_2" style="width:40px;"> )</div>
+    </div>
+
+    <div class="section-title">六、灰色部分是幾分之幾圓？每題 3 分</div>
+    <div class="questions">
+        <div class="q-item">(1) 圓心角 60 度是 ( <input type="text" id="a6_1"> ) 圓。</div>
+        <div class="q-item">(2) 圓心角 120 度是 ( <input type="text" id="a6_2"> ) 圓。</div>
+    </div>
+
+    <div class="section-title">七、應用題。每題 4 分</div>
+    <div class="questions">
+        <div class="q-item full-width">(1) 一個正方形花圃周長是 12.8 公尺，面積是幾平方公尺？<br>答：( <input type="text" id="a7_1"> )</div>
+        <div class="q-item full-width">(2) 將一個圓對折 3 次後，得到的扇形圓心角是幾度？<br>答：( <input type="text" id="a7_2"> )</div>
+    </div>
+
+    <button class="btn-submit" onclick="gradeQuiz()">完成測驗，查看分析結果</button>
+
+    <div id="report-card">
+        <h2>測驗分析報告</h2>
+        <div id="feedback-list"></div>
+    </div>
+</div>
+
+<script>
+const answers = {
+    a1_1: "314.6", a1_2: "5/14", a1_3: "100", a1_4: "60058300000000", a1_5: "6", a1_6: "3",
+    a2_1: "21.63", a2_2: "8.208",
+    a3_1: "15/7", a3_2: "20", a3_3: "3/5",
+    a4_1: "8000", a4_2: "100",
+    a5_1: "=", a5_2: "<",
+    a6_1: "1/6", a6_2: "1/3",
+    a7_1: "10.24", a7_2: "45"
+};
+
+const hints = {
+    a1_6: "乘以 0.001 等於將小數點向左移動 3 位。",
+    a3_1: "3 3/7 換成假分數是 24/7。 (24/7) × (5/8) = (3/7) × 5 = 15/7。",
+    a7_1: "周長 12.8 ÷ 4 = 邊長 3.2。面積 = 3.2 × 3.2 = 10.24。",
+    a7_2: "對折 1次是 1/2圓，2次是 1/4圓，3次是 1/8圓。 360 ÷ 8 = 45 度。"
+};
+
+function gradeQuiz() {
+    let score = 0;
+    let total = Object.keys(answers).length;
+    let feedback = "";
+
+    for (let key in answers) {
+        let userAns = document.getElementById(key).value.trim();
+        if (userAns === answers[key]) {
+            score++;
+        } else {
+            feedback += `
+                <div class="error-item">
+                    第 ${key.replace('a','').replace('_','-')} 題 錯誤：您的答案為 [${userAns || '空'}]<br>
+                    正確答案應為：<span class="ans-correct">${answers[key]}</span><br>
+                    <span class="tip">提示：${hints[key] || "請重新核對計算過程。"}</span>
+                </div>`;
+        }
+    }
+
+    document.getElementById("score-val").innerText = Math.round((score/total)*100);
+    document.getElementById("feedback-list").innerHTML = feedback || "<p class='ans-correct'>恭喜！全部答對！</p>";
+    document.getElementById("report-card").style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
+}
+</script>
+
+</body>
+</html>
