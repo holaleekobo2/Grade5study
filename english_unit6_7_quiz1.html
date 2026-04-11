@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 5 English Quiz</title>
+<style>
+:root {
+--primary: #4CAF50;
+--secondary: #FF9800;
+--bg-color: #F4F9F4;
+--text-color: #333;
+--card-bg: #FFFFFF;
+--font-main: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: var(--font-main);
+background-color: var(--bg-color);
+color: var(--text-color);
+line-height: 1.6;
+padding: 20px;
+}
+
+.quiz-container {
+max-width: 900px;
+margin: 0 auto;
+}
+
+header {
+text-align: center;
+margin-bottom: 30px;
+background: var(--primary);
+color: white;
+padding: 20px;
+border-radius: 15px;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1 {
+font-size: 2.2rem;
+margin-bottom: 10px;
+}
+
+.section-card {
+background: var(--card-bg);
+border-radius: 15px;
+padding: 25px;
+margin-bottom: 25px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+border-left: 8px solid var(--primary);
+}
+
+.sec-a { border-left-color: #FF5722; }
+.sec-b { border-left-color: #4CAF50; }
+.sec-c { border-left-color: #2196F3; }
+.sec-d { border-left-color: #9C27B0; }
+.sec-e { border-left-color: #E91E63; }
+.sec-f { border-left-color: #FF9800; }
+
+h2 {
+font-size: 1.5rem;
+margin-bottom: 10px;
+color: #222;
+border-bottom: 2px dashed #ddd;
+padding-bottom: 5px;
+}
+
+.instructions {
+font-weight: bold;
+color: #555;
+margin-bottom: 15px;
+background: #f9f9f9;
+padding: 10px;
+border-radius: 8px;
+}
+
+.word-bank {
+background: #fffacd;
+padding: 15px;
+border-radius: 10px;
+text-align: center;
+font-weight: bold;
+margin-bottom: 20px;
+border: 2px dashed #ffd700;
+font-size: 1.1rem;
+color: #d35400;
+}
+
+.question {
+margin-bottom: 15px;
+font-size: 1.1rem;
+}
+
+.blank-input {
+border: none;
+border-bottom: 2px solid #aaa;
+background: transparent;
+font-family: inherit;
+font-size: 1.1rem;
+color: #0056b3;
+width: 140px;
+text-align: center;
+outline: none;
+transition: border-color 0.3s;
+}
+
+.blank-input:focus {
+border-bottom: 2px solid var(--primary);
+}
+
+.inline-select {
+font-family: inherit;
+font-size: 1.05rem;
+padding: 3px 5px;
+border-radius: 6px;
+border: 1px solid #ccc;
+background: #fff;
+color: #d35400;
+font-weight: bold;
+outline: none;
+}
+
+.options label {
+display: block;
+margin: 6px 0;
+cursor: pointer;
+padding: 10px 15px;
+background: #f4f6f8;
+border-radius: 8px;
+transition: all 0.2s;
+border: 1px solid transparent;
+}
+
+.options label:hover {
+background: #e9ecef;
+border-color: #ccc;
+}
+
+.options input[type="radio"] {
+margin-right: 10px;
+transform: scale(1.2);
+}
+
+.reading-text {
+background: #e3f2fd;
+padding: 20px;
+border-radius: 10px;
+margin-bottom: 20px;
+font-size: 1.05rem;
+line-height: 1.7;
+border-left: 5px solid #1976d2;
+}
+
+.visual-prompt-container {
+display: flex;
+align-items: flex-start;
+gap: 20px;
+margin-bottom: 25px;
+background: #fafafa;
+padding: 15px;
+border-radius: 10px;
+border: 1px solid #eee;
+}
+
+.svg-box {
+width: 100px;
+height: 100px;
+flex-shrink: 0;
+background: #fff;
+border-radius: 10px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.prompt-q-a textarea {
+width: 100%;
+border-radius: 8px;
+border: 1px solid #ccc;
+padding: 10px;
+font-family: inherit;
+font-size: 1rem;
+outline: none;
+resize: vertical;
+margin-top: 8px;
+}
+
+.prompt-q-a textarea:focus {
+border-color: var(--primary);
+box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.prompt-q-a {
+flex-grow: 1;
+}
+
+.submit-btn {
+display: block;
+width: 100%;
+background: var(--primary);
+color: white;
+font-size: 1.5rem;
+font-weight: bold;
+padding: 15px;
+border: none;
+border-radius: 10px;
+cursor: pointer;
+transition: background 0.3s, transform 0.2s;
+font-family: inherit;
+margin-top: 20px;
+}
+
+.submit-btn:hover {
+background: #45a049;
+transform: translateY(-2px);
+}
+
+#result-box {
+display: none;
+text-align: center;
+margin-top: 30px;
+padding: 30px;
+background: white;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+border: 5px solid #FFD700;
+}
+
+#result-box h2 {
+font-size: 2.5rem;
+color: #333;
+border: none;
+}
+
+#result-box p {
+font-size: 1.5rem;
+margin-top: 10px;
+}
+
+.correct-bg { background-color: #d4edda !important; border-color: #28a745 !important; }
+.incorrect-bg { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+.correct-text { color: #28a745 !important; font-weight: bold; }
+.incorrect-text { color: #dc3545 !important; text-decoration: line-through; }
+
+@media (max-width: 600px) {
+.visual-prompt-container {
+flex-direction: column;
+align-items: center;
+text-align: center;
+}
+.svg-box {
+margin-bottom: 10px;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+<header>
+<h1>Grade 5 English Quiz</h1>
+<p>Complete all sections carefully. Good luck!</p>
+</header>
+
+<!-- SECTION A -->
+<div class="section-card sec-a">
+<h2>Section A: Vocabulary</h2>
+<p class="instructions">Instructions: Use the words in the box to fill in the blanks. (10 questions, 2 pts each)</p>
+
+<div class="word-bank">
+glacier • renewable • stomach ache • bitter • turbines • delicious • fever • excited • environment • volcano
+</div>
+
+<div class="question">1. My mom cooked a <input type="text" id="q-a-1" class="blank-input" autocomplete="off"> Indian curry for dinner last night.</div>
+<div class="question">2. If you eat too much candy, you might get a <input type="text" id="q-a-2" class="blank-input" autocomplete="off">.</div>
+<div class="question">3. Dark chocolate without sugar tastes very <input type="text" id="q-a-3" class="blank-input" autocomplete="off">.</div>
+<div class="question">4. We need to protect our <input type="text" id="q-a-4" class="blank-input" autocomplete="off"> by using less plastic.</div>
+<div class="question">5. In Iceland, you can see a large <input type="text" id="q-a-5" class="blank-input" autocomplete="off"> made of ice that never melts.</div>
+<div class="question">6. Wind <input type="text" id="q-a-6" class="blank-input" autocomplete="off"> turn around to create electricity from the air.</div>
+<div class="question">7. Solar and wind power are types of <input type="text" id="q-a-7" class="blank-input" autocomplete="off"> energy.</div>
+<div class="question">8. The children were very <input type="text" id="q-a-8" class="blank-input" autocomplete="off"> to go on a field trip to the science museum.</div>
+<div class="question">9. A <input type="text" id="q-a-9" class="blank-input" autocomplete="off"> is a mountain that can sometimes erupt with hot lava.</div>
+<div class="question">10. If your forehead feels very hot, you might have a <input type="text" id="q-a-10" class="blank-input" autocomplete="off">.</div>
+</div>
+
+<!-- SECTION B -->
+<div class="section-card sec-b">
+<h2>Section B: Grammar</h2>
+<p class="instructions">Instructions: Select the correct word(s) in the brackets. (10 questions, 2 pts each)</p>
+
+<div class="question">1. That new movie (
+<select id="q-b-1" class="inline-select">
+<option value="">--select--</option>
+<option value="looks">looks</option>
+<option value="look like">look like</option>
+</select>
+) very interesting.</div>
+
+<div class="question">2. I (
+<select id="q-b-2" class="inline-select">
+<option value="">--select--</option>
+<option value="have">have</option>
+<option value="feel">feel</option>
+</select>
+) a terrible cough today.</div>
+
+<div class="question">3. These flowers (
+<select id="q-b-3" class="inline-select">
+<option value="">--select--</option>
+<option value="smells">smells</option>
+<option value="smell">smell</option>
+</select>
+) like honey.</div>
+
+<div class="question">4. She (
+<select id="q-b-4" class="inline-select">
+<option value="">--select--</option>
+<option value="feels">feels</option>
+<option value="has">has</option>
+</select>
+) dizzy after spinning in circles.</div>
+
+<div class="question">5. In the future, people (
+<select id="q-b-5" class="inline-select">
+<option value="">--select--</option>
+<option value="will">will</option>
+<option value="won't">won't</option>
+</select>
+) use more green energy.</div>
+
+<div class="question">6. This silk scarf (
+<select id="q-b-6" class="inline-select">
+<option value="">--select--</option>
+<option value="feels">feels</option>
+<option value="tastes">tastes</option>
+</select>
+) very soft and smooth.</div>
+
+<div class="question">7. Does he (
+<select id="q-b-7" class="inline-select">
+<option value="">--select--</option>
+<option value="has">has</option>
+<option value="have">have</option>
+</select>
+) a sore throat?</div>
+
+<div class="question">8. The music from the party (
+<select id="q-b-8" class="inline-select">
+<option value="">--select--</option>
+<option value="sounds">sounds</option>
+<option value="looks">looks</option>
+</select>
+) very loud.</div>
+
+<div class="question">9. We (
+<select id="q-b-9" class="inline-select">
+<option value="">--select--</option>
+<option value="will">will</option>
+<option value="won't">won't</option>
+</select>
+) waste water if we want to save the planet.</div>
+
+<div class="question">10. That lemon (
+<select id="q-b-10" class="inline-select">
+<option value="">--select--</option>
+<option value="tastes">tastes</option>
+<option value="smells like">smells like</option>
+</select>
+) very sour.</div>
+</div>
+
+<!-- SECTION C -->
+<div class="section-card sec-c">
+<h2>Section C: Read and Choose</h2>
+<p class="instructions">Instructions: Select the best answer. (10 questions, 2 pts each)</p>
+
+<div class="question">
+1. Iceland is known as the land of fire and ice because it has __________.
+<div class="options">
+<label><input type="radio" name="q-c-1" value="A"> A. many trees</label>
+<label><input type="radio" name="q-c-1" value="B"> B. glaciers and volcanoes</label>
+<label><input type="radio" name="q-c-1" value="C"> C. big deserts</label>
+<label><input type="radio" name="q-c-1" value="D"> D. no water</label>
+</div>
+</div>
+
+<div class="question">
+2. We use our nose to __________ the scent of the ocean.
+<div class="options">
+<label><input type="radio" name="q-c-2" value="A"> A. touch</label>
+<label><input type="radio" name="q-c-2" value="B"> B. taste</label>
+<label><input type="radio" name="q-c-2" value="C"> C. smell</label>
+<label><input type="radio" name="q-c-2" value="D"> D. hear</label>
+</div>
+</div>
+
+<div class="question">
+3. Which of these is a way to save energy?
+<div class="options">
+<label><input type="radio" name="q-c-3" value="A"> A. Leaving the lights on</label>
+<label><input type="radio" name="q-c-3" value="B"> B. Driving a big car alone</label>
+<label><input type="radio" name="q-c-3" value="C"> C. Turning off the TV when not watching</label>
+<label><input type="radio" name="q-c-3" value="D"> D. Using more hot water</label>
+</div>
+</div>
+
+<div class="question">
+4. When you have a cold, you often __________ a lot.
+<div class="options">
+<label><input type="radio" name="q-c-4" value="A"> A. laugh</label>
+<label><input type="radio" name="q-c-4" value="B"> B. sneeze</label>
+<label><input type="radio" name="q-c-4" value="C"> C. dance</label>
+<label><input type="radio" name="q-c-4" value="D"> D. jump</label>
+</div>
+</div>
+
+<div class="question">
+5. Electricity made from the sun is called __________ energy.
+<div class="options">
+<label><input type="radio" name="q-c-5" value="A"> A. wind</label>
+<label><input type="radio" name="q-c-5" value="B"> B. water</label>
+<label><input type="radio" name="q-c-5" value="C"> C. solar</label>
+<label><input type="radio" name="q-c-5" value="D"> D. coal</label>
+</div>
+</div>
+
+<div class="question">
+6. The cake in the oven __________ wonderful!
+<div class="options">
+<label><input type="radio" name="q-c-6" value="A"> A. sounds</label>
+<label><input type="radio" name="q-c-6" value="B"> B. looks like</label>
+<label><input type="radio" name="q-c-6" value="C"> C. smells</label>
+<label><input type="radio" name="q-c-6" value="D"> D. feels</label>
+</div>
+</div>
+
+<div class="question">
+7. If you have a __________, you should see a dentist.
+<div class="options">
+<label><input type="radio" name="q-c-7" value="A"> A. headache</label>
+<label><input type="radio" name="q-c-7" value="B"> B. toothache</label>
+<label><input type="radio" name="q-c-7" value="C"> C. backache</label>
+<label><input type="radio" name="q-c-7" value="D"> D. cough</label>
+</div>
+</div>
+
+<div class="question">
+8. Will it rain tomorrow? No, it __________.
+<div class="options">
+<label><input type="radio" name="q-c-8" value="1"> 1. will</label>
+<label><input type="radio" name="q-c-8" value="2"> 2. won't</label>
+<label><input type="radio" name="q-c-8" value="3"> 3. is</label>
+<label><input type="radio" name="q-c-8" value="4"> 4. not</label>
+</div>
+</div>
+
+<div class="question">
+9. A __________ is something you read to imagine new worlds.
+<div class="options">
+<label><input type="radio" name="q-c-9" value="A"> A. storybook</label>
+<label><input type="radio" name="q-c-9" value="B"> B. medicine</label>
+<label><input type="radio" name="q-c-9" value="C"> C. turbine</label>
+<label><input type="radio" name="q-c-9" value="D"> D. battery</label>
+</div>
+</div>
+
+<div class="question">
+10. Scientists think the Earth __________ get warmer if we don't help the environment.
+<div class="options">
+<label><input type="radio" name="q-c-10" value="A"> A. won't</label>
+<label><input type="radio" name="q-c-10" value="B"> B. will</label>
+<label><input type="radio" name="q-c-10" value="C"> C. is</label>
+<label><input type="radio" name="q-c-10" value="D"> D. does</label>
+</div>
+</div>
+</div>
+
+<!-- SECTION D -->
+<div class="section-card sec-d">
+<h2>Section D: Answer in Complete Sentences</h2>
+<p class="instructions">Instructions: Look at the visuals and write a complete sentence for each. (5 questions, 4 pts each)</p>
+
+<!-- Q1 -->
+<div class="visual-prompt-container">
+<div class="svg-box">
+<svg width="60" height="60" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="40" fill="#FFCC80" />
+<path d="M35 40 Q40 30 45 40" stroke="#d35400" stroke-width="3" fill="none"/>
+<path d="M55 40 Q60 30 65 40" stroke="#d35400" stroke-width="3" fill="none"/>
+<path d="M40 70 Q50 60 60 70" stroke="#d35400" stroke-width="3" fill="none"/>
+<path d="M40 20 L45 35 M60 20 L55 35" stroke="#E65100" stroke-width="5" stroke-linecap="round"/>
+<rect x="20" y="40" width="15" height="20" rx="5" fill="#FFAB91"/>
+<rect x="65" y="40" width="15" height="20" rx="5" fill="#FFAB91"/>
+<path d="M45 25 L50 15 L55 25 L60 15" stroke="red" stroke-width="2" fill="none"/>
+</svg>
+</div>
+<div class="prompt-q-a">
+<strong>1. What is the matter with the child?</strong>
+<textarea id="q-d-1" rows="2" placeholder="Write a complete sentence..."></textarea>
+</div>
+</div>
+
+<!-- Q2 -->
+<div class="visual-prompt-container">
+<div class="svg-box">
+<svg width="60" height="60" viewBox="0 0 100 100">
+<circle cx="50" cy="30" r="15" fill="#FFCC80" />
+<rect x="35" y="45" width="30" height="40" rx="5" fill="#1976D2" />
+<path d="M45 30 L55 30 M50 30 V25" stroke="#fff" stroke-width="2"/>
+<circle cx="20" cy="20" r="2" fill="#81D4FA"/>
+<circle cx="80" cy="40" r="3" fill="#81D4FA"/>
+<circle cx="25" cy="70" r="2" fill="#81D4FA"/>
+<path d="M40 45 Q50 40 60 45" stroke="#fff" stroke-width="4" fill="none"/>
+<path d="M30 40 Q35 45 30 50 M70 40 Q65 45 70 50" stroke="#000" stroke-width="2" fill="none"/>
+</svg>
+</div>
+<div class="prompt-q-a">
+<strong>2. How does the person feel?</strong>
+<textarea id="q-d-2" rows="2" placeholder="Write a complete sentence..."></textarea>
+</div>
+</div>
+
+<!-- Q3 -->
+<div class="visual-prompt-container">
+<div class="svg-box">
+<svg width="60" height="60" viewBox="0 0 100 100">
+<circle cx="80" cy="20" r="12" fill="#FFD54F" />
+<path d="M80 5 L80 0 M80 35 L80 40 M65 20 L60 20 M100 20 L95 20 M70 10 L65 5 M90 30 L95 35 M70 30 L65 35 M90 10 L95 5" stroke="#FFD54F" stroke-width="3"/>
+<rect x="20" y="50" width="50" height="40" fill="#8D6E63"/>
+<polygon points="10,50 45,25 80,50" fill="#E53935"/>
+<rect x="30" y="35" width="12" height="12" fill="#1E88E5" transform="skewX(-20)"/>
+<rect x="45" y="35" width="12" height="12" fill="#1E88E5" transform="skewX(-20)"/>
+</svg>
+</div>
+<div class="prompt-q-a">
+<strong>3. What kind of energy is the house using?</strong>
+<textarea id="q-d-3" rows="2" placeholder="Write a complete sentence..."></textarea>
+</div>
+</div>
+
+<!-- Q4 -->
+<div class="visual-prompt-container">
+<div class="svg-box">
+<svg width="60" height="60" viewBox="0 0 100 100">
+<circle cx="40" cy="40" r="25" fill="#FFCC80" />
+<path d="M30 35 Q35 30 40 35 M45 35 Q50 30 55 35" stroke="#000" stroke-width="2" fill="none"/>
+<path d="M35 50 Q40 60 50 50" stroke="#d35400" stroke-width="3" fill="none"/>
+<polygon points="60,60 90,40 85,80" fill="#FFB300"/>
+<polygon points="60,60 90,40 88,38 58,58" fill="#F4511E"/>
+<circle cx="70" cy="55" r="3" fill="#E53935"/>
+<circle cx="80" cy="50" r="4" fill="#E53935"/>
+<circle cx="78" cy="65" r="3" fill="#E53935"/>
+</svg>
+</div>
+<div class="prompt-q-a">
+<strong>4. How does the pizza taste?</strong>
+<textarea id="q-d-4" rows="2" placeholder="Write a complete sentence..."></textarea>
+</div>
+</div>
+
+<!-- Q5 -->
+<div class="visual-prompt-container">
+<div class="svg-box">
+<svg width="60" height="60" viewBox="0 0 100 100">
+<path d="M0 80 Q50 60 100 80 V100 H0 Z" fill="#66BB6A"/>
+<rect x="47" y="40" width="6" height="40" fill="#CFD8DC"/>
+<circle cx="50" cy="40" r="4" fill="#90A4AE"/>
+<ellipse cx="50" cy="20" rx="4" ry="20" fill="#ECEFF1"/>
+<ellipse cx="67" cy="50" rx="20" ry="4" fill="#ECEFF1" transform="rotate(30 50 40)"/>
+<ellipse cx="33" cy="50" rx="20" ry="4" fill="#ECEFF1" transform="rotate(-30 50 40)"/>
+</svg>
+</div>
+<div class="prompt-q-a">
+<strong>5. What will this machine produce?</strong>
+<textarea id="q-d-5" rows="2" placeholder="Write a complete sentence..."></textarea>
+</div>
+</div>
+</div>
+
+<!-- SECTION E -->
+<div class="section-card sec-e">
+<h2>Section E: Reading Comprehension 1</h2>
+<p class="instructions">Instructions: Read the text and choose the correct answer. (5 questions, 2 pts each)</p>
+
+<div class="reading-text">
+<strong>The Power of Iceland</strong><br>
+Iceland is a unique island in the North Atlantic. It is famous for its natural beauty, including hot springs and massive glaciers. Because Iceland has many volcanoes, the ground is very hot. This heat is used to create "geothermal energy." People in Iceland use this hot water from the ground to heat their homes and swimming pools. They also use rushing water from waterfalls to make electricity. By using the wind, the sun, and the earth, Iceland shows the world how to live without using dirty fuels like oil or coal.
+</div>
+
+<div class="question">
+1. Where is Iceland located?
+<div class="options">
+<label><input type="radio" name="q-e-1" value="A"> A. South Pacific</label>
+<label><input type="radio" name="q-e-1" value="B"> B. North Atlantic</label>
+<label><input type="radio" name="q-e-1" value="C"> C. Indian Ocean</label>
+<label><input type="radio" name="q-e-1" value="D"> D. Mediterranean Sea</label>
+</div>
+</div>
+
+<div class="question">
+2. What makes the ground in Iceland hot?
+<div class="options">
+<label><input type="radio" name="q-e-2" value="A"> A. The sun</label>
+<label><input type="radio" name="q-e-2" value="B"> B. Large fires</label>
+<label><input type="radio" name="q-e-2" value="C"> C. Volcanoes</label>
+<label><input type="radio" name="q-e-2" value="D"> D. Hot weather</label>
+</div>
+</div>
+
+<div class="question">
+3. What do people use to heat their swimming pools?
+<div class="options">
+<label><input type="radio" name="q-e-3" value="A"> A. Solar panels</label>
+<label><input type="radio" name="q-e-3" value="B"> B. Hot water from the ground</label>
+<label><input type="radio" name="q-e-3" value="C"> C. Electricity from coal</label>
+<label><input type="radio" name="q-e-3" value="D"> D. Gas heaters</label>
+</div>
+</div>
+
+<div class="question">
+4. Iceland creates electricity from waterfalls using __________.
+<div class="options">
+<label><input type="radio" name="q-e-4" value="A"> A. wind</label>
+<label><input type="radio" name="q-e-4" value="B"> B. rushing water</label>
+<label><input type="radio" name="q-e-4" value="C"> C. fire</label>
+<label><input type="radio" name="q-e-4" value="D"> D. ice</label>
+</div>
+</div>
+
+<div class="question">
+5. The main idea of the text is that Iceland __________.
+<div class="options">
+<label><input type="radio" name="q-e-5" value="A"> A. is too cold to live in</label>
+<label><input type="radio" name="q-e-5" value="B"> B. uses renewable energy</label>
+<label><input type="radio" name="q-e-5" value="C"> C. has no electricity</label>
+<label><input type="radio" name="q-e-5" value="D"> D. is a small island</label>
+</div>
+</div>
+</div>
+
+<!-- SECTION F -->
+<div class="section-card sec-f">
+<h2>Section F: Reading Comprehension 2</h2>
+<p class="instructions">Instructions: Read the text and choose the correct answer. (5 questions, 2 pts each)</p>
+
+<div class="reading-text">
+<strong>A Visit to the Doctor</strong><br>
+Yesterday, Sam did not go to school because he felt sick. He had a high fever and a very sore throat. When he swallowed his food, it felt painful. His mother took him to see Dr. Miller. The doctor used a small light to look inside Sam's throat. It looked very red. Dr. Miller told Sam to drink lots of water and get plenty of rest. He also gave Sam some medicine that tasted like cherries. Sam must stay home for two days until he feels better.
+</div>
+
+<div class="question">
+1. Why was Sam absent from school?
+<div class="options">
+<label><input type="radio" name="q-f-1" value="A"> A. He was on vacation</label>
+<label><input type="radio" name="q-f-1" value="B"> B. He felt sick</label>
+<label><input type="radio" name="q-f-1" value="C"> C. He was at a party</label>
+<label><input type="radio" name="q-f-1" value="D"> D. He was studying</label>
+</div>
+</div>
+
+<div class="question">
+2. What were Sam’s symptoms?
+<div class="options">
+<label><input type="radio" name="q-f-2" value="A"> A. A stomach ache and a cough</label>
+<label><input type="radio" name="q-f-2" value="B"> B. A fever and a sore throat</label>
+<label><input type="radio" name="q-f-2" value="C"> C. A broken leg and a headache</label>
+<label><input type="radio" name="q-f-2" value="D"> D. A cold and a toothache</label>
+</div>
+</div>
+
+<div class="question">
+3. What did Dr. Miller use to see inside Sam's throat?
+<div class="options">
+<label><input type="radio" name="q-f-3" value="A"> A. A mirror</label>
+<label><input type="radio" name="q-f-3" value="B"> B. A small light</label>
+<label><input type="radio" name="q-f-3" value="C"> C. A spoon</label>
+<label><input type="radio" name="q-f-3" value="D"> D. A camera</label>
+</div>
+</div>
+
+<div class="question">
+4. How did the medicine taste?
+<div class="options">
+<label><input type="radio" name="q-f-4" value="A"> A. Bitter</label>
+<label><input type="radio" name="q-f-4" value="B"> B. Like chocolate</label>
+<label><input type="radio" name="q-f-4" value="C"> C. Like cherries</label>
+<label><input type="radio" name="q-f-4" value="D"> D. Sour</label>
+</div>
+</div>
+
+<div class="question">
+5. What was the doctor’s advice?
+<div class="options">
+<label><input type="radio" name="q-f-5" value="A"> A. To go back to school immediately</label>
+<label><input type="radio" name="q-f-5" value="B"> B. To eat more candy</label>
+<label><input type="radio" name="q-f-5" value="C"> C. To drink water and rest</label>
+<label><input type="radio" name="q-f-5" value="D"> D. To play outside in the rain</label>
+</div>
+</div>
+</div>
+
+<button class="submit-btn" onclick="calculateScore()">Submit Quiz</button>
+
+<div id="result-box">
+<h2>Your Score</h2>
+<h1 id="score-text" style="font-size: 3.5rem; color: #4CAF50; margin: 10px 0;">0 / 100</h1>
+<p id="feedback-text"></p>
+</div>
+</div>
+
+<script>
+function calculateScore() {
+let totalScore = 0;
+
+// Helper to evaluate Text Inputs (Section A)
+function checkText(id, answerList) {
+const el = document.getElementById(id);
+if (!el) return;
+const val = el.value.trim().toLowerCase();
+if (answerList.includes(val)) {
+el.classList.add('correct-bg');
+el.classList.remove('incorrect-bg');
+totalScore += 2;
+} else {
+el.classList.add('incorrect-bg');
+el.classList.remove('correct-bg');
+}
+}
+
+// Section A Keys (Allowing slight variations)
+checkText('q-a-1', ['delicious']);
+checkText('q-a-2', ['stomach ache', 'stomachache']);
+checkText('q-a-3', ['bitter']);
+checkText('q-a-4', ['environment']);
+checkText('q-a-5', ['glacier']);
+checkText('q-a-6', ['turbines']);
+checkText('q-a-7', ['renewable']);
+checkText('q-a-8', ['excited']);
+checkText('q-a-9', ['volcano']);
+checkText('q-a-10', ['fever']);
+
+// Helper to evaluate Select Inputs (Section B)
+function checkSelect(id, correctVal) {
+const el = document.getElementById(id);
+if (!el) return;
+if (el.value === correctVal) {
+el.classList.add('correct-bg');
+el.classList.remove('incorrect-bg');
+totalScore += 2;
+} else {
+el.classList.add('incorrect-bg');
+el.classList.remove('correct-bg');
+}
+}
+
+// Section B Keys
+checkSelect('q-b-1', 'looks');
+checkSelect('q-b-2', 'have');
+checkSelect('q-b-3', 'smell');
+checkSelect('q-b-4', 'feels');
+checkSelect('q-b-5', 'will');
+checkSelect('q-b-6', 'feels');
+checkSelect('q-b-7', 'have');
+checkSelect('q-b-8', 'sounds');
+checkSelect('q-b-9', "won't");
+checkSelect('q-b-10', 'tastes');
+
+// Helper to evaluate Radio Inputs (Sections C, E, F)
+function checkRadio(name, correctVal) {
+const radios = document.getElementsByName(name);
+let answered = false;
+let correct = false;
+
+radios.forEach(r => {
+const label = r.parentElement;
+label.classList.remove('correct-text', 'incorrect-text');
+label.style.background = '#f4f6f8';
+
+if (r.checked) {
+answered = true;
+if (r.value === correctVal) {
+correct = true;
+label.classList.add('correct-text');
+label.style.background = '#d4edda';
+totalScore += 2;
+} else {
+label.classList.add('incorrect-text');
+label.style.background = '#f8d7da';
+}
+}
+});
+
+// Highlight correct answer if wrong or skipped
+if (!correct) {
+radios.forEach(r => {
+if (r.value === correctVal) {
+r.parentElement.classList.add('correct-text');
+}
+});
+}
+}
+
+// Section C Keys
+const keysC = ['B', 'C', 'C', 'B', 'C', 'C', 'B', '2', 'A', 'B'];
+for(let i=1; i<=10; i++) { checkRadio('q-c-' + i, keysC[i-1]); }
+
+// Section E Keys
+const keysE = ['B', 'C', 'B', 'B', 'B'];
+for(let i=1; i<=5; i++) { checkRadio('q-e-' + i, keysE[i-1]); }
+
+// Section F Keys
+const keysF = ['B', 'B', 'B', 'C', 'C'];
+for(let i=1; i<=5; i++) { checkRadio('q-f-' + i, keysF[i-1]); }
+
+// Helper to evaluate Sentence Inputs (Section D) - 4 pts each
+function checkSentence(id, keywords) {
+const el = document.getElementById(id);
+if (!el) return;
+const val = el.value.trim().toLowerCase();
+let hasKeyword = keywords.some(kw => val.includes(kw));
+let isSentence = val.length >= 5 && val.includes(" ");
+
+if (hasKeyword && isSentence) {
+el.classList.add('correct-bg');
+el.classList.remove('incorrect-bg');
+totalScore += 4;
+} else {
+el.classList.add('incorrect-bg');
+el.classList.remove('correct-bg');
+}
+}
+
+// Section D Keys (Checking for sentence logic + keywords)
+checkSentence('q-d-1', ['headache', 'sick', 'hurt', 'pain']);
+checkSentence('q-d-2', ['cold', 'freezing', 'shivering', 'chilly', 'sick']);
+checkSentence('q-d-3', ['solar', 'sun', 'renewable', 'light']);
+checkSentence('q-d-4', ['delicious', 'good', 'tasty', 'yummy', 'great', 'nice']);
+checkSentence('q-d-5', ['electricity', 'energy', 'power', 'wind']);
+
+// Display Results
+const resultBox = document.getElementById('result-box');
+const scoreText = document.getElementById('score-text');
+const feedbackText = document.getElementById('feedback-text');
+
+resultBox.style.display = 'block';
+scoreText.textContent = totalScore + " / 100";
+
+if (totalScore >= 90) {
+feedbackText.textContent = "Excellent job! You are a star! ⭐";
+scoreText.style.color = "#4CAF50";
+} else if (totalScore >= 70) {
+feedbackText.textContent = "Great work! Keep practicing. 👍";
+scoreText.style.color = "#FF9800";
+} else {
+feedbackText.textContent = "Good try! Make sure to review the lessons. 📚";
+scoreText.style.color = "#F44336";
+}
+
+resultBox.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
