@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6 & 7 Vocabulary Study List</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .vocab-table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-secondary);
+        }
+        th {
+            background-color: var(--accent-primary);
+            color: white;
+            text-align: left;
+            padding: 16px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Inter', sans-serif;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+        .vocab-word {
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+        }
+        .chinese {
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+        .example {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const btn = document.getElementById('themeBtn');
+            if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <p><a href="english_vocab.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回單字庫</a></p>
+    <h1>📖 Unit 6 & 7 Vocabulary Study List</h1>
+    
+    <div class="vocab-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Chinese Translation</th>
+                    <th>Example Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="vocab-word">amazing</td><td class="chinese">令人驚奇的</td><td class="example">The magic show was absolutely amazing.</td></tr>
+                <tr><td class="vocab-word">exciting</td><td class="chinese">令人興奮的</td><td class="example">Riding the roller coaster was an exciting experience.</td></tr>
+                <tr><td class="vocab-word">brave</td><td class="chinese">勇敢的</td><td class="example">The brave knight saved the kingdom.</td></tr>
+                <tr><td class="vocab-word">fight</td><td class="chinese">戰鬥 / 打架</td><td class="example">The heroes had to fight the villains to protect the city.</td></tr>
+                <tr><td class="vocab-word">dragon</td><td class="chinese">龍</td><td class="example">A mythical dragon breathes fire and can fly.</td></tr>
+                <tr><td class="vocab-word">romantic</td><td class="chinese">浪漫的</td><td class="example">They watched a beautiful, romantic sunset together.</td></tr>
+                <tr><td class="vocab-word">scary</td><td class="chinese">可怕的</td><td class="example">The haunted house was too scary for the little children.</td></tr>
+                <tr><td class="vocab-word">boring</td><td class="chinese">無聊的</td><td class="example">The movie was so boring that I fell asleep.</td></tr>
+                <tr><td class="vocab-word">action</td><td class="chinese">動作 / 刺激</td><td class="example">My favorite movie genre is action because of the thrilling stunts.</td></tr>
+                <tr><td class="vocab-word">scared</td><td class="chinese">害怕的</td><td class="example">The loud thunder made the dog feel scared.</td></tr>
+                <tr><td class="vocab-word">horror</td><td class="chinese">恐怖的</td><td class="example">I don't like watching horror movies because they give me nightmares.</td></tr>
+                <tr><td class="vocab-word">sound</td><td class="chinese">聲音</td><td class="example">The sound of the waves crashing on the beach is very relaxing.</td></tr>
+                <tr><td class="vocab-word">taste</td><td class="chinese">味道</td><td class="example">This cake has a very sweet and delicious taste.</td></tr>
+                <tr><td class="vocab-word">smell</td><td class="chinese">氣味 / 聞</td><td class="example">I love the smell of fresh bread from the bakery.</td></tr>
+                <tr><td class="vocab-word">description</td><td class="chinese">描述</td><td class="example">Please write a detailed description of the suspect.</td></tr>
+                <tr><td class="vocab-word">ending</td><td class="chinese">結局</td><td class="example">The book had a happy ending where everyone celebrated.</td></tr>
+                <tr><td class="vocab-word">factory</td><td class="chinese">工廠</td><td class="example">The factory produces hundreds of cars every day.</td></tr>
+                <tr><td class="vocab-word">wardrobe</td><td class="chinese">衣櫃</td><td class="example">She hung her new dresses elegantly in the wardrobe.</td></tr>
+                <tr><td class="vocab-word">character</td><td class="chinese">角色</td><td class="example">My favorite character in the story is the clever fox.</td></tr>
+                <tr><td class="vocab-word">title</td><td class="chinese">標題 / 書名</td><td class="example">Do you know the title of this interesting book?</td></tr>
+                <tr><td class="vocab-word">a cold</td><td class="chinese">感冒</td><td class="example">I keep sneezing because I caught a cold.</td></tr>
+                <tr><td class="vocab-word">cough</td><td class="chinese">咳嗽</td><td class="example">Cover your mouth when you cough so you don't spread germs.</td></tr>
+                <tr><td class="vocab-word">stomachache</td><td class="chinese">胃痛</td><td class="example">Eating too much candy gave him a bad stomachache.</td></tr>
+                <tr><td class="vocab-word">sick</td><td class="chinese">生病的</td><td class="example">She stayed home from school because she felt sick.</td></tr>
+                <tr><td class="vocab-word">headache</td><td class="chinese">頭痛</td><td class="example">The loud music gave me a terrible headache.</td></tr>
+                <tr><td class="vocab-word">sore throat</td><td class="chinese">喉嚨痛</td><td class="example">Drinking warm tea with honey comes in handy for a sore throat.</td></tr>
+                <tr><td class="vocab-word">wrapper</td><td class="chinese">包裝紙</td><td class="example">Throw the candy wrapper into the trash bin.</td></tr>
+                <tr><td class="vocab-word">wrong</td><td class="chinese">錯誤的</td><td class="example">I think we took the wrong path to the mountain.</td></tr>
+                <tr><td class="vocab-word">homesick</td><td class="chinese">想家的</td><td class="example">When he went to summer camp, he felt homesick and missed his family.</td></tr>
+                <tr><td class="vocab-word">curry</td><td class="chinese">咖哩</td><td class="example">We cooked a flavorful chicken curry for dinner.</td></tr>
+                <tr><td class="vocab-word">spicy</td><td class="chinese">辛辣的</td><td class="example">The chili peppers made the soup very spicy.</td></tr>
+                <tr><td class="vocab-word">crunchy</td><td class="chinese">酥脆的</td><td class="example">I enjoy eating crunchy chips while watching a movie.</td></tr>
+                <tr><td class="vocab-word">beverage</td><td class="chinese">飲料</td><td class="example">Tea is a popular hot beverage around the world.</td></tr>
+                <tr><td class="vocab-word">ingredient</td><td class="chinese">原料</td><td class="example">Flour is the main ingredient in bread.</td></tr>
+                <tr><td class="vocab-word">accompany</td><td class="chinese">陪伴</td><td class="example">Will you accompany me to the grocery store?</td></tr>
+                <tr><td class="vocab-word">order</td><td class="chinese">點餐 / 訂購</td><td class="example">I'd like to order a pizza with extra cheese, please.</td></tr>
+                <tr><td class="vocab-word">future</td><td class="chinese">未來</td><td class="example">In the future, people might live on Mars.</td></tr>
+                <tr><td class="vocab-word">save</td><td class="chinese">節省 / 拯救</td><td class="example">Remember to save your money in a piggy bank.</td></tr>
+                <tr><td class="vocab-word">travel</td><td class="chinese">旅行</td><td class="example">I want to travel around the world one day.</td></tr>
+                <tr><td class="vocab-word">gas</td><td class="chinese">瓦斯 / 氣體</td><td class="example">Cars need gas or electricity to move.</td></tr>
+                <tr><td class="vocab-word">turn off</td><td class="chinese">關掉</td><td class="example">Please turn off the faucet when you brush your teeth.</td></tr>
+                <tr><td class="vocab-word">light</td><td class="chinese">光 / 燈</td><td class="example">Switch on the light so we can see better.</td></tr>
+                <tr><td class="vocab-word">electricity</td><td class="chinese">電</td><td class="example">Lightning is a natural form of electricity.</td></tr>
+                <tr><td class="vocab-word">energy</td><td class="chinese">能源 / 能量</td><td class="example">Solar panels turn sunlight into energy.</td></tr>
+                <tr><td class="vocab-word">another</td><td class="chinese">另外一個</td><td class="example">I finished my apple, can I have another one?</td></tr>
+                <tr><td class="vocab-word">pollution</td><td class="chinese">汙染</td><td class="example">Smoke from factories causes air pollution.</td></tr>
+                <tr><td class="vocab-word">imagine</td><td class="chinese">想像</td><td class="example">Can you imagine a world with no cars?</td></tr>
+                <tr><td class="vocab-word">poem</td><td class="chinese">詩</td><td class="example">We had to write a rhyming poem for English class.</td></tr>
+                <tr><td class="vocab-word">website</td><td class="chinese">網站</td><td class="example">I found the information on a helpful website.</td></tr>
+                <tr><td class="vocab-word">begin</td><td class="chinese">開始</td><td class="example">The race will begin when the whistle blows.</td></tr>
+                <tr><td class="vocab-word">competition</td><td class="chinese">比賽</td><td class="example">She won first prize in the art competition.</td></tr>
+                <tr><td class="vocab-word">topic</td><td class="chinese">主題</td><td class="example">The topic of today's lesson is global warming.</td></tr>
+                <tr><td class="vocab-word">planet</td><td class="chinese">行星</td><td class="example">Earth is the third planet from the sun.</td></tr>
+                <tr><td class="vocab-word">change</td><td class="chinese">改變</td><td class="example">The caterpillar will change into a butterfly.</td></tr>
+                <tr><td class="vocab-word">hurricane</td><td class="chinese">颶風</td><td class="example">A hurricane is a powerful storm that starts over the ocean.</td></tr>
+                <tr><td class="vocab-word">glacier</td><td class="chinese">冰河</td><td class="example">A glacier is a huge, slow-moving river of ice.</td></tr>
+                <tr><td class="vocab-word">melt</td><td class="chinese">融化</td><td class="example">The ice cream will melt if you leave it in the sun.</td></tr>
+                <tr><td class="vocab-word">flood</td><td class="chinese">洪水</td><td class="example">Too much rain can cause a flood in the streets.</td></tr>
+                <tr><td class="vocab-word">weather</td><td class="chinese">天氣</td><td class="example">What is the weather like outside today?</td></tr>
+                <tr><td class="vocab-word">reason</td><td class="chinese">理由</td><td class="example">Tell me the reason why you were late.</td></tr>
+                <tr><td class="vocab-word">extremely</td><td class="chinese">極其 / 非常</td><td class="example">It is extremely cold in Antarctica.</td></tr>
+                <tr><td class="vocab-word">storm</td><td class="chinese">暴風雨</td><td class="example">The thunder and lightning meant a storm was coming.</td></tr>
+                <tr><td class="vocab-word">recycle</td><td class="chinese">回收</td><td class="example">We should recycle paper and plastic to help Earth.</td></tr>
+                <tr><td class="vocab-word">listen</td><td class="chinese">聽</td><td class="example">Please listen carefully to the teacher's instructions.</td></tr>
+                <tr><td class="vocab-word">possible</td><td class="chinese">可能的</td><td class="example">It is possible to get an A if you study hard.</td></tr>
+                <tr><td class="vocab-word">polar bear</td><td class="chinese">北極熊</td><td class="example">The polar bear lives on the Arctic ice.</td></tr>
+                <tr><td class="vocab-word">puffin</td><td class="chinese">海鸚</td><td class="example">A puffin is a sea bird with a colorful beak.</td></tr>
+                <tr><td class="vocab-word">flamingo</td><td class="chinese">紅鶴</td><td class="example">The flamingo is a pink bird that stands on one leg.</td></tr>
+                <tr><td class="vocab-word">geography</td><td class="chinese">地理</td><td class="example">In geography class, we learned about maps.</td></tr>
+                <tr><td class="vocab-word">volcano</td><td class="chinese">火山</td><td class="example">Lava flows out of a volcano when it erupts.</td></tr>
+                <tr><td class="vocab-word">capital</td><td class="chinese">首都</td><td class="example">Paris is the capital city of France.</td></tr>
+                <tr><td class="vocab-word">quiz</td><td class="chinese">小考</td><td class="example">We have a short quiz every Friday.</td></tr>
+                <tr><td class="vocab-word">concert</td><td class="chinese">音樂會</td><td class="example">The band played loud music at the concert.</td></tr>
+                <tr><td class="vocab-word">neatly</td><td class="chinese">整潔地</td><td class="example">Please write neatly so I can read your work.</td></tr>
+                <tr><td class="vocab-word">quietly</td><td class="chinese">安靜地</td><td class="example">The students walked quietly through the library.</td></tr>
+                <tr><td class="vocab-word">patiently</td><td class="chinese">耐心心地</td><td class="example">The dog waited patiently for its treat.</td></tr>
+                <tr><td class="vocab-word">carefully</td><td class="chinese">小心地</td><td class="example">Carry the glass carefully so you don't drop it.</td></tr>
+                <tr><td class="vocab-word">loudly</td><td class="chinese">大聲地</td><td class="example">Don't shout so loudly; I can hear you!</td></tr>
+                <tr><td class="vocab-word">clearly</td><td class="chinese">清楚地</td><td class="example">Speak clearly so everyone can understand.</td></tr>
+                <tr><td class="vocab-word">clap</td><td class="chinese">拍手</td><td class="example">The audience began to clap after the play.</td></tr>
+                <tr><td class="vocab-word">noise</td><td class="chinese">噪音</td><td class="example">The construction site made a lot of noise.</td></tr>
+                <tr><td class="vocab-word">way</td><td class="chinese">方式 / 路</td><td class="example">Which way should we turn at the corner?</td></tr>
+                <tr><td class="vocab-word">event</td><td class="chinese">活動 / 事件</td><td class="example">The school sports day is a big annual event.</td></tr>
+                <tr><td class="vocab-word">have to</td><td class="chinese">必須</td><td class="example">I have to do my homework before I can play.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p style="margin-top: 2rem;"><a href="english_vocab.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回單字庫</a></p>
+</div>
+</body>
+</html>
