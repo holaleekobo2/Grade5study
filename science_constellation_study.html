@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式四季星空記憶板</title>
+    <style>
+        :root {
+            --bg-color: #0b1021;
+            --star-color: #fff;
+            --line-color: rgba(255, 255, 255, 0.3);
+            --accent-color: #3498db;
+        }
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+        .btn-group { margin-bottom: 15px; }
+        button {
+            padding: 10px 18px;
+            margin: 5px;
+            border: none;
+            border-radius: 25px;
+            background: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button.active { background: var(--accent-color); color: white; }
+        .toggle-group { display: flex; justify-content: center; gap: 20px; font-size: 0.9em; }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        canvas { width: 100%; height: 100%; }
+        .star-label {
+            position: absolute;
+            color: white;
+            text-align: center;
+            pointer-events: none;
+            text-shadow: 0 0 5px #000;
+            transition: opacity 0.3s;
+        }
+        .star-name { display: block; font-size: 1.1em; font-weight: bold; color: #f1c40f; }
+        .constellation { display: block; font-size: 0.85em; color: #bdc3c7; }
+        .instruction { margin-top: 15px; color: #7f8c8d; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <h2>✨ 四季代表星象記憶板</h2>
+    <div class="btn-group">
+        <button onclick="changeSeason('spring')" id="btn-spring">春季大三角</button>
+        <button onclick="changeSeason('summer')" id="btn-summer">夏季大三角</button>
+        <button onclick="changeSeason('autumn')" id="btn-autumn">秋季四邊形</button>
+        <button onclick="changeSeason('winter')" id="btn-winter">冬季大三角</button>
+    </div>
+    <div class="toggle-group">
+        <label><input type="checkbox" id="showStars" checked onchange="draw()"> 顯示星名</label>
+        <label><input type="checkbox" id="showConsts" checked onchange="draw()"> 顯示星座</label>
+    </div>
+    <p class="instruction">💡 提示：隱藏標籤後，可用滑鼠點擊「星星圓點」來查看解答。</p>
+    <a href="science.html" style="display:inline-block; margin-top:10px; color:#3498db; text-decoration:none; font-weight:bold;">⬅ 返回自然測驗目錄</a>
+</div>
+
+<div class="canvas-container" id="container">
+    <canvas id="starCanvas"></canvas>
+</div>
+
+<script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('container');
+
+    const data = {
+        spring: {
+            type: 'triangle',
+            stars: [
+                { name: '大角星', const: '牧夫座', x: 0.5, y: 0.2 },
+                { name: '角宿一', const: '室女座', x: 0.3, y: 0.7 },
+                { name: '五帝座一', const: '獅子座', x: 0.7, y: 0.6 }
+            ]
+        },
+        summer: {
+            type: 'triangle',
+            stars: [
+                { name: '織女星', const: '天琴座', x: 0.4, y: 0.2 },
+                { name: '牛郎星', const: '天鷹座', x: 0.7, y: 0.8 },
+                { name: '天津四', const: '天鵝座', x: 0.2, y: 0.5 }
+            ]
+        },
+        autumn: {
+            type: 'square',
+            stars: [
+                { name: '室宿一', const: '飛馬座', x: 0.3, y: 0.3 },
+                { name: '室宿二', const: '飛馬座', x: 0.3, y: 0.7 },
+                { name: '壁宿一', const: '飛馬座', x: 0.7, y: 0.7 },
+                { name: '壁宿二', const: '仙女座', x: 0.7, y: 0.3 }
+            ]
+        },
+        winter: {
+            type: 'triangle',
+            stars: [
+                { name: '天狼星', const: '大犬座', x: 0.5, y: 0.8 },
+                { name: '參宿四', const: '獵戶座', x: 0.3, y: 0.3 },
+                { name: '南河三', const: '小犬座', x: 0.7, y: 0.4 }
+            ]
+        }
+    };
+
+    let currentSeason = 'spring';
+    let activeStar = null;
+
+    function resize() {
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+        draw();
+    }
+
+    function changeSeason(s) {
+        currentSeason = s;
+        activeStar = null;
+        document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + s).classList.add('active');
+        draw();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const season = data[currentSeason];
+        const stars = season.stars;
+        const showStars = document.getElementById('showStars').checked;
+        const showConsts = document.getElementById('showConsts').checked;
+
+        // 畫連線
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.setLineDash([5, 5]);
+        ctx.lineWidth = 2;
+        stars.forEach((s, i) => {
+            const next = stars[(i + 1) % stars.length];
+            ctx.moveTo(s.x * canvas.width, s.y * canvas.height);
+            ctx.lineTo(next.x * canvas.width, next.y * canvas.height);
+        });
+        ctx.stroke();
+
+        // 移除舊標籤
+        document.querySelectorAll('.star-label').forEach(l => l.remove());
+
+        // 畫星星與標籤
+        stars.forEach((s, i) => {
+            const px = s.x * canvas.width;
+            const py = s.y * canvas.height;
+
+            // 星星圓點
+            ctx.beginPath();
+            ctx.arc(px, py, 8, 0, Math.PI * 2);
+            ctx.fillStyle = (activeStar === i) ? '#f1c40f' : 'white';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "white";
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // 建立標籤
+            if (showStars || showConsts || activeStar === i) {
+                const label = document.createElement('div');
+                label.className = 'star-label';
+                label.style.left = (px + 15) + 'px';
+                label.style.top = (py - 20) + 'px';
+                
+                let html = '';
+                if (showStars || activeStar === i) html += `<span class="star-name">${s.name}</span>`;
+                if (showConsts || activeStar === i) html += `<span class="constellation">${s.const}</span>`;
+                
+                label.innerHTML = html;
+                container.appendChild(label);
+            }
+        });
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        
+        const season = data[currentSeason];
+        activeStar = null;
+        season.stars.forEach((s, i) => {
+            const px = s.x * canvas.width;
+            const py = s.y * canvas.height;
+            const dist = Math.sqrt((mx-px)**2 + (my-py)**2);
+            if (dist < 20) activeStar = i;
+        });
+        draw();
+    });
+
+    window.addEventListener('resize', resize);
+    setTimeout(() => {
+        resize();
+        changeSeason('spring');
+    }, 100);
+
+</script>
+
+</body>
+</html>
