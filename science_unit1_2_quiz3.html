@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>五下自然科學補救小測驗 - 挑戰星空大師 3</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f4f7f6; padding: 20px; line-height: 1.6; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .section { margin-top: 25px; border: 1px solid #dcdde1; border-radius: 8px; padding: 15px; }
+        .section-title { font-weight: bold; background: #3498db; color: white; padding: 5px 15px; border-radius: 4px; display: inline-block; margin-bottom: 15px; }
+        .question { margin-bottom: 20px; padding: 10px; border-radius: 6px; }
+        .question-text { font-weight: bold; margin-bottom: 8px; color: #2f3640; }
+        .options label { display: block; margin: 6px 0; cursor: pointer; padding: 5px; border-radius: 4px; }
+        .options label:hover { background-color: #f1f2f6; }
+        .feedback { display: none; margin-top: 10px; padding: 10px; border-radius: 5px; font-size: 0.95em; border-left: 5px solid #e74c3c; background: #fff5f5; }
+        .correct { border-left-color: #2ecc71; background: #f0fff4; }
+        .ans-label { font-weight: bold; color: #27ae60; }
+        #submit-btn { display: block; width: 100%; padding: 15px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 30px; }
+        #submit-btn:hover { background: #27ae60; }
+        #result { display: none; text-align: center; font-size: 1.5em; margin-top: 20px; padding: 20px; background: #ecf0f1; border-radius: 8px; }
+        .wrong-q { border: 2px solid #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🌟 五下自然補救測驗 3：星空與氣體變形題 🌟</h1>
+    <p style="text-align: center; color: #7f8c8d;">(針對錯題強化：變更描述方式，挑戰你的真觀念！)</p>
+
+    <form id="quizForm">
+        <div class="section">
+            <div class="section-title">第一部分：核心觀念強化 (是非題)</div>
+            
+            <div class="question" id="q1_2a">
+                <div class="question-text">1. 有人說可以在冬天的半夜同時看見天蠍座的大火星與獵戶座的參宿，這是可能的。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_2a" value="O"> O</label>
+                    <label><input type="radio" name="q1_2a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：大火星（天蠍座）與參宿（獵戶座）在地球自轉下絕對無法同時看到。</div>
+            </div>
+            <div class="question" id="q1_2b">
+                <div class="question-text">2. 因為地球自轉，所以我們永遠無法在同一天晚上的同一時刻，同時看見天蠍座和獵戶座。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_2b" value="O"> O</label>
+                    <label><input type="radio" name="q1_2b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：天蠍座是夏季代表，獵戶座是冬季代表，彼此方位相對。</div>
+            </div>
+
+            <div class="question" id="q1_3a">
+                <div class="question-text">3. 想要找出自己生日當天的星空，星座盤的日期要對準「農曆」的生日。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_3a" value="O"> O</label>
+                    <label><input type="radio" name="q1_3a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：星座盤必須使用「國曆」日期。</div>
+            </div>
+            <div class="question" id="q1_3b">
+                <div class="question-text">4. 星座盤最外圈的月份與日期刻度，其實都是依據「國曆」來設計的。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_3b" value="O"> O</label>
+                    <label><input type="radio" name="q1_3b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：星座盤的使用一律配合國曆。</div>
+            </div>
+
+            <div class="question" id="q1_4a">
+                <div class="question-text">5. 如果我們整晚不睡覺，一整夜觀察星空，大約只能看見一到兩個季節的星空。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_4a" value="O"> O</label>
+                    <label><input type="radio" name="q1_4a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：隨著時間推移，大約可以看到三個季節的星空。</div>
+            </div>
+            <div class="question" id="q1_4b">
+                <div class="question-text">6. 在秋季的半夜，我們也有機會看到冬季代表性的星座從東方升起。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_4b" value="O"> O</label>
+                    <label><input type="radio" name="q1_4b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：地球自轉讓星空持續由東向西移動，後一個季節的星空會在半夜升起。</div>
+            </div>
+
+            <div class="question" id="q1_6a">
+                <div class="question-text">7. 星星每天都會東升西落，這是因為大部分的星星都繞著地球由東向西轉動。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_6a" value="O"> O</label>
+                    <label><input type="radio" name="q1_6a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：這主要是因為「地球由西向東自轉」造成的錯覺。</div>
+            </div>
+            <div class="question" id="q1_6b">
+                <div class="question-text">8. 太陽、月亮與星星看起來都是由東向西移動，這是因為地球由西向東自轉的緣故。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_6b" value="O"> O</label>
+                    <label><input type="radio" name="q1_6b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：宇宙中的天體並沒有明顯的每日繞地運動，是地球在自轉。</div>
+            </div>
+
+            <div class="question" id="q1_7a">
+                <div class="question-text">9. 因為地球一直在繞太陽公轉，所以夏季大三角這三顆星星的距離到了冬天就會變大。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_7a" value="O"> O</label>
+                    <label><input type="radio" name="q1_7a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：恆星距離地球非常遙遠，彼此之間的相對形狀在短時間內是不變的。</div>
+            </div>
+            <div class="question" id="q1_7b">
+                <div class="question-text">10. 幾百年來，北斗七星這幾顆星星在天空中的相對位置和排列形狀幾乎沒有改變。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_7b" value="O"> O</label>
+                    <label><input type="radio" name="q1_7b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：星座的形狀對人類短短的歷史來說是固定的。</div>
+            </div>
+
+            <div class="question" id="q1_12a">
+                <div class="question-text">11. 燃燒產生的二氧化碳是一種灰黑色的氣體，所以我們可以看到蠟燭冒黑煙。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_12a" value="O"> O</label>
+                    <label><input type="radio" name="q1_12a" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：X</span><br>解析：二氧化碳是無色無味的，黑煙是燃燒未完全的碳粒。</div>
+            </div>
+            <div class="question" id="q1_12b">
+                <div class="question-text">12. 將收集到的未知氣體通入澄清石灰水，若水變混濁，就表示這個氣體很可能是二氧化碳。</div>
+                <div class="options">
+                    <label><input type="radio" name="q1_12b" value="O"> O</label>
+                    <label><input type="radio" name="q1_12b" value="X"> X</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：O</span><br>解析：這是檢驗二氧化碳的標準方法。</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">第二部分：情境與應用 (選擇題)</div>
+            
+            <div class="question" id="q2_1a">
+                <div class="question-text">13. 面向北方時，正前方是北方，正後方是南方，那你的左手邊是什麼方向？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_1a" value="1"> (1) 東方</label>
+                    <label><input type="radio" name="q2_1a" value="2"> (2) 西方</label>
+                    <label><input type="radio" name="q2_1a" value="3"> (3) 南方</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(2)</span><br>解析：面北時，右東左西。</div>
+            </div>
+            <div class="question" id="q2_1b">
+                <div class="question-text">14. 如果你的右手邊是東方，那你正在面對著哪個方向？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_1b" value="1"> (1) 北方</label>
+                    <label><input type="radio" name="q2_1b" value="2"> (2) 南方</label>
+                    <label><input type="radio" name="q2_1b" value="3"> (3) 西方</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(1)</span><br>解析：右邊是東方，前面必然是北方。</div>
+            </div>
+
+            <div class="question" id="q2_8a">
+                <div class="question-text">15. 面向南方觀察星空，多數星星會從畫面中的哪一邊升起進入你的視線？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_8a" value="1"> (1) 左方</label>
+                    <label><input type="radio" name="q2_8a" value="2"> (2) 右方</label>
+                    <label><input type="radio" name="q2_8a" value="3"> (3) 正前方</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(1)</span><br>解析：東升西落，面南時左手就是東方。</div>
+            </div>
+            <div class="question" id="q2_8b">
+                <div class="question-text">16. 面向南方時，追蹤一顆恆星一整晚，最後會看到它往哪個方向落下？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_8b" value="1"> (1) 左方</label>
+                    <label><input type="radio" name="q2_8b" value="2"> (2) 右方</label>
+                    <label><input type="radio" name="q2_8b" value="3"> (3) 上方</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(2)</span><br>解析：星星從西方落下，面南時右手邊就是西方。</div>
+            </div>
+
+            <div class="question" id="q2_11a">
+                <div class="question-text">17. 下列哪一種做法應用了二氧化碳「不助燃、不可燃且比空氣重」的特性？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_11a" value="1"> (1) 製作乾冰</label>
+                    <label><input type="radio" name="q2_11a" value="2"> (2) 製作滅火器</label>
+                    <label><input type="radio" name="q2_11a" value="3"> (3) 提供海底潛水員呼吸</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(2)</span><br>解析：二氧化碳常被利用於滅火。</div>
+            </div>
+            <div class="question" id="q2_11b">
+                <div class="question-text">18. 植物在白天進行光合作用時，會大量吸收空氣中的哪一種氣體？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2_11b" value="1"> (1) 氧氣</label>
+                    <label><input type="radio" name="q2_11b" value="2"> (2) 氫氣</label>
+                    <label><input type="radio" name="q2_11b" value="3"> (3) 二氧化碳</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(3)</span><br>解析：光合作用會吸收二氧化碳並釋放氧氣。</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">第三部分：四季亮星與星座 (必背題)</div>
+
+            <div class="question" id="q3_1a">
+                <div class="question-text">19. 到了春天，天空中哪一顆星星「不是」春季大三角的成員？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_1a" value="1"> (1) 大角星</label>
+                    <label><input type="radio" name="q3_1a" value="2"> (2) 角宿一</label>
+                    <label><input type="radio" name="q3_1a" value="3"> (3) 北極星</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(3)</span><br>解析：春季大三角是牧夫座大角星、室女座角宿一、獅子座五帝座一。</div>
+            </div>
+            <div class="question" id="q3_1b">
+                <div class="question-text">20. 「春季大三角」包含了牧夫座的大角星、室女座的角宿一，以及獅子座的哪一顆星？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_1b" value="1"> (1) 五帝座一</label>
+                    <label><input type="radio" name="q3_1b" value="2"> (2) 軒轅十四</label>
+                    <label><input type="radio" name="q3_1b" value="3"> (3) 天津四</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(1)</span><br>解析：獅子尾巴的五帝座一是春季大三角的頂點之一。</div>
+            </div>
+
+            <div class="question" id="q3_2a">
+                <div class="question-text">21. 四季星空中，哪一個季節的天空缺乏特別明亮的一等星，而以「四邊形」最為代表？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_2a" value="1"> (1) 春季</label>
+                    <label><input type="radio" name="q3_2a" value="2"> (2) 夏季</label>
+                    <label><input type="radio" name="q3_2a" value="3"> (3) 秋季</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(3)</span><br>解析：秋季沒有大三角，而是由秋季四邊形為主。</div>
+            </div>
+            <div class="question" id="q3_2b">
+                <div class="question-text">22. 秋季四邊形主要是由幾顆星星組成？其中一顆隸屬於哪一個星座？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_2b" value="1"> (1) 天鵝座</label>
+                    <label><input type="radio" name="q3_2b" value="2"> (2) 仙女座</label>
+                    <label><input type="radio" name="q3_2b" value="3"> (3) 大熊座</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(2)</span><br>解析：秋季四邊形由飛馬座的三顆星加上仙女座的一顆星（壁宿二）組成。</div>
+            </div>
+
+            <div class="question" id="q3_3a">
+                <div class="question-text">23. 夏季大三角之中的「天津四」是屬於下列哪一個星座？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_3a" value="1"> (1) 天琴座</label>
+                    <label><input type="radio" name="q3_3a" value="2"> (2) 天鷹座</label>
+                    <label><input type="radio" name="q3_3a" value="3"> (3) 天鵝座</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(3)</span><br>解析：天津四是天鵝座的主星。</div>
+            </div>
+            <div class="question" id="q3_3b">
+                <div class="question-text">24. 冬季大三角包含大犬座的「天狼星」、獵戶座的「參宿四」，以及小犬座的哪一顆亮星？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3_3b" value="1"> (1) 南河三</label>
+                    <label><input type="radio" name="q3_3b" value="2"> (2) 牛郎星</label>
+                    <label><input type="radio" name="q3_3b" value="3"> (3) 織女星</label>
+                </div>
+                <div class="feedback"><span class="ans-label">正確答案：(1)</span><br>解析：南河三是小犬座裡最亮的星。</div>
+            </div>
+        </div>
+
+        <button type="button" id="submit-btn" onclick="calculateScore()">提交測驗並查看詳解</button>
+    </form>
+
+    <div id="result">
+        您的分數：<span id="score">0</span> 分
+        <p id="msg"></p>
+    </div>
+</div>
+
+<script>
+function calculateScore() {
+    const answers = {
+        q1_2a: 'X', q1_2b: 'O', q1_3a: 'X', q1_3b: 'O', q1_4a: 'X', q1_4b: 'O',
+        q1_6a: 'X', q1_6b: 'O', q1_7a: 'X', q1_7b: 'O', q1_12a: 'X', q1_12b: 'O',
+        q2_1a: '2', q2_1b: '1', q2_8a: '1', q2_8b: '2', q2_11a: '2', q2_11b: '3',
+        q3_1a: '3', q3_1b: '1', q3_2a: '3', q3_2b: '2', q3_3a: '3', q3_3b: '1'
+    };
+
+    let score = 0;
+    let totalQuestions = Object.keys(answers).length;
+    let quizForm = document.getElementById('quizForm');
+
+    for (let qId in answers) {
+        let questionDiv = document.getElementById(qId);
+        let selected = quizForm.querySelector(`input[name="${qId}"]:checked`);
+        let feedback = questionDiv.querySelector('.feedback');
+        
+        feedback.style.display = 'block';
+
+        if (selected && selected.value === answers[qId]) {
+            score++;
+            questionDiv.classList.remove('wrong-q');
+            feedback.classList.add('correct');
+        } else {
+            questionDiv.classList.add('wrong-q');
+            feedback.classList.remove('correct');
+        }
+    }
+
+    let finalScore = Math.round((score / totalQuestions) * 100);
+    document.getElementById('score').innerText = finalScore;
+    document.getElementById('result').style.display = 'block';
+    
+    let msg = document.getElementById('msg');
+    if(finalScore === 100) msg.innerText = "太優秀了！所有星空觀念都記熟了！";
+    else if(finalScore >= 80) msg.innerText = "很棒喔！將紅框題目的解析再看一次就完美了。";
+    else msg.innerText = "加油！請仔細閱讀紅框題目的詳解，再重新挑戰一次！";
+
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
