@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社會 3 測驗：日本帝國如何統治台灣</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .section-title { 
+            margin-top: 2.5rem; 
+            border-left: 5px solid var(--accent-primary); 
+            padding-left: 15px; 
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        .review-item { padding: 20px; margin-bottom: 20px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-primary); }
+        .wrong { border-left: 5px solid var(--accent-danger); }
+        .correct { border-left: 5px solid var(--accent-success); }
+        .correct-reason { margin-top: 10px; color: var(--text-secondary); font-size: 0.95em; padding-top: 10px; border-top: 1px dashed var(--border-color); }
+        @media (max-width: 640px) {
+            .options { display: flex; flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <p><a href="society.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回目錄</a></p>
+    <h1>社會 3 日本帝國如何統治台灣</h1>
+
+    <div style="margin-bottom: 2rem; padding: 20px; background: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border-color);">
+        <p><strong>五年____班 座號：____ 姓名：__________</strong></p>
+    </div>
+
+    <form id="quiz-form">
+        <div class="section-title">一、是非題 (每題 2 分，共 20 分)</div>
+        <div id="tf-container"></div>
+
+        <div class="section-title">二、選擇題 (每題 4 分，共 80 分)</div>
+        <div id="mc-container"></div>
+
+        <button type="button" id="submit-btn" onclick="checkAnswers()" style="margin-top: 30px;">交卷並查看結果</button>
+    </form>
+
+    <div id="result-panel" style="display: none; margin-top: 40px;">
+        <h2>測驗結果</h2>
+        <div id="final-score" style="font-size: 2rem; text-align:center; color: var(--accent-primary); margin-bottom: 20px; font-weight: bold;"></div>
+        <div id="feedback-list"></div>
+        <button id="retryBtn" onclick="location.reload()" style="margin-top: 20px; background: var(--text-secondary); width: 100%; border: none; padding: 18px; border-radius: 16px; color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer;">再試一次</button>
+    </div>
+
+    <div class="history-section" style="margin-top: 40px;">
+        <h3 class="section-title">📊 測驗歷史紀錄 (本機儲存)</h3>
+        <div id="history-body"></div>
+        <button onclick="clearRecords()" style="background: var(--accent-danger); color: white; padding: 12px; margin-top: 20px; border-radius: 12px; cursor: pointer; border: none; font-weight: bold;">清除紀錄</button>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const btn = document.getElementById('themeBtn');
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+        localStorage.setItem('theme', newTheme);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const btn = document.getElementById('themeBtn');
+        if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+    });
+
+    const tfQuestions = [
+        { q: "日本在台灣設立總督府，是日治時期的最高統治機關。", a: "O", r: "總督府擁有行政、立法、司法等極大權力。" },
+        { q: "日治時期的警察工作單純，只要負責抓小偷和維護治安即可。", a: "X", r: "日治警察權力極大，還管轄公共衛生、調查戶口、宣導政令等。" },
+        { q: "「保甲制度」是將十戶編為一甲，十甲編為一保，實施集體監控。", a: "O", r: "這是日本利用台灣傳統習俗來輔助警察控制地方的制度。" },
+        { q: "「連坐法」是指如果保甲內有人犯罪，同保甲的其他居民也會受連累受罰。", a: "O", r: "這是保甲制度中互相監督的重要手段。" },
+        { q: "日治初期進行的「土地調查」，主要目的是為了獎勵農民開發荒地。", a: "X", r: "土地調查是為了釐清所有權，以便正確課徵土地稅。" },
+        { q: "日本推行「皇民化運動」，是為了讓台灣人保留更多傳統漢人習俗。", a: "X", r: "目的是要台灣人效忠日本天皇，並將台灣人同化為日本臣民。" },
+        { q: "「神社參拜」是皇民化運動中，強制台灣人改變宗教信仰的一種方式。", a: "O", r: "當時要求台灣人放棄傳統信仰，改向神社參拜。" },
+        { q: "日治時期引進了「星期制度」與「標準時」，改變了台灣人的時間觀念。", a: "O", r: "日本引進陽曆與守時觀念，使人民生活步調趨向規律。" },
+        { q: "日本政府推行「國語運動」，這裡的國語是指當時通用的「閩南語」。", a: "X", r: "當時所謂的「國語」是指「日語」。" },
+        { q: "日治時期規定行人與車輛都必須靠右側通行，這就是現在交通規則的由來。", a: "X", r: "日治時期規定是「左側通行」。" }
+    ];
+
+    const mcQuestions = [
+        { q: "關於日治時期警察的敘述，下列哪一項正確？", o: ["受老師管轄", "權力極大，包辦人民大小事", "只負責軍事戰鬥", "地位低下"], a: 1, r: "警察在當時被稱為「警察大人」，管轄範圍從治安到衛生、調查無所不包。" },
+        { q: "保甲制度中的「保正」和「甲長」是由誰擔任？", o: ["日本警察", "日本軍人", "當地的台灣人", "總督府派來的官員"], a: 2, r: "保正與甲長選自地方領袖，協助警察執行任務。" },
+        { q: "日本統治初期進行大規模的「戶口調查」，其主要目的為何？", o: ["分發糧食", "掌握人口動態以便管理與課稅", "鼓勵生育", "安排移民日本"], a: 1, r: "精確的戶口普查能有效管理人民並穩定稅收。" },
+        { q: "下列哪一項不是「皇民化運動」推行的內容？", o: ["改日本姓名", "說日語", "參拜神社", "推廣中秋節吃月餅"], a: 3, r: "皇民化運動旨在消除台灣傳統文化，改採日本習俗。" },
+        { q: "「林野調查」主要是針對台灣的哪種資源進行清理與所有權確認？", o: ["海洋資源", "礦產資源", "森林與荒野土地", "城市建築"], a: 2, r: "藉此將大量無主或產權不明的林地收歸政府所有。" },
+        { q: "在日治時期的街道上，民眾走路或開車應遵守什麼規則？", o: ["左側通行", "右側通行", "隨意通行", "中間通行"], a: 0, r: "日本政府引進了「左側通行」的現代交通規則。" },
+        { q: "為什麼當時的台灣人會稱警察為「警察大人」？", o: ["因為他們都很和藹可親", "因為他們權力極大且深度介入民生", "因為是總督府規定的稱呼", "因為警察都是台灣人"], a: 1, r: "警察是殖民統治的最前線，威嚴與權力讓民眾心生畏懼。" },
+        { q: "皇民化運動中，鼓勵台灣人改用日本姓名的目的是？", o: ["增加趣味性", "方便日本老師點名", "強化對日本的認同與效忠", "改善台灣人的社會地位"], a: 2, r: "透過改變姓名，在精神上將台灣人徹底日本化。" },
+        { q: "日治時期推行的現代化規範中，何者提升了台灣的環境品質？", o: ["守時觀念", "左側通行", "公共衛生與防疫", "度量衡統一"], a: 2, r: "警察負責督促民眾清理環境，減少了流行病的發生。" },
+        { q: "下列哪一個機關擁有當時台灣最高的行政與立法權？", o: ["警察局", "州廳", "台灣總督府", "保甲辦公室"], a: 2, r: "總督府是殖民統治的核心機關。" },
+        { q: "關於日治時期的「守時」教育，下列敘述何者錯誤？", o: ["引進了星期制度", "要求人民養成準時的習慣", "是為了方便日本官員旅遊", "改善了傳統台灣人對時間較隨意的習慣"], a: 2, r: "守時是為了提升社會運作效率及工業生產力。" },
+        { q: "若一個「甲」內有人藏匿罪犯，全甲的人都要受罰，這反映了什麼制度？", o: ["保甲制度的連坐法", "警察制度的巡邏法", "皇民化運動的教化", "土地調查的規定"], a: 0, r: "連坐法利用集體責任感來預防犯罪。" },
+        { q: "日治時期統一「度量衡」的目的是？", o: ["方便學生算數學", "使商業交易有統一基準", "鼓勵大家多買東西", "測量神社的大小"], a: 1, r: "統一計量標準有利於經濟活動與稅收計算。" },
+        { q: "皇民化運動發生的背景主要是因為？", o: ["台灣人強烈要求", "日本與清朝開戰", "日本發動對外戰爭需要台灣人效忠", "日本政府很有錢"], a: 2, r: "戰爭期間，日本需要將殖民地人民轉化為可用戰力。" },
+        { q: "下列何者是日本在台灣推動的「三大調查」之一？", o: ["漁業調查", "土地調查", "服裝調查", "宗教調查"], a: 1, r: "三大調查包含：土地、戶口、林野。" },
+        { q: "在日治時期，如果你在演講中批評總督府，最可能直接出面制止你的是？", o: ["校長", "警察", "甲長", "鄰居"], a: 1, r: "警察有權監控言論並隨時中止不當演講。" },
+        { q: "日治時期引進的「陽曆」是指？", o: ["以農曆為主的曆法", "現行的公曆(西曆)", "日本古代的曆法", "依天氣變化的曆法"], a: 1, r: "陽曆的引入改變了傳統依賴農曆的生活習慣。" },
+        { q: "「十戶為一甲」是哪項制度的規定？", o: ["戶口調查", "保甲制度", "軍隊編制", "學校班級"], a: 1, r: "這是保甲制度的基本組成單位。" },
+        { q: "日本統治台灣後，透過各項調查掌握了資源，其最終目的是？", o: ["還給台灣人", "改善世界環境", "獲取最大利益並鞏固統治", "單純為了科學研究"], a: 2, r: "殖民調查是為了更有效率地開採資源與收稅。" },
+        { q: "下列哪一項事物最能代表日治時期的「威權管理」？", o: ["學校的鐘聲", "路邊的警察與巡邏箱", "熱鬧的夜市", "原住民的祭典"], a: 1, r: "警察是殖民威權統治最具體的象徵。" }
+    ];
+
+    function initQuiz() {
+        const tfContainer = document.getElementById('tf-container');
+        tfQuestions.forEach((item, index) => {
+            tfContainer.innerHTML += `
+                <div class="question" id="tf-q-${index}">
+                    <p><strong>${index + 1}. ${item.q}</strong></p>
+                    <div class="options" style="display:flex; gap:15px; margin-top:15px;">
+                        <label style="flex:1;"><input type="radio" name="tf-${index}" value="O"> <span>是 (O)</span></label>
+                        <label style="flex:1;"><input type="radio" name="tf-${index}" value="X"> <span>否 (X)</span></label>
+                    </div>
+                </div>`;
+        });
+
+        const mcContainer = document.getElementById('mc-container');
+        mcQuestions.forEach((item, index) => {
+            let optionsHtml = '';
+            item.o.forEach((opt, oIdx) => {
+                optionsHtml += `<label><input type="radio" name="mc-${index}" value="${oIdx}"> <span>(${oIdx + 1}) ${opt}</span></label>`;
+            });
+            mcContainer.innerHTML += `
+                <div class="question" id="mc-q-${index}">
+                    <p><strong>${index + 1}. ${item.q}</strong></p>
+                    <div class="options">${optionsHtml}</div>
+                </div>`;
+        });
+        displayHistory();
+    }
+
+    function styleHighlight(groupName, correctValue) {
+        const optionsGroup = document.getElementsByName(groupName);
+        optionsGroup.forEach(opt => {
+            const label = opt.parentElement;
+            if(opt.value == correctValue) {
+                label.style.borderColor = "var(--accent-success)";
+                label.style.background = "rgba(16, 185, 129, 0.1)";
+                label.style.color = "var(--accent-success)";
+                label.style.fontWeight = "bold";
+            } else if(opt.checked && opt.value != correctValue) {
+                label.style.borderColor = "var(--accent-danger)";
+                label.style.background = "rgba(239, 68, 68, 0.1)";
+            }
+            opt.disabled = true;
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        let mistakesBody = "";
+
+        tfQuestions.forEach((q, i) => {
+            const selected = document.querySelector(`input[name="tf-${i}"]:checked`);
+            if (selected && selected.value === q.a) {
+                score += 2;
+                styleHighlight(`tf-${i}`, q.a);
+            } else {
+                let uVal = selected ? (selected.value === 'O' ? '是 (O)' : '否 (X)') : '未作答';
+                let cVal = q.a === 'O' ? '是 (O)' : '否 (X)';
+                mistakesBody += `
+                    <div class="review-item wrong">
+                        <p><strong>是非題 ${i+1}. ${q.q}</strong></p>
+                        <p style="margin-top:10px;">你的答案：<span style="color:var(--accent-danger); font-weight:bold;">${uVal}</span></p>
+                        <p>正確答案：<span style="color:var(--accent-success); font-weight:bold;">${cVal}</span></p>
+                        <div class="correct-reason"><strong>解析：</strong>${q.r}</div>
+                    </div>`;
+                styleHighlight(`tf-${i}`, q.a);
+            }
+        });
+
+        mcQuestions.forEach((q, i) => {
+            const selected = document.querySelector(`input[name="mc-${i}"]:checked`);
+            if (selected && parseInt(selected.value) === q.a) {
+                score += 4;
+                styleHighlight(`mc-${i}`, q.a);
+            } else {
+                let uVal = selected ? `(${parseInt(selected.value)+1}) ${q.o[parseInt(selected.value)]}` : '未作答';
+                let cVal = `(${q.a+1}) ${q.o[q.a]}`;
+                mistakesBody += `
+                    <div class="review-item wrong">
+                        <p><strong>選擇題 ${i+1}. ${q.q}</strong></p>
+                        <p style="margin-top:10px;">你的答案：<span style="color:var(--accent-danger); font-weight:bold;">${uVal}</span></p>
+                        <p>正確答案：<span style="color:var(--accent-success); font-weight:bold;">${cVal}</span></p>
+                        <div class="correct-reason"><strong>解析：</strong>${q.r}</div>
+                    </div>`;
+                styleHighlight(`mc-${i}`, q.a);
+            }
+        });
+
+        document.getElementById('final-score').innerText = `得分：${score} / 100`;
+        if(mistakesBody === "") {
+            document.getElementById('feedback-list').innerHTML = "<div class='review-item correct'><p style='color:var(--accent-success); font-weight:bold; font-size:1.2rem; text-align:center;'>恭喜全對！🎉</p></div>";
+        } else {
+            document.getElementById('feedback-list').innerHTML = `<h3 style="margin-bottom: 20px;">錯題解析 (Correction Ledger)</h3>${mistakesBody}`;
+        }
+        
+        document.getElementById('result-panel').style.display = 'block';
+        document.getElementById('submit-btn').style.display = 'none';
+        
+        saveRecord(score);
+        window.scrollTo({ top: document.getElementById('result-panel').offsetTop - 30, behavior: 'smooth' });
+    }
+
+    function saveRecord(score) {
+        const records = JSON.parse(localStorage.getItem('society_unit3_quiz2_History') || "[]");
+        records.unshift({ date: new Date().toLocaleString(), score: score });
+        localStorage.setItem('society_unit3_quiz2_History', JSON.stringify(records.slice(0, 5)));
+        displayHistory();
+    }
+
+    function displayHistory() {
+        const records = JSON.parse(localStorage.getItem('society_unit3_quiz2_History') || "[]");
+        const body = document.getElementById('history-body');
+        if(records.length === 0) {
+            body.innerHTML = "<div class='history-item'>尚無測驗紀錄</div>";
+            return;
+        }
+        body.innerHTML = records.map((r, i) => `<div class="history-item" style="background: var(--bg-primary); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color);"><strong>第 ${records.length - i} 次作答 - ${r.date}</strong><br>分數：<span style="color: var(--accent-success); font-weight: bold;">${r.score}</span></div>`).join('');
+    }
+
+    function clearRecords() {
+        if(confirm("確定要清除所有測驗紀錄嗎？")) {
+            localStorage.removeItem('society_unit3_quiz2_History');
+            displayHistory();
+        }
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
