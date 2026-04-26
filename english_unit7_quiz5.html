@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G5 English Unit 7 Grammar Goals Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .input-box {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1.15rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .reading-box { 
+            background: var(--bg-secondary); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-left: 5px solid var(--accent-primary); 
+            margin-bottom: 20px; 
+            font-size: 1.1rem;
+            line-height: 1.8;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-title { 
+            margin-top: 2rem; 
+            border-left: 5px solid var(--accent-primary); 
+            padding-left: 15px; 
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .options-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+        }
+        @media (max-width: 640px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+        .review-item { padding: 20px; margin-bottom: 20px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-primary); }
+        .wrong { border-left: 5px solid var(--accent-danger); }
+        .correct { border-left: 5px solid var(--accent-success); }
+    </style>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <p><a href="english.html" style="text-decoration: none; font-weight: bold; color: var(--accent-primary);">⬅ 返回目錄</a></p>
+    <h1>Grammar Goals 5: Unit 7</h1>
+    <p style="text-align:center; font-size: 1.2rem; color: var(--text-secondary); margin-top: -1.5rem; margin-bottom: 2rem;">Future Forms & Scheduled Events</p>
+
+    <div id="quiz-ui">
+        <div class="section">
+            <h3 class="section-title">Part I. Vocabulary and Grammar (40%)</h3>
+            <div id="part1"></div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Part II. Cloze Test (20%)</h3>
+            <div class="reading-box">
+                Next week is the school trip! The bus (11)______ at 8:30 AM. We (12)______ to visit the Rhino Park. I think it (13)______ a great day. Look at those clouds! It (14)______ to rain, so don't forget your umbrella. We (15)______ back at 4:00 PM.
+            </div>
+            <div id="part2"></div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Part III. Reading Comprehension (20%)</h3>
+            <div class="reading-box">
+                The Wildlife Center has a busy schedule tomorrow. The monkey safari starts at 10:00. At 1:00, the students have lunch. After that, they are going to visit the cheetah enclosure. The guide says, "Look! That cheetah is going to run!" Scientists believe that if we don't help, these animals will be extinct in 50 years.
+            </div>
+            <div id="part3"></div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Part IV. Use words to write Future sentences (12%)</h3>
+            <div id="part4"></div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Part V. Write the Questions (8%)</h3>
+            <div id="part5"></div>
+        </div>
+
+        <button id="submitBtn" onclick="submitQuiz()">提交答案查看結果</button>
+    </div>
+
+    <div id="result" style="display: none;">
+        <h2>測試結果</h2>
+        <div id="score-text" style="font-size: 2rem; text-align:center; color: var(--accent-primary); margin-bottom: 20px; font-weight: bold;"></div>
+        <div id="review-area"></div>
+        <button id="submitBtn" onclick="location.reload()" style="margin-top: 20px; background: var(--text-secondary);">再試一次</button>
+    </div>
+
+    <div class="history-section" style="margin-top: 40px;">
+        <h3 class="section-title">📊 測驗紀錄回顧 (History)</h3>
+        <div id="history-body"></div>
+    </div>
+</div>
+
+<script>
+function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+    localStorage.setItem('theme', newTheme);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const btn = document.getElementById('themeBtn');
+    if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+    updateHistory();
+});
+
+const quizData = [
+    // Part 1
+    { q: "1. Look! That tree kangaroo _______ jump!", options: ["will", "won't", "is going to", "goes to"], correct: 2, part: 1, exp: "Use 'going to' for a future event based on a current observation (Look!)." },
+    { q: "2. I think the rainforest _______ disappear eventually if we don't stop logging.", options: ["will", "is going to", "leaves", "won't"], correct: 0, part: 1, exp: "Use 'will' for predictions based on what we think." },
+    { q: "3. What time _______ the Safari train tour start?", options: ["is", "does", "will", "do"], correct: 1, part: 1, exp: "Use Simple Present (does) for scheduled future events." },
+    { q: "4. Don't worry, the animals _______ become extinct today.", options: ["will", "won't", "going to", "not"], correct: 1, part: 1, exp: "Negative prediction: won't + infinitive." },
+    { q: "5. We _______ to work with local communities to save the rhinos.", options: ["will", "is going", "are going", "go"], correct: 2, part: 1, exp: "Future plans/intentions: are going to." },
+    { q: "6. The bus _______ for the school at 4:30 PM.", options: ["leave", "leaves", "is leave", "will leaves"], correct: 1, part: 1, exp: "Schedules use Simple Present (leaves)." },
+    { q: "7. In fifty years, many species _______ extinct.", options: ["be", "are", "will be", "going to be"], correct: 2, part: 1, exp: "Future prediction with 'will' + 'be'." },
+    { q: "8. They _______ have lunch at the Safari Café at 12:30.", options: ["will", "going to", "have", "are"], correct: 2, part: 1, exp: "Simple present for future schedules: They have lunch (it is on the itinerary)." },
+    { q: "9. Look at those experts! They _______ give a talk about cheetahs.", options: ["will", "going to", "are going to", "are"], correct: 2, part: 1, exp: "Evidence-based future: are going to." },
+    { q: "10. The park _______ at 9:00 AM tomorrow.", options: ["opens", "opening", "is open", "will opens"], correct: 0, part: 1, exp: "Scheduled events (opening times) use Simple Present." },
+
+    // Part 2
+    { q: "11. The bus (schedule)...", options: ["leave", "leaves", "is leaving", "will leave"], correct: 1, part: 2, exp: "Schedule = Simple Present." },
+    { q: "12. We (plan)...", options: ["go", "are going", "will go", "goes"], correct: 1, part: 2, exp: "Plan = are going to." },
+    { q: "13. I think it (prediction)...", options: ["is", "will be", "is going to be", "be"], correct: 1, part: 2, exp: "Prediction with 'I think' = will." },
+    { q: "14. Look! It (evidence)...", options: ["is going", "will", "going to", "goes"], correct: 0, part: 2, exp: "Evidence = is going to." },
+    { q: "15. We (schedule back)...", options: ["arrive", "arriving", "arrives", "are arrive"], correct: 0, part: 2, exp: "Schedule = Simple Present (We arrive)." },
+
+    // Part 3
+    { q: "16. What time does the monkey safari start?", options: ["9:00", "10:00", "1:00", "4:30"], correct: 1, part: 3, exp: "Text states: 'starts at 10:00'." },
+    { q: "17. What are the students going to do after lunch?", options: ["Go home", "Visit cheetahs", "Ride the train", "Sleep"], correct: 1, part: 3, exp: "Text states: 'After that, they are going to visit the cheetah enclosure'." },
+    { q: "18. Why does the guide say a cheetah 'is going to run'?", options: ["It is a plan", "He sees it ready to move", "He thinks so", "It is a schedule"], correct: 1, part: 3, exp: "Observation/Evidence = going to." },
+    { q: "19. When will the animals be extinct if we don't help?", options: ["10 years", "Next week", "50 years", "Never"], correct: 2, part: 3, exp: "Text states: 'extinct in 50 years'." },
+    { q: "20. Which grammar is used for the safari start time?", options: ["Will", "Going to", "Simple Present", "Past Tense"], correct: 2, part: 3, exp: "Start times are scheduled (Simple Present)." },
+
+    // Part 4
+    { q: "21. It / rain / soon / (Look at those clouds!)", type: "text", correct: ["it is going to rain soon.", "it is going to rain soon"], part: 4, exp: "Evidence based: be going to." },
+    { q: "22. The train / leave / at 5:00 / (Schedule)", type: "text", correct: ["the train leaves at 5:00.", "the train leaves at 5:00"], part: 4, exp: "Schedule: Simple Present." },
+    { q: "23. I / help / you / (Offer/Prediction)", type: "text", correct: ["i will help you.", "i will help you"], part: 4, exp: "Offer/Will." },
+
+    // Part 5
+    { q: "24. (Question for: The bus leaves at 9:00.)", type: "text", correct: ["what time does the bus leave?", "what time does the bus leave"], part: 5, exp: "Schedule question structure." },
+    { q: "25. (Question for: We are going to visit the zoo.)", type: "text", correct: ["what are you going to visit?", "what are you going to visit", "where are you going to visit?", "where are you going to visit"], part: 5, exp: "Going to question structure." }
+];
+
+function renderQuiz() {
+    quizData.forEach((item, idx) => {
+        const container = document.getElementById('part' + item.part);
+        const div = document.createElement('div');
+        div.className = 'question';
+        
+        if (item.type === "text") {
+            div.innerHTML = `<p><strong>${item.q}</strong></p><input type="text" class="input-box" id="q${idx}" placeholder="請在此輸入答案...">`;
+        } else {
+            let html = `<p><strong>${item.q}</strong></p><div class="options options-grid">`;
+            item.options.forEach((opt, oIdx) => {
+                html += `<label><input type="radio" name="q${idx}" value="${oIdx}"> <span>${opt}</span></label>`;
+            });
+            html += `</div>`;
+            div.innerHTML = html;
+        }
+        container.appendChild(div);
+    });
+}
+
+function submitQuiz() {
+    let score = 0;
+    const reviewArea = document.getElementById('review-area');
+    reviewArea.innerHTML = '<h3 style="margin-bottom: 20px;">錯題解析 (Correction Ledger)</h3>';
+
+    let allCorrect = true;
+
+    quizData.forEach((item, idx) => {
+        let isCorrect = false;
+        let userVal = "";
+        let expectedAnswerStr = "";
+
+        if (item.type === "text") {
+            userVal = document.getElementById('q'+idx).value.trim().toLowerCase();
+            isCorrect = item.correct.includes(userVal);
+            expectedAnswerStr = item.correct[0];
+            const inputField = document.getElementById('q'+idx);
+            if(isCorrect) {
+                inputField.style.borderColor = "var(--accent-success)";
+            } else {
+                inputField.style.borderColor = "var(--accent-danger)";
+            }
+        } else {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            userVal = selected ? item.options[selected.value] : "未作答 (No answer)";
+            isCorrect = selected && parseInt(selected.value) === item.correct;
+            expectedAnswerStr = item.options[item.correct];
+            
+            // Highlight options
+            const optionsGroup = document.getElementsByName(`q${idx}`);
+            optionsGroup.forEach(opt => {
+                const label = opt.parentElement;
+                if(parseInt(opt.value) === item.correct) {
+                    label.style.borderColor = "var(--accent-success)";
+                    label.style.background = "rgba(16, 185, 129, 0.1)";
+                    label.style.color = "var(--accent-success)";
+                    label.style.fontWeight = "bold";
+                } else if(opt.checked && parseInt(opt.value) !== item.correct) {
+                    label.style.borderColor = "var(--accent-danger)";
+                    label.style.background = "rgba(239, 68, 68, 0.1)";
+                }
+            });
+        }
+
+        if (isCorrect) {
+            score++;
+        } else {
+            allCorrect = false;
+            const reviewItem = document.createElement('div');
+            reviewItem.className = `review-item wrong`;
+            reviewItem.innerHTML = `
+                <p><strong>${item.q}</strong></p>
+                <p style="margin-top: 10px;">你的答案：<span style="color:var(--accent-danger); font-weight:bold;">${userVal}</span></p>
+                <p>正確答案：<span style="color:var(--accent-success); font-weight:bold;">${expectedAnswerStr}</span></p>
+                <div style="font-size:0.95rem; color:var(--text-secondary); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color);">
+                    <strong>說明：</strong>${item.exp}
+                </div>
+            `;
+            reviewArea.appendChild(reviewItem);
+        }
+    });
+
+    if(allCorrect) {
+        reviewArea.innerHTML += '<p style="color: var(--accent-success); font-size: 1.2rem; font-weight: bold; text-align: center;">太棒了！所有題目都答對了！🎉</p>';
+    }
+
+    const finalPercentage = Math.round((score / quizData.length) * 100);
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('score-text').innerHTML = `得分: ${score} / ${quizData.length} (${finalPercentage}%)`;
+
+    saveAttempt(score, quizData.length, finalPercentage);
+    
+    // Scroll to results
+    window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
+}
+
+function saveAttempt(score, total, percentage) {
+    const history = JSON.parse(localStorage.getItem('english_unit7_GoalsQuizHistory') || "[]");
+    history.unshift({ date: new Date().toLocaleString(), scoreStr: `${score}/${total}`, percentage: percentage + "%" });
+    localStorage.setItem('english_unit7_GoalsQuizHistory', JSON.stringify(history.slice(0, 5))); // Keep last 5
+    updateHistory();
+}
+
+function updateHistory() {
+    const history = JSON.parse(localStorage.getItem('english_unit7_GoalsQuizHistory') || "[]");
+    const container = document.getElementById('history-body');
+    if (history.length === 0) {
+        container.innerHTML = "<div class='history-item'>尚無測驗紀錄</div>";
+        return;
+    }
+    container.innerHTML = history.map((h, i) => `
+        <div class="history-item">
+            <strong>第 ${history.length - i} 次測驗 - ${h.date}</strong><br>
+            得分：<span style="color: var(--accent-success); font-weight: bold;">${h.scoreStr} (${h.percentage})</span>
+        </div>
+    `).join('');
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
