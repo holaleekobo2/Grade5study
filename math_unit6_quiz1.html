@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5下 數學測驗 - 單元 6：小數除法與應用</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Quiz-specific overrides ── */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 16px;
+        }
+        .quiz-header span { font-weight: 600; font-size: 1rem; color: var(--text-secondary); }
+        .quiz-header input[type="text"] {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            width: 140px;
+        }
+        #finalScoreDisplay { font-weight: 700; color: var(--accent-primary); }
+
+        .section-block { margin-bottom: 32px; }
+        .section-title {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            padding: 8px 20px;
+            border-radius: 99px;
+            margin-bottom: 20px;
+            letter-spacing: 0.02em;
+        }
+
+        .question-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 22px 26px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        .question-card.incorrect {
+            background: rgba(239,68,68,0.05);
+            border-color: var(--accent-danger);
+        }
+        .question-card p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        .options label:hover { border-color: var(--accent-primary); background: var(--bg-primary); }
+        .options input[type="radio"] { accent-color: var(--accent-primary); width: 18px; height: 18px; cursor: pointer; }
+
+        .fill-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .fill-input:focus { outline: none; border-color: var(--accent-primary); }
+        .fill-input.wide   { width: 100px; }
+        .fill-input.narrow { width: 60px; }
+
+        /* 分數顯示 CSS */
+        .fraction { display: inline-flex; flex-direction: column; vertical-align: middle; align-items: center; padding: 0 4px; line-height: 1.2; }
+        .numerator { border-bottom: 2px solid var(--text-primary); padding: 0 2px; }
+        .denominator { padding: 0 2px; }
+
+        .feedback {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .feedback.correct { background: rgba(16,185,129,0.1); border-left: 5px solid var(--accent-success); color: var(--accent-success); }
+        .feedback.wrong   { background: rgba(239,68,68,0.08); border-left: 5px solid var(--accent-danger); color: var(--text-primary); }
+        .feedback.wrong strong { color: var(--accent-danger); }
+
+        .submit-btn {
+            display: block;
+            width: 220px;
+            margin: 36px auto 0;
+            padding: 16px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 99px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(99,102,241,0.35);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .submit-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 30px -5px rgba(99,102,241,0.45); }
+
+        .score-display {
+            display: none;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 28px 0 10px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link { display: inline-block; margin-bottom: 24px; text-decoration: none; font-weight: 600; color: var(--accent-primary); transition: opacity 0.2s; }
+        .back-link:hover { opacity: 0.75; }
+
+        /* ── History Section ── */
+        .history-section {
+            margin-top: 60px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 30px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .history-header h2 { margin-bottom: 0; font-size: 1.4rem; }
+        .clear-btn {
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .clear-btn:hover { opacity: 0.8; }
+
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .history-table th, .history-table td { border: 1px solid var(--border-color); padding: 12px 16px; text-align: center; }
+        .history-table th { background: var(--bg-secondary); font-weight: 700; color: var(--text-secondary); }
+        .history-table td { color: var(--text-primary); }
+        .history-table tr:hover td { background: var(--glass-bg); }
+
+        .detail-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .detail-btn:hover { opacity: 0.8; }
+
+        /* ── Modal ── */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            margin: 6% auto;
+            padding: 30px;
+            width: 85%;
+            max-width: 640px;
+            max-height: 78vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+        .modal-content h2 { margin-bottom: 20px; font-size: 1.3rem; }
+        .wrong-item {
+            background: rgba(239,68,68,0.06);
+            border-left: 4px solid var(--accent-danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: var(--text-secondary);
+            color: white;
+            border: none;
+            border-radius: 99px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .close-btn:hover { opacity: 0.8; }
+
+        .empty-history { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 1rem; }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', newTheme);
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            if (saved === 'dark') document.getElementById('themeBtn').innerHTML = '<span>☀️</span> 亮色模式';
+            renderHistory();
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="math.html" class="back-link">⬅ 返回數學目錄</a>
+    <h1>🔢 單元 6：小數除法與應用</h1>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">範圍：整數、小數除以整數 (108課綱)</p>
+
+    <div class="quiz-header">
+        <span>姓名：<input type="text" id="userName" placeholder="請輸入姓名"></span>
+        <span id="finalScoreDisplay">得分：____</span>
+    </div>
+
+    <form id="mathQuiz">
+
+        <!-- 一、選擇題 -->
+        <div class="section-block">
+            <span class="section-title">一、選擇題 (每題 5 分)</span>
+
+            <div class="question-card" id="q_mc1">
+                <p>1. 1 公升的果汁平分給 8 位學生，每人可分得多少公升？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc1" value="1"> 0.125</label>
+                    <label><input type="radio" name="mc1" value="2"> 0.8</label>
+                    <label><input type="radio" name="mc1" value="3"> 1.25</label>
+                    <label><input type="radio" name="mc1" value="4"> 12.5</label>
+                </div>
+                <div class="feedback" id="fb_mc1">
+                    <strong>【正確解答：0.125】</strong><br>
+                    解析：1 ÷ 8 = 0.125。計算時補 0 到千分位即可除盡。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_mc2">
+                <p>2. 算式「82 ÷ 400」的答案是多少？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc2" value="1"> 2.05</label>
+                    <label><input type="radio" name="mc2" value="2"> 20.5</label>
+                    <label><input type="radio" name="mc2" value="3"> 0.205</label>
+                    <label><input type="radio" name="mc2" value="4"> 0.0205</label>
+                </div>
+                <div class="feedback" id="fb_mc2">
+                    <strong>【正確解答：0.205】</strong><br>
+                    解析：82 ÷ 400 = 82 ÷ 100 ÷ 4 = 0.82 ÷ 4 = 0.205。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_mc3">
+                <p>3. 小數點向左移 2 位，代表該數是被除以多少？</p>
+                <div class="options">
+                    <label><input type="radio" name="mc3" value="1"> 10</label>
+                    <label><input type="radio" name="mc3" value="2"> 100</label>
+                    <label><input type="radio" name="mc3" value="3"> 1000</label>
+                    <label><input type="radio" name="mc3" value="4"> 1</label>
+                </div>
+                <div class="feedback" id="fb_mc3">
+                    <strong>【正確解答：100】</strong><br>
+                    解析：除以 10 小數點左移 1 位，除以 100 左移 2 位。
+                </div>
+            </div>
+        </div>
+
+        <!-- 二、填填看 -->
+        <div class="section-block">
+            <span class="section-title">二、填填看 (每題 5 分)</span>
+
+            <div class="question-card" id="q_fill1">
+                <p>1. 35.8 ÷ 1000 = <input type="text" id="fill1_val" class="fill-input wide" placeholder="？"></p>
+                <div class="feedback" id="fb_fill1">
+                    <strong>【正確解答：0.0358】</strong><br>
+                    解析：除以 1000，小數點向左移動 3 位。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_fill2">
+                <p>2. 0.07 公尺用分數表示是 
+                    <span class="fraction"><span class="numerator">7</span><span class="denominator">100</span></span> 公尺。<br>
+                    (請輸入分子：<input type="text" id="fill2_val" class="fill-input narrow" placeholder="？">)</p>
+                <div class="feedback" id="fb_fill2">
+                    <strong>【正確解答：7】</strong><br>
+                    解析：二位小數代表百分之幾，故為 7/100。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_fill3">
+                <p>3. 用四捨五入法取概數到小數點後第一位：58.74 ≈ <input type="text" id="fill3_val" class="fill-input wide" placeholder="？"></p>
+                <div class="feedback" id="fb_fill3">
+                    <strong>【正確解答：58.7】</strong><br>
+                    解析：看百分位(4)，小於 5 捨去，故為 58.7。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_fill4">
+                <p>4. 比較大小 (填入 >、< 或 =)：<br>
+                    (1) 0.6 <input type="text" id="fill4a_val" class="fill-input narrow"> <span class="fraction"><span class="numerator">3</span><span class="denominator">5</span></span> <br>
+                    (2) 0.125 <input type="text" id="fill4b_val" class="fill-input narrow"> <span class="fraction"><span class="numerator">1</span><span class="denominator">8</span></span>
+                </p>
+                <div class="feedback" id="fb_fill4">
+                    <strong>【正確解答：(1) = ; (2) =】</strong><br>
+                    解析：(1) 3 ÷ 5 = 0.6；(2) 1 ÷ 8 = 0.125。
+                </div>
+            </div>
+        </div>
+
+        <!-- 三、應用題 -->
+        <div class="section-block">
+            <span class="section-title">三、應用題 (每題 10 分)</span>
+
+            <div class="question-card" id="q_app1">
+                <p>1. 面積 36.75 m² 的長方形花園，長 14 m，寬是幾公尺？</p>
+                <p>答：<input type="text" id="app1_val" class="fill-input wide"> 公尺</p>
+                <div class="feedback" id="fb_app1">
+                    <strong>【正確解答：2.625】</strong><br>
+                    解析：36.75 ÷ 14 = 2.625。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_app2">
+                <p>2. 浩浩繞公園走 6 圈共 10.6 公里，一圈大約幾公里？(四捨五入到小數點後第二位)</p>
+                <p>答：<input type="text" id="app2_val" class="fill-input wide"> 公里</p>
+                <div class="feedback" id="fb_app2">
+                    <strong>【正確解答：1.77】</strong><br>
+                    解析：10.6 ÷ 6 = 1.766...，百分位看千分位(6)進位，得 1.77。
+                </div>
+            </div>
+
+            <div class="question-card" id="q_app3">
+                <p>3. 12 個雞蛋共重 0.6 公斤，平均每個雞蛋重幾公斤？</p>
+                <p>答：<input type="text" id="app3_val" class="fill-input wide"> 公斤</p>
+                <div class="feedback" id="fb_app3">
+                    <strong>【正確解答：0.05】</strong><br>
+                    解析：0.6 ÷ 12 = 0.05。
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="calculateScore()">提交測驗並查看解析 ✅</button>
+    </form>
+
+    <div class="score-display" id="scoreBoard"></div>
+
+    <!-- ── 測驗紀錄 ── -->
+    <div class="history-section">
+        <div class="history-header">
+            <h2>📊 測驗紀錄</h2>
+            <button class="clear-btn" onclick="clearHistory()">🗑 清除紀錄</button>
+        </div>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>日期時間</th>
+                    <th>姓名</th>
+                    <th>得分</th>
+                    <th>詳情</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+        </table>
+        <div id="emptyHistory" class="empty-history" style="display:none;">尚無測驗紀錄</div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="detailModal" class="modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+        <h2 id="modalTitle">錯題詳情</h2>
+        <div id="modalBody"></div>
+        <button class="close-btn" onclick="closeModal()">關閉</button>
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'mathU6Q1History';
+
+function calculateScore() {
+    let score = 0;
+    const form = document.getElementById('mathQuiz');
+    const mistakes = [];
+
+    document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('incorrect'));
+
+    // MC1 (Ans: 1)
+    const mc1 = form.querySelector('input[name="mc1"]:checked');
+    if (mc1 && mc1.value === "1") { score += 5; showFeedback('mc1', true); }
+    else { showFeedback('mc1', false); mistakes.push({ label: '選擇題 1', correct: '0.125' }); }
+
+    // MC2 (Ans: 3)
+    const mc2 = form.querySelector('input[name="mc2"]:checked');
+    if (mc2 && mc2.value === "3") { score += 5; showFeedback('mc2', true); }
+    else { showFeedback('mc2', false); mistakes.push({ label: '選擇題 2', correct: '0.205' }); }
+
+    // MC3 (Ans: 2)
+    const mc3 = form.querySelector('input[name="mc3"]:checked');
+    if (mc3 && mc3.value === "2") { score += 5; showFeedback('mc3', true); }
+    else { showFeedback('mc3', false); mistakes.push({ label: '選擇題 3', correct: '100' }); }
+
+    // Fill1 (Ans: 0.0358)
+    const f1 = document.getElementById('fill1_val').value.trim();
+    if (f1 === "0.0358") { score += 5; showFeedback('fill1', true); }
+    else { showFeedback('fill1', false); mistakes.push({ label: '填填看 1', correct: '0.0358' }); }
+
+    // Fill2 (Ans: 7)
+    const f2 = document.getElementById('fill2_val').value.trim();
+    if (f2 === "7") { score += 5; showFeedback('fill2', true); }
+    else { showFeedback('fill2', false); mistakes.push({ label: '填填看 2', correct: '7' }); }
+
+    // Fill3 (Ans: 58.7)
+    const f3 = document.getElementById('fill3_val').value.trim();
+    if (f3 === "58.7") { score += 5; showFeedback('fill3', true); }
+    else { showFeedback('fill3', false); mistakes.push({ label: '填填看 3', correct: '58.7' }); }
+
+    // Fill4 (Ans: = and =)
+    const f4a = document.getElementById('fill4a_val').value.trim();
+    const f4b = document.getElementById('fill4b_val').value.trim();
+    if (f4a === "=" && f4b === "=") { score += 10; showFeedback('fill4', true); }
+    else { showFeedback('fill4', false); mistakes.push({ label: '填填看 4', correct: '(1) = ; (2) =' }); }
+
+    // App1 (Ans: 2.625)
+    const a1 = document.getElementById('app1_val').value.trim();
+    if (a1 === "2.625") { score += 20; showFeedback('app1', true); }
+    else { showFeedback('app1', false); mistakes.push({ label: '應用題 1', correct: '2.625' }); }
+
+    // App2 (Ans: 1.77)
+    const a2 = document.getElementById('app2_val').value.trim();
+    if (a2 === "1.77") { score += 20; showFeedback('app2', true); }
+    else { showFeedback('app2', false); mistakes.push({ label: '應用題 2', correct: '1.77' }); }
+
+    // App3 (Ans: 0.05)
+    const a3 = document.getElementById('app3_val').value.trim();
+    if (a3 === "0.05") { score += 20; showFeedback('app3', true); }
+    else { showFeedback('app3', false); mistakes.push({ label: '應用題 3', correct: '0.05' }); }
+
+    // Show score banner
+    const board = document.getElementById('scoreBoard');
+    board.style.display = 'block';
+    board.innerHTML = `🎉 測驗完成！總分：${score} / 100`;
+    document.getElementById('finalScoreDisplay').innerHTML =
+        `得分：<span style="color:var(--accent-secondary)">${score}</span>`;
+    
+    // Scroll to results
+    board.scrollIntoView({ behavior: 'smooth' });
+
+    // Save record
+    const name = document.getElementById('userName').value.trim() || '無名氏';
+    saveRecord({ name, score, date: new Date().toLocaleString('zh-TW'), mistakes });
+    renderHistory();
+}
+
+function showFeedback(id, isCorrect) {
+    const fb = document.getElementById('fb_' + id);
+    const q  = document.getElementById('q_' + id);
+    fb.style.display = 'block';
+    if (isCorrect) {
+        fb.className = 'feedback correct';
+        fb.innerHTML = '✅ 恭喜答對！';
+    } else {
+        fb.className = 'feedback wrong';
+        fb.style.display = 'block'; 
+        q.classList.add('incorrect');
+    }
+}
+
+function saveRecord(record) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    history.unshift(record); // Add to beginning
+    if (history.length > 10) history.pop(); // Keep last 10
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const tbody = document.getElementById('historyBody');
+    const empty = document.getElementById('emptyHistory');
+    if (history.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+    tbody.innerHTML = history.map((rec, i) => `
+        <tr>
+            <td>${rec.date}</td>
+            <td>${rec.name}</td>
+            <td><strong>${rec.score}</strong></td>
+            <td><button class="detail-btn" onclick="showDetail(${i})">查看詳情</button></td>
+        </tr>
+    `).join('');
+}
+
+function showDetail(index) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const rec = history[index];
+    document.getElementById('modalTitle').textContent = `${rec.name} 的錯題分析（得分：${rec.score}）`;
+    const body = document.getElementById('modalBody');
+    if (!rec.mistakes || rec.mistakes.length === 0) {
+        body.innerHTML = "<p style='color:var(--accent-success);font-weight:700;'>🎊 太棒了！全對！</p>";
+    } else {
+        body.innerHTML = rec.mistakes.map(m => `
+            <div class="wrong-item">
+                <strong>${m.label}</strong><br>
+                正確解答：<strong>${m.correct}</strong>
+            </div>
+        `).join('');
+    }
+    document.getElementById('detailModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('detailModal').style.display = 'none';
+}
+
+function clearHistory() {
+    if (confirm('確定要清除所有測驗紀錄嗎？此動作無法復原。')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHistory();
+    }
+}
+</script>
+
+</body>
+</html>
