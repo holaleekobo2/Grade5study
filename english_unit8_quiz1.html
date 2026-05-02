@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextMove Quiz: P5 English Unit 8</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .nav-tabs span {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .nav-tabs span.active {
+            border-bottom: 3px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .section-desc {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-primary);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            background: var(--bg-primary);
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.25em;
+            margin-bottom: 15px;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.15rem;
+        }
+
+        .options label:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+        }
+
+        .options input {
+            margin-right: 15px;
+        }
+
+        .reading-passage {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            border-left: 5px solid var(--accent-secondary);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        #result-section, #review-section, #history-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .review-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .wrong-ans {
+            border-left: 5px solid var(--accent-danger);
+        }
+
+        .correct-ans {
+            border-left: 5px solid var(--accent-success);
+        }
+
+        .explanation {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .history-table th {
+            background: var(--bg-secondary);
+            font-weight: bold;
+        }
+
+        .back-link {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--accent-primary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="english.html" class="back-link">⬅ 返回目錄</a>
+    
+    <div class="nav-tabs">
+        <span id="tab-quiz" class="active" onclick="showView('quiz')">開始測驗</span>
+        <span id="tab-history" onclick="showView('history')">歷史成績</span>
+    </div>
+
+    <div id="quiz-view">
+        <h1 style="margin-bottom: 0;">Unit 8 English Quiz</h1>
+        <p style="text-align:center; font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">Kenya & Rules (have to, should, can't & Adverbs)</p>
+
+        <form id="quiz-form">
+            <!-- Part A -->
+            <div class="section-desc">
+                <strong>Part A: Grammar Application (文法應用)</strong><br>
+                請根據語境選擇最正確的單字或片語。
+            </div>
+            <div id="part-a-questions"></div>
+
+            <!-- Part B -->
+            <div class="section-desc">
+                <strong>Part B: Reading Comprehension 1 (閱讀理解一)</strong><br>
+                閱讀短文並回答推論問題。
+            </div>
+            <div class="reading-passage">
+                <strong>The Music Competition</strong><br>
+                Today is the day of the big school competition. Mia and her friends are in the hallway. Their teacher, Mr. Chen, looks at them and says, "Everyone, you <strong>have to</strong> wait <strong>patiently</strong> in line. The judges are listening to the other group now. You <strong>can't</strong> make any noise because it will scare the performers. Mia, you are wearing your uniform <strong>neatly</strong>, which is great! When you go on stage, you <strong>should</strong> breathe <strong>deeply</strong> if you feel nervous. Sing <strong>clearly</strong> so the people at the back can hear you. You <strong>shouldn't</strong> worry too much. Just do your best!" Mia nods and waits for her turn.
+            </div>
+            <div id="part-b-questions"></div>
+
+            <!-- Part C -->
+            <div class="section-desc">
+                <strong>Part C: Reading Comprehension 2 (閱讀理解二)</strong><br>
+                閱讀短文並回答推論問題。
+            </div>
+            <div class="reading-passage">
+                <strong>Safety in the Safari Park</strong><br>
+                Luke is visiting a safari park with his family. The guide gives everyone a list of rules. "The animals here are amazing, but they are not pets," the guide explains. "You <strong>have to</strong> stay inside the car at all times. You <strong>can't</strong> open the windows to touch the rhinos. If you see a lion, you <strong>should</strong> watch <strong>quietly</strong>. You <strong>shouldn't</strong> shout <strong>loudly</strong> because it might make the animals angry. Some animals move <strong>slowly</strong>, but they are very strong. Also, you <strong>have to</strong> throw your litter into the garbage cans to keep the park clean. If we follow these rules, we will have a safe trip."
+            </div>
+            <div id="part-c-questions"></div>
+
+            <button type="button" onclick="calculateScore()">提交測驗 (Submit)</button>
+        </form>
+    </div>
+
+    <div id="result-section">
+        <h2 style="text-align: center; color: var(--accent-primary);">測驗結果 (Quiz Results)</h2>
+        <div style="text-align:center; font-size: 2em; margin: 20px 0; font-weight: bold; color: var(--text-primary);" id="final-score"></div>
+        <button onclick="location.reload()" style="background: var(--text-secondary);">重新測驗 (Retake Quiz)</button>
+    </div>
+
+    <div id="review-section">
+        <h3 style="color: var(--accent-primary); margin-bottom: 15px;">題目檢討 (Review)</h3>
+        <div id="review-content"></div>
+    </div>
+
+    <div id="history-view" style="display:none;">
+        <h2 style="text-align: center; color: var(--accent-primary);">歷史成績 Dashboard</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>時間 (Timestamp)</th>
+                    <th>分數 (Score)</th>
+                </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+        </table>
+        <button onclick="clearHistory()" style="background: var(--accent-danger); margin-top:20px;">清除紀錄 (Clear History)</button>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const btn = document.getElementById('themeBtn');
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+        localStorage.setItem('theme', newTheme);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const btn = document.getElementById('themeBtn');
+        if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+    });
+
+    const questions = [
+        // Part A: Grammar (20 Questions)
+        { q: "He ____ wait in line like everyone else. It's the rule.", a: "has to", options: ["have to", "has to", "shouldn't"], type: "grammar", exp: "主詞為 He，表達必須遵守的規則時使用 has to。" },
+        { q: "The students ____ run in the hallway. It is dangerous.", a: "can't", options: ["can't", "should", "has to"], type: "grammar", exp: "危險的事物通常是禁止的，故用 can't。" },
+        { q: "You look tired. You ____ go to bed earlier tonight.", a: "should", options: ["can't", "have to", "should"], type: "grammar", exp: "這是一個友好的建議，而非強制性規則，故用 should。" },
+        { q: "She dresses ____ for the school concert.", a: "neatly", options: ["neat", "neatly", "neatly to"], type: "grammar", exp: "修飾動詞 dress (穿衣) 需要使用副詞 neatly。" },
+        { q: "We ____ bring food into the library. It's not allowed.", a: "can't", options: ["should", "can't", "have to"], type: "grammar", exp: "Not allowed 代表禁止，使用 can't。" },
+        { q: "Please listen ____ to the teacher's instructions.", a: "carefully", options: ["careful", "carefully", "more careful"], type: "grammar", exp: "修飾動詞 listen 需使用副詞 carefully。" },
+        { q: "I ____ do my homework before I can play video games.", a: "have to", options: ["has to", "have to", "shouldn't"], type: "grammar", exp: "主詞為 I，表達義務使用 have to。" },
+        { q: "You ____ shout in the hospital. People are sleeping.", a: "shouldn't", options: ["should", "shouldn't", "have to"], type: "grammar", exp: "基於禮貌的建議不應該做某事，使用 shouldn't。" },
+        { q: "The rhino moves ____ through the long grass.", a: "slowly", options: ["slowly", "slow", "has to slow"], type: "grammar", exp: "修飾動作 move 使用副詞 slowly。" },
+        { q: "They ____ wear a uniform to school every day.", a: "have to", options: ["have to", "has to", "can't"], type: "grammar", exp: "複數主詞 They 搭配 have to 表示校規。" },
+        { q: "You ____ throw litter on the ground. Use the garbage cans.", a: "shouldn't", options: ["should", "shouldn't", "can't to"], type: "grammar", exp: "勸告不要亂丟垃圾，使用 shouldn't。" },
+        { q: "Wait ____ for your turn. Don't be angry.", a: "patiently", options: ["patient", "patiently", "patiently to"], type: "grammar", exp: "修飾動詞 wait 使用副詞 patiently。" },
+        { q: "If you are lost, you ____ ask a police officer for help.", a: "should", options: ["should", "can't", "has to"], type: "grammar", exp: "給予迷路者的好建議使用 should。" },
+        { q: "The baby is sleeping. We have to talk ____.", a: "quietly", options: ["quiet", "quietly", "loudly"], type: "grammar", exp: "根據 context (嬰兒在睡覺)，應選擇副詞 quietly。" },
+        { q: "Does he ____ finish his lunch now?", a: "have to", options: ["have to", "has to", "should"], type: "grammar", exp: "助動詞 Does 後面接原形動詞 have to。" },
+        { q: "You ____ touch the fire. It is very hot!", a: "can't", options: ["should", "can't", "has to"], type: "grammar", exp: "表達絕對禁止或危險的行為使用 can't。" },
+        { q: "I can't hear you. Please speak ____.", a: "clearly", options: ["clear", "clearly", "slowly"], type: "grammar", exp: "聽不清楚時，要求對方說得「清楚」，使用 clearly。" },
+        { q: "It's raining. You ____ take an umbrella with you.", a: "should", options: ["should", "can't", "has to"], type: "grammar", exp: "下雨帶傘是好建議，用 should。" },
+        { q: "The little girl claps her hands ____ because she is happy.", a: "excitedly", options: ["excited", "excitedly", "exciting"], type: "grammar", exp: "修飾動作 clap 使用副詞 excitedly。" },
+        { q: "We ____ be late for the exam tomorrow.", a: "shouldn't", options: ["should", "shouldn't", "have to"], type: "grammar", exp: "不應該遲到，使用 shouldn't。" },
+
+        // Part B: Reading 1 (5 Questions)
+        { q: "Why did Mr. Chen tell the students to wait 'patiently'?", a: "Because another group is performing.", options: ["Because they are late.", "Because another group is performing.", "Because he is angry."], type: "reading", exp: "文中提到 judges are listening to the other group，所以要耐心等待。" },
+        { q: "Based on the story, what will happen if students make noise?", a: "The performers might get scared.", options: ["The teacher will sing.", "The performers might get scared.", "Mia will lose her uniform."], type: "reading", exp: "文中明確指出 noise will scare the performers。" },
+        { q: "How should Mia sing to make sure everyone hears her?", a: "She should sing clearly.", options: ["She should sing quietly.", "She should sing clearly.", "She should sing slowly."], type: "reading", exp: "文中提到 Sing clearly so the people at the back can hear you。" },
+        { q: "What does Mr. Chen think about Mia's uniform?", a: "She looks neat and ready.", options: ["It is too dirty.", "She looks neat and ready.", "She needs a new one."], type: "reading", exp: "文中稱讚 Mia wearing your uniform neatly, which is great! 推論她準備好了。" },
+        { q: "What is the teacher's main goal in the passage?", a: "To give advice and rules for the competition.", options: ["To teach a new song.", "To give advice and rules for the competition.", "To complain about the noise."], type: "reading", exp: "整篇短文老師都在提供比賽的規範與建議。" },
+
+        // Part C: Reading 2 (5 Questions)
+        { q: "According to the guide, why shouldn't visitors shout?", a: "It might make the animals angry.", options: ["The animals are sleeping.", "It might make the animals angry.", "The car windows are open."], type: "reading", exp: "文中提到 shouldn't shout... it might make the animals angry。" },
+        { q: "What is a 'rule' mentioned in the safari park?", a: "You have to stay inside the car.", options: ["You should feed the lions.", "You have to stay inside the car.", "You can touch the rhinos slowly."], type: "reading", exp: "文中明確標示 have to stay inside the car。" },
+        { q: "If Luke sees a lion, how should he behave?", a: "He should be quiet and watch.", options: ["He should shout for help.", "He should open the window.", "He should be quiet and watch."], type: "reading", exp: "文中建議 You should watch quietly。" },
+        { q: "What can we infer about the safari park animals?", a: "They are wild and need to be respected.", options: ["They are like pets at home.", "They are wild and need to be respected.", "They like loud noises."], type: "reading", exp: "文中提到 animals... are not pets 並給予多項安全規定，推論應尊重野生動物。" },
+        { q: "Why does the guide mention 'garbage cans'?", a: "To remind visitors to keep the park clean.", options: ["To hide from the lions.", "To remind visitors to keep the park clean.", "To feed the rhinos."], type: "reading", exp: "文中提到 throw litter into garbage cans to keep the park clean。" }
+    ];
+
+    function initQuiz() {
+        const partA = document.getElementById('part-a-questions');
+        const partB = document.getElementById('part-b-questions');
+        const partC = document.getElementById('part-c-questions');
+
+        questions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = `
+                <div class="question-text">${index + 1}. ${item.q}</div>
+                <div class="options">
+                    ${item.options.map((opt, oIdx) => `
+                        <label>
+                            <input type="radio" name="q${index}" value="${opt}"> <span>${opt}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            if (index < 20) partA.appendChild(card);
+            else if (index < 25) partB.appendChild(card);
+            else partC.appendChild(card);
+        });
+        loadHistory();
+    }
+
+    function calculateScore() {
+        let score = 0;
+        let reviewHTML = '';
+        const formData = new FormData(document.getElementById('quiz-form'));
+        let allCorrect = true;
+
+        questions.forEach((item, index) => {
+            const userAnswer = formData.get(`q${index}`);
+            const isCorrect = userAnswer === item.a;
+            if (isCorrect) {
+                score++;
+            } else {
+                allCorrect = false;
+            }
+
+            reviewHTML += `
+                <div class="review-item ${isCorrect ? 'correct-ans' : 'wrong-ans'}">
+                    <strong>Q${index + 1}: ${item.q}</strong><br>
+                    您的答案: <span style="color: ${isCorrect ? 'var(--accent-success)' : 'var(--accent-danger)'}; font-weight: bold;">${userAnswer || '未回答'}</span> | 正確答案: <span style="color: var(--accent-success); font-weight: bold;">${item.a}</span><br>
+                    <div class="explanation">💡 <strong>解析：</strong>${item.exp}</div>
+                </div>
+            `;
+            
+            // Highlight options in UI
+            const optionsGroup = document.getElementsByName(`q${index}`);
+            optionsGroup.forEach(opt => {
+                const label = opt.parentElement;
+                if(opt.value === item.a) {
+                    label.style.borderColor = "var(--accent-success)";
+                    label.style.background = "rgba(16, 185, 129, 0.1)";
+                    label.style.color = "var(--accent-success)";
+                    label.style.fontWeight = "bold";
+                } else if(opt.checked && opt.value !== item.a) {
+                    label.style.borderColor = "var(--accent-danger)";
+                    label.style.background = "rgba(239, 68, 68, 0.1)";
+                }
+            });
+        });
+
+        if(allCorrect) {
+            reviewHTML += '<p style="color: var(--accent-success); font-size: 1.2rem; font-weight: bold; text-align: center;">太棒了！所有題目都答對了！🎉</p>';
+        }
+
+        const finalScorePercent = Math.round((score / questions.length) * 100);
+        document.getElementById('final-score').innerHTML = `得分: ${finalScorePercent} / 100 <br><span style="font-size:0.5em; color: var(--text-secondary);">(${score} / ${questions.length} 答對)</span>`;
+        document.getElementById('review-content').innerHTML = reviewHTML;
+        
+        // Remove display none for result
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('review-section').style.display = 'block';
+        
+        // Hide the submit button
+        const submitBtn = document.querySelector('button[onclick="calculateScore()"]');
+        if(submitBtn) submitBtn.style.display = 'none';
+
+        saveHistory(finalScorePercent);
+        
+        window.scrollTo({ top: document.getElementById('result-section').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function saveHistory(score) {
+        const history = JSON.parse(localStorage.getItem('quizUnit8History') || '[]');
+        history.push({ score: score, time: new Date().toLocaleString() });
+        localStorage.setItem('quizUnit8History', JSON.stringify(history));
+        loadHistory();
+    }
+
+    function loadHistory() {
+        const history = JSON.parse(localStorage.getItem('quizUnit8History') || '[]');
+        const body = document.getElementById('history-body');
+        if (history.length === 0) {
+            body.innerHTML = '<tr><td colspan="2">尚無紀錄</td></tr>';
+            return;
+        }
+        body.innerHTML = history.reverse().map(item => `
+            <tr>
+                <td>${item.time}</td>
+                <td style="font-weight:bold; color:var(--accent-primary);">${item.score}%</td>
+            </tr>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if(confirm("確定要清除所有歷史紀錄嗎？")) {
+            localStorage.removeItem('quizUnit8History');
+            loadHistory();
+        }
+    }
+
+    function showView(view) {
+        document.getElementById('quiz-view').style.display = view === 'quiz' ? 'block' : 'none';
+        document.getElementById('history-view').style.display = view === 'history' ? 'block' : 'none';
+        document.getElementById('tab-quiz').className = view === 'quiz' ? 'active' : '';
+        document.getElementById('tab-history').className = view === 'history' ? 'active' : '';
+        
+        // If going back to quiz view, keep result sections visible if they already took it, 
+        // but here we can just leave them as they are
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
