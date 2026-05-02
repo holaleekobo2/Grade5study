@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 8 Vocabulary Spelling Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .quiz-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .hint {
+            font-family: 'Courier New', monospace;
+            color: var(--accent-primary);
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .spell-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .spell-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        .result-row {
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-row.correct {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 5px solid var(--accent-success);
+        }
+
+        .result-row.incorrect {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 5px solid var(--accent-danger);
+        }
+
+        .result-row .result-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-row.correct .result-label { color: var(--accent-success); }
+        .result-row.incorrect .result-label { color: var(--accent-danger); }
+
+        .explanation {
+            font-size: 0.92rem;
+            font-style: italic;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .history-table th {
+            background: var(--bg-secondary);
+            font-weight: bold;
+        }
+
+        #results { display: none; margin-top: 20px; }
+
+        .score-box {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin: 24px 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .back-link {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--accent-primary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn  = document.getElementById('themeBtn');
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            btn.innerHTML = next === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', next);
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            const btn = document.getElementById('themeBtn');
+            if (saved === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="english.html" class="back-link">⬅ 返回目錄</a>
+
+    <div id="quiz-view">
+        <h1>Unit 8 Vocabulary Spelling Quiz</h1>
+        <p style="text-align:center; font-size: 1.15rem; color: var(--text-secondary); margin-top: -1rem; margin-bottom: 2rem;">
+            Fill in the blank with the correct word. Use the hint to help you!
+        </p>
+        <div id="quiz-container"></div>
+        <button class="submit-btn" onclick="checkResults()">提交測驗 (Check Results)</button>
+    </div>
+
+    <div id="results">
+        <h2 style="text-align:center; color: var(--accent-primary);">測驗結果 (Quiz Results)</h2>
+        <div class="score-box" id="score-summary"></div>
+        <div id="results-list"></div>
+
+        <button class="submit-btn" onclick="restartQuiz()" style="background: var(--text-secondary); box-shadow: none;">
+            重新作答 (Try Again)
+        </button>
+
+        <div style="margin-top: 40px; border-top: 2px solid var(--border-color); padding-top: 30px;">
+            <h3 style="color: var(--accent-primary); margin-bottom: 16px;">📊 歷史成績 (History Dashboard)</h3>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>時間 (Timestamp)</th>
+                        <th>分數 (Score)</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body"></tbody>
+            </table>
+            <button class="submit-btn" onclick="clearHistory()"
+                    style="background: var(--accent-danger); box-shadow: none; margin-top: 16px;">
+                清除紀錄 (Clear History)
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const HISTORY_KEY = 'unit8VocabQuizHistory';
+
+    const vocabData = [
+        { word: "concert",       sentence: "We went to a loud music ___ last night.",                  exp: "名詞：指一場音樂表演 (a musical performance)。" },
+        { word: "neatly",        sentence: "Please fold your clothes ___ and put them away.",          exp: "副詞：整齊地，修飾動詞 fold。" },
+        { word: "quietly",       sentence: "The students walked ___ through the library.",              exp: "副詞：安靜地，修飾動詞 walked。" },
+        { word: "patiently",     sentence: "The dog waited ___ for its owner to come home.",           exp: "副詞：耐心地，修飾動詞 waited。" },
+        { word: "carefully",     sentence: "Carry the glasses ___ so they don't break.",               exp: "副詞：小心地，修飾動詞 carry。" },
+        { word: "loudly",        sentence: "He spoke ___ so everyone at the back could hear.",         exp: "副詞：大聲地，修飾動詞 spoke。" },
+        { word: "clearly",       sentence: "The teacher explained the rule ___.",                      exp: "副詞：清楚地，修飾動詞 explained。" },
+        { word: "clap",          sentence: "The audience began to ___ after the show ended.",          exp: "動詞：拍手。" },
+        { word: "noise",         sentence: "There was a loud ___ coming from the kitchen.",            exp: "名詞：噪音，指令人不舒服的聲音。" },
+        { word: "way",           sentence: "Do you know the ___ to the park?",                         exp: "名詞：方向、路線。" },
+        { word: "event",         sentence: "The school sports day is a big ___.",                      exp: "名詞：活動或事件，通常是有計畫的。" },
+        { word: "have to",       sentence: "You ___ finish your homework before playing.",             exp: "片語：表示義務或必要，等同 must。" },
+        { word: "safari",        sentence: "We saw many lions on our African ___.",                    exp: "名詞：野生動物觀賞之旅。" },
+        { word: "rhino",         sentence: "The ___ has a very thick skin and a horn.",               exp: "名詞：犀牛，rhinoceros 的縮寫。" },
+        { word: "probably",      sentence: "It will ___ rain, so take an umbrella.",                  exp: "副詞：大概、很可能，表示高可能性。" },
+        { word: "grass",         sentence: "The cows are eating ___ in the field.",                   exp: "名詞：草。" },
+        { word: "permission",    sentence: "You need ___ to leave the classroom.",                    exp: "名詞：許可，被允許做某事。" },
+        { word: "example",       sentence: "Can you give me an ___ of an insect?",                   exp: "名詞：例子，代表某類事物的一個個案。" },
+        { word: "comfortably",   sentence: "The cat sat ___ on the soft sofa.",                      exp: "副詞：舒適地，修飾動詞 sat。" },
+        { word: "dream",         sentence: "I had a strange ___ about flying last night.",            exp: "名詞：夢，睡覺時腦海中出現的畫面。" },
+        { word: "happen",        sentence: "How did the accident ___?",                               exp: "動詞：發生，表示某事出現了。" },
+        { word: "finish",        sentence: "I will ___ my dinner in five minutes.",                   exp: "動詞：完成，到達某事的結尾。" },
+        { word: "wake up",       sentence: "I usually ___ at seven o'clock.",                         exp: "片語動詞：醒來，停止睡眠。" },
+        { word: "doorbell",      sentence: "I heard the ___ ring, so someone is here.",               exp: "名詞：門鈴，安裝在房子外的鈴。" },
+        { word: "rule",          sentence: "Always follow the safety ___ at school.",                 exp: "名詞：規則，規定什麼是允許的指示。" },
+        { word: "bite",          sentence: "Be careful, that dog might ___ you!",                     exp: "動詞：咬，用牙齒切入某物。" },
+        { word: "chase",         sentence: "The cat likes to ___ the mouse.",                         exp: "動詞：追逐，跑在某人或某物後面。" },
+        { word: "dark",          sentence: "Turn on the light, it is too ___ in here.",               exp: "形容詞：黑暗的，沒有光線。" },
+        { word: "litter",        sentence: "Do not throw ___ on the street.",                         exp: "名詞：垃圾，在公共場所亂扔的廢棄物。" },
+        { word: "lost",          sentence: "I got ___ in the big shopping mall.",                     exp: "形容詞：迷路的，找不到路。" },
+        { word: "kick",          sentence: "He tried to ___ the ball into the goal.",                 exp: "動詞：踢，用腳踢某物。" },
+        { word: "smash",         sentence: "Be careful not to ___ the window!",                      exp: "動詞：打破、粉碎，使某物碎裂。" },
+        { word: "awake",         sentence: "The baby is still ___ and won't sleep.",                  exp: "形容詞：醒著的，沒有在睡覺。" },
+        { word: "flashlight",    sentence: "Use a ___ to see in the dark cave.",                     exp: "名詞：手電筒，手持的小型電燈。" },
+        { word: "should",        sentence: "You ___ eat more vegetables to stay healthy.",            exp: "情態動詞：應該，用來給建議。" },
+        { word: "might",         sentence: "It ___ be cold today, so wear a jacket.",                 exp: "情態動詞：可能，表示不確定性。" },
+        { word: "follow",        sentence: "Please ___ the signs to find the exit.",                  exp: "動詞：跟隨、遵守。" },
+        { word: "advice",        sentence: "The doctor gave me some good ___.",                       exp: "名詞：建議，關於應該做什麼的意見（不可數）。" },
+        { word: "female",        sentence: "A hen is a ___ bird.",                                    exp: "形容詞：雌性的，女性的。" },
+        { word: "marathon",      sentence: "A ___ is a very long race.",                              exp: "名詞：馬拉松，一種長距離賽跑。" },
+        { word: "silver",        sentence: "She won a ___ medal for second place.",                   exp: "名詞 / 形容詞：銀色的，銀牌代表第二名。" },
+        { word: "gold",          sentence: "The winner received a ___ medal.",                        exp: "名詞 / 形容詞：金色的，金牌代表第一名。" },
+        { word: "medal",         sentence: "He wore his ___ proudly after the race.",                 exp: "名詞：獎牌，在體育比賽中頒發的獎勵。" },
+        { word: "championship",  sentence: "Our team won the school ___.",                            exp: "名詞：冠軍賽，找出最佳者的比賽。" },
+        { word: "reportedly",    sentence: "He is ___ the best player in the city.",                  exp: "副詞：據報導，根據傳言或新聞。" },
+        { word: "hobby",         sentence: "My favorite ___ is collecting stamps.",                   exp: "名詞：愛好，為樂趣而做的活動。" },
+        { word: "rating",        sentence: "That movie has a high ___ on the website.",               exp: "名詞：評分，顯示某物有多好的分數。" },
+        { word: "athlete",       sentence: "The ___ trained hard for the Olympic games.",             exp: "名詞：運動員，擅長體育的人。" }
+    ];
+
+    /* ── Hint Generator ── */
+    function generateHint(word) {
+        return word.split(' ').map(part => {
+            if (part.length <= 1) return part;
+            if (part.length === 2) return part[0] + '_';
+            return part[0] + '_'.repeat(part.length - 2) + part[part.length - 1];
+        }).join(' ');
+    }
+
+    /* ── Render Quiz ── */
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        vocabData.forEach((item, index) => {
+            const hint = generateHint(item.word);
+            const sentenceHTML = item.sentence.replace(
+                '___',
+                `<span class="hint">(${hint})</span>`
+            );
+            const div = document.createElement('div');
+            div.className = 'quiz-item';
+            div.innerHTML = `
+                <div class="sentence">${index + 1}. ${sentenceHTML}</div>
+                <input type="text" class="spell-input" id="input-${index}" placeholder="Type the missing word...">
+            `;
+            container.appendChild(div);
+        });
+        updateHistoryDisplay();
+    }
+
+    /* ── Check & Score ── */
+    function checkResults() {
+        let score = 0;
+        const resultsList = document.getElementById('results-list');
+        resultsList.innerHTML = '';
+
+        vocabData.forEach((item, index) => {
+            const userInput = (document.getElementById(`input-${index}`).value || '').trim();
+            const isCorrect = userInput.toLowerCase() === item.word.toLowerCase();
+            if (isCorrect) score++;
+
+            const filledSentence = item.sentence.replace(
+                '___',
+                `<u style="color:${isCorrect ? 'var(--accent-success)' : 'var(--accent-danger)'}; font-weight:bold;">
+                    ${userInput || '（未作答）'}
+                </u>`
+            );
+
+            const div = document.createElement('div');
+            div.className = `result-row ${isCorrect ? 'correct' : 'incorrect'}`;
+            div.innerHTML = `
+                <div class="result-label">${isCorrect ? '✅ 正確 (Correct)' : '❌ 錯誤 (Incorrect)'}</div>
+                <div style="font-size:1.05rem; margin-bottom:6px;">${index + 1}. ${filledSentence}</div>
+                <div style="font-size:0.92rem; color:var(--text-secondary);">
+                    提示 (Hint): <span style="font-family:monospace; color:var(--accent-primary); font-weight:bold;">${generateHint(item.word)}</span>
+                    &nbsp;|&nbsp;
+                    正確答案 (Answer): <strong style="color:var(--accent-success);">${item.word}</strong>
+                </div>
+                ${!isCorrect ? `<div class="explanation">💡 ${item.exp}</div>` : ''}
+            `;
+            resultsList.appendChild(div);
+        });
+
+        const pct = Math.round((score / vocabData.length) * 100);
+        document.getElementById('score-summary').innerHTML =
+            `${score} / ${vocabData.length} &nbsp;(${pct}%)`;
+
+        saveToHistory(score);
+        document.getElementById('quiz-view').style.display  = 'none';
+        document.getElementById('results').style.display    = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── History ── */
+    function saveToHistory(score) {
+        const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+        history.push({ date: new Date().toLocaleString(), score: `${score}/${vocabData.length}` });
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        updateHistoryDisplay();
+    }
+
+    function updateHistoryDisplay() {
+        const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+        const tbody = document.getElementById('history-body');
+        if (!tbody) return;
+        if (!history.length) {
+            tbody.innerHTML = '<tr><td colspan="2">尚無紀錄</td></tr>';
+            return;
+        }
+        tbody.innerHTML = [...history].reverse().map(entry => `
+            <tr>
+                <td>${entry.date}</td>
+                <td style="font-weight:bold; color:var(--accent-primary);">${entry.score}</td>
+            </tr>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm('確定要清除所有歷史紀錄嗎？')) {
+            localStorage.removeItem(HISTORY_KEY);
+            updateHistoryDisplay();
+        }
+    }
+
+    /* ── Restart ── */
+    function restartQuiz() {
+        document.getElementById('quiz-view').style.display = 'block';
+        document.getElementById('results').style.display   = 'none';
+        initQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>

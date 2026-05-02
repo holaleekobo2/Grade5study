@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 8 Vocabulary Quiz 2</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .quiz-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .quiz-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .sentence {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        .hint-text {
+            color: var(--accent-primary);
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .spell-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .spell-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .primary-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .primary-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        .secondary-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--text-secondary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+
+        .danger-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-danger);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+
+        .summary-card {
+            text-align: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .summary-score {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+        }
+
+        .summary-feedback {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .res-row {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        .res-correct { border-left: 5px solid var(--accent-success); }
+        .res-incorrect { border-left: 5px solid var(--accent-danger); }
+
+        .res-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .tag-correct {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-success);
+        }
+
+        .tag-wrong {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-danger);
+        }
+
+        .explanation-box {
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .history-table th {
+            background: var(--bg-secondary);
+            font-weight: bold;
+        }
+
+        #results-view { display: none; }
+
+        .back-link {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--accent-primary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn  = document.getElementById('themeBtn');
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            btn.innerHTML = next === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+            localStorage.setItem('theme', next);
+        }
+        window.addEventListener('DOMContentLoaded', function () {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            const btn = document.getElementById('themeBtn');
+            if (saved === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+        });
+    </script>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <a href="english.html" class="back-link">⬅ 返回目錄</a>
+
+    <!-- Quiz View -->
+    <div id="quiz-view">
+        <h1>Unit 8 Vocabulary Quiz 2</h1>
+        <p style="text-align:center; font-size:1.15rem; color:var(--text-secondary); margin-top:-1rem; margin-bottom:2rem;">
+            Fill in the blanks to complete the sentences.
+        </p>
+        <div id="questions-list"></div>
+        <button class="primary-btn" onclick="processResults()">提交測驗 (Finish &amp; Check Results)</button>
+    </div>
+
+    <!-- Results View -->
+    <div id="results-view">
+        <div class="summary-card">
+            <div class="summary-score" id="score-text">0 / 0</div>
+            <div class="summary-feedback" id="feedback-text"></div>
+        </div>
+
+        <div id="review-section"></div>
+
+        <button class="primary-btn" onclick="restartQuiz()">重新作答 (Try Again)</button>
+
+        <div style="margin-top:40px; border-top:2px solid var(--border-color); padding-top:30px;">
+            <h3 style="color:var(--accent-primary); margin-bottom:16px;">📊 歷史成績 (History Dashboard)</h3>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>時間 (Date)</th>
+                        <th>分數 (Score)</th>
+                        <th>百分比 (Percent)</th>
+                    </tr>
+                </thead>
+                <tbody id="history-rows"></tbody>
+            </table>
+            <button class="danger-btn" onclick="clearHistory()">清除紀錄 (Reset History)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const HISTORY_KEY = 'unit8VocabQuiz2History';
+
+    const vocabularyList = [
+        { w: "concert",      s: "The rock band performed a loud ___ for thousands of fans.",        g: "名詞：指一場公開的音樂表演 (a public musical performance)。" },
+        { w: "neatly",       s: "She wrote her name ___ at the top of the page.",                   g: "副詞：整齊地、整潔地，修飾動詞 wrote。" },
+        { w: "quietly",      s: "Please talk ___ in the library so others can study.",              g: "副詞：安靜地，修飾動詞 talk。" },
+        { w: "patiently",    s: "The students waited ___ in line for the school bus.",              g: "副詞：耐心地，修飾動詞 waited。" },
+        { w: "carefully",    s: "You must hold the baby bird very ___.",                            g: "副詞：小心地，修飾動詞 hold。" },
+        { w: "loudly",       s: "The alarm clock rang ___ at six o'clock.",                         g: "副詞：大聲地，修飾動詞 rang。" },
+        { w: "clearly",      s: "Speak ___ so that everyone can understand you.",                   g: "副詞：清楚地，修飾動詞 speak。" },
+        { w: "clap",         s: "The audience began to ___ when the play finished.",                g: "動詞：拍手，將雙手掌合擊。" },
+        { w: "noise",        s: "There was so much ___ outside that I couldn't sleep.",             g: "名詞：噪音，令人不舒服的聲音。" },
+        { w: "way",          s: "Excuse me, which ___ is the nearest train station?",               g: "名詞：路線、方向。" },
+        { w: "event",        s: "The New Year party is the biggest ___ of the winter.",             g: "名詞：事件或活動，通常是有計畫的。" },
+        { w: "have to",      s: "In Taiwan, students ___ wear a uniform to school.",                g: "片語：表達義務或必要，等同 must。" },
+        { w: "safari",       s: "We went on a ___ to see lions and giraffes in the wild.",          g: "名詞：野生動物觀賞之旅。" },
+        { w: "rhino",        s: "A ___ is a heavy animal with one or two horns on its nose.",      g: "名詞：犀牛，rhinoceros 的縮寫。" },
+        { w: "probably",     s: "I think it will ___ be sunny tomorrow, but I'm not sure.",        g: "副詞：大概、很可能，表示高度可能性。" },
+        { w: "grass",        s: "The soccer players ran across the green ___.",                     g: "名詞：草，生長在草坪上的綠色植物。" },
+        { w: "permission",   s: "Did you get ___ from your parents to go on the trip?",            g: "名詞：許可，允許某人做某事。" },
+        { w: "example",      s: "Can you show me an ___ of how to solve this math problem?",       g: "名詞：例子，代表某類事物的一個個案。" },
+        { w: "comfortably",  s: "The cat was sleeping ___ on the soft rug.",                       g: "副詞：舒適地，修飾動詞 sleeping。" },
+        { w: "dream",        s: "I had a wonderful ___ about being a superhero.",                   g: "名詞：夢，睡覺時大腦產生的畫面。" },
+        { w: "happen",       s: "What time did the accident ___ yesterday?",                        g: "動詞：發生、出現。" },
+        { w: "finish",       s: "Make sure you ___ your dinner before having dessert.",             g: "動詞：完成，到達某事的結尾。" },
+        { w: "wake up",      s: "It is hard to ___ early on Monday mornings.",                     g: "片語動詞：醒來，停止睡眠。" },
+        { w: "doorbell",     s: "I ran to the door when I heard the ___ ring.",                    g: "名詞：門鈴，裝在房子外面的鈴。" },
+        { w: "rule",         s: "The most important school ___ is to be kind to others.",          g: "名詞：規則，說明什麼可以或不可以做的指示。" },
+        { w: "bite",         s: "Don't put your hand near the cage; the hamster might ___.",       g: "動詞：咬，用牙齒切入某物。" },
+        { w: "chase",        s: "Dogs love to ___ tennis balls across the park.",                  g: "動詞：追逐，跑在某人或某物後面試圖抓住它。" },
+        { w: "dark",         s: "I need a lamp because it is getting ___ in this room.",           g: "形容詞：黑暗的，缺乏光線。" },
+        { w: "litter",       s: "Please pick up your ___ and put it in the trash can.",            g: "名詞：垃圾，在公共場所丟棄的廢棄物。" },
+        { w: "lost",         s: "Check the map so we don't get ___ in the city.",                  g: "形容詞：迷路的，找不到方向或位置。" },
+        { w: "kick",         s: "You should ___ the ball with the side of your foot.",             g: "動詞：踢，用腳打某物。" },
+        { w: "smash",        s: "Be careful! If you drop that vase, it will ___.",                 g: "動詞：打破、粉碎，猛力使某物碎裂。" },
+        { w: "awake",        s: "I was still ___ at midnight because of the noise.",               g: "形容詞：醒著的，不在睡覺。" },
+        { w: "flashlight",   s: "We used a ___ to see inside the dark tent.",                     g: "名詞：手電筒，手持的小型電燈。" },
+        { w: "should",       s: "You ___ say 'thank you' when someone helps you.",                 g: "情態動詞：應該，用來給建議或說明正確的行為。" },
+        { w: "might",        s: "Take an umbrella because it ___ rain later.",                     g: "情態動詞：可能，表示不確定的可能性。" },
+        { w: "follow",       s: "The ducklings always ___ their mother to the pond.",              g: "動詞：跟隨、跟在後面移動。" },
+        { w: "advice",       s: "My teacher gave me some great ___ on how to study.",              g: "名詞：建議，關於應該做什麼的意見（不可數名詞）。" },
+        { w: "female",       s: "A cow is a ___ animal, while a bull is male.",                   g: "形容詞：雌性的、女性的。" },
+        { w: "marathon",     s: "Running a ___ requires a lot of training and energy.",            g: "名詞：馬拉松，42 公里的長距離賽跑。" },
+        { w: "silver",       s: "The person who comes in second place wins a ___ medal.",          g: "名詞 / 形容詞：銀色的，銀牌代表第二名。" },
+        { w: "gold",         s: "First place winners usually receive a ___ medal.",                g: "名詞 / 形容詞：金色的，金牌代表第一名。" },
+        { w: "medal",        s: "The athlete wore her Olympic ___ around her neck.",               g: "名詞：獎牌，在體育比賽中頒發的金屬圓牌。" },
+        { w: "championship", s: "Our school soccer team won the district ___.",                    g: "名詞：冠軍賽，決定最佳者的高水準比賽。" },
+        { w: "reportedly",   s: "The famous singer is ___ staying at this hotel.",                g: "副詞：據報導，根據傳言或新聞（尚未確認）。" },
+        { w: "hobby",        s: "Playing chess is a popular ___ for many children.",              g: "名詞：愛好，在空閒時間為樂趣而做的活動。" },
+        { w: "rating",       s: "This video game has a five-star ___ from players.",              g: "名詞：評分，顯示某物有多好的分數或等級。" },
+        { w: "athlete",      s: "A professional ___ must eat healthy food and exercise daily.",   g: "名詞：運動員，在體育方面非常優秀的人。" }
+    ];
+
+    /* ── Hint Generator ── */
+    function getHint(word) {
+        return word.split(' ').map(part => {
+            if (part.length <= 1) return part;
+            if (part.length === 2) return part[0] + '_';
+            return part[0] + '_'.repeat(part.length - 2) + part[part.length - 1];
+        }).join(' ');
+    }
+
+    /* ── Render Quiz ── */
+    function renderQuiz() {
+        const list = document.getElementById('questions-list');
+        list.innerHTML = vocabularyList.map((item, i) => `
+            <div class="quiz-item">
+                <div class="sentence">${i + 1}. ${item.s.replace('___', `<span class="hint-text">${getHint(item.w)}</span>`)}</div>
+                <input type="text" class="spell-input" id="q-${i}" placeholder="Type the missing word..." autocomplete="off">
+            </div>
+        `).join('');
+    }
+
+    /* ── Process Results ── */
+    function processResults() {
+        let correctCount = 0;
+        const reviewParts = [];
+
+        vocabularyList.forEach((item, i) => {
+            const userInput = (document.getElementById(`q-${i}`).value || '').trim();
+            const isCorrect = userInput.toLowerCase() === item.w.toLowerCase();
+            if (isCorrect) correctCount++;
+
+            const answerColour = isCorrect ? 'var(--accent-success)' : 'var(--accent-danger)';
+            const filledSentence = item.s.replace(
+                '___',
+                `<u style="color:${answerColour}; font-weight:bold;">${userInput || '（未作答）'}</u>`
+            );
+
+            reviewParts.push(`
+                <div class="res-row ${isCorrect ? 'res-correct' : 'res-incorrect'}">
+                    <span class="res-tag ${isCorrect ? 'tag-correct' : 'tag-wrong'}">
+                        ${isCorrect ? '✅ 正確 (Correct)' : '❌ 錯誤 (Incorrect)'}
+                    </span>
+                    <p style="margin:6px 0;"><strong>${i + 1}.</strong> ${filledSentence}</p>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:4px 0;">
+                        提示 (Hint): <span style="font-family:monospace; color:var(--accent-primary); font-weight:700;">${getHint(item.w)}</span>
+                        &nbsp;|&nbsp;
+                        正確答案: <strong style="color:var(--accent-success);">${item.w}</strong>
+                    </p>
+                    ${!isCorrect ? `<div class="explanation-box">💡 ${item.g}</div>` : ''}
+                </div>
+            `);
+        });
+
+        const total    = vocabularyList.length;
+        const pct      = Math.round((correctCount / total) * 100);
+        const perfect  = correctCount === total;
+
+        document.getElementById('score-text').textContent    = `${correctCount} / ${total} (${pct}%)`;
+        document.getElementById('feedback-text').textContent = perfect
+            ? '太棒了！全部答對！🎉 Perfect Score!'
+            : '繼續加油！檢視下方錯題解析。Keep practicing!';
+        document.getElementById('review-section').innerHTML  = reviewParts.join('');
+
+        saveHistory(correctCount, total, pct);
+
+        document.getElementById('quiz-view').style.display    = 'none';
+        document.getElementById('results-view').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── History ── */
+    function saveHistory(score, total, pct) {
+        const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+        history.push({
+            date:    new Date().toLocaleString(),
+            score:   `${score}/${total}`,
+            percent: pct + '%'
+        });
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        displayHistory();
+    }
+
+    function displayHistory() {
+        const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+        const tbody   = document.getElementById('history-rows');
+        if (!tbody) return;
+        if (!history.length) {
+            tbody.innerHTML = '<tr><td colspan="3">尚無紀錄</td></tr>';
+            return;
+        }
+        tbody.innerHTML = [...history].reverse().map(e => `
+            <tr>
+                <td>${e.date}</td>
+                <td>${e.score}</td>
+                <td><strong style="color:var(--accent-primary);">${e.percent}</strong></td>
+            </tr>
+        `).join('');
+    }
+
+    function clearHistory() {
+        if (confirm('確定要清除所有歷史紀錄嗎？')) {
+            localStorage.removeItem(HISTORY_KEY);
+            displayHistory();
+        }
+    }
+
+    /* ── Restart ── */
+    function restartQuiz() {
+        document.getElementById('results-view').style.display = 'none';
+        document.getElementById('quiz-view').style.display    = 'block';
+        renderQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── Init ── */
+    renderQuiz();
+    displayHistory();
+</script>
+
+</body>
+</html>
