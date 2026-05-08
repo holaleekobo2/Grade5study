@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文語法特訓：Is/Are vs Do/Does Retest 1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .intro {
+            background: var(--bg-secondary);
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--accent-primary);
+        }
+        .intro strong {
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+        }
+        .section-title {
+            margin-top: 40px;
+            border-left: 5px solid var(--accent-secondary);
+            padding-left: 15px;
+            color: var(--text-primary);
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 12px;
+            margin-top: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        .result-item {
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .correct { 
+            background: rgba(16, 185, 129, 0.1); 
+            border-color: var(--accent-success);
+        }
+        .wrong { 
+            background: rgba(239, 68, 68, 0.1); 
+            border-color: var(--accent-danger);
+        }
+        .explanation {
+            display: block;
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--accent-primary);
+        }
+        .score-box {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow);
+        }
+        .score-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div class="theme-toggle">
+    <button id="themeBtn" onclick="toggleTheme()"><span>🌙</span> 暗色模式</button>
+</div>
+
+<div class="container">
+    <p><a href="english.html" class="back-home">⬅ 返回目錄</a></p>
+    <h1>英文語法特訓：Is vs Does 強化篇</h1>
+    
+    <div class="intro">
+        <strong>📚 學習重點回顧：</strong><br>
+        1. <strong>Do / Does</strong> 是助動詞，用來詢問「動作」。句子裡一定要有<strong>動詞原形</strong>。<br>
+        2. <strong>Is / Are</strong> 是繫動詞，用來詢問「狀態」。句子裡通常是<strong>形容詞、名詞或地點</strong>。<br>
+        3. 記得 <strong>Does</strong> 是小偷，會偷走動詞的 <strong>s</strong>！
+    </div>
+
+    <form id="quizForm">
+        <!-- Part A -->
+        <h2 class="section-title">Part A: Fill in the Blanks (Is, Are, Do, Does)</h2>
+        <div class="section">
+            <div class="question">
+                <p>1. ________ your sister like spicy food?</p>
+                <select name="a1" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+            <div class="question">
+                <p>2. ________ the library open on Sundays?</p>
+                <select name="a2" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+            <div class="question">
+                <p>3. ________ they going to the zoo tomorrow?</p>
+                <select name="a3" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+            <div class="question">
+                <p>4. ________ the train leave at 9:00 a.m.?</p>
+                <select name="a4" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+            <div class="question">
+                <p>5. ________ those shoes expensive?</p>
+                <select name="a5" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+            <div class="question">
+                <p>6. ________ the students finish their homework every day?</p>
+                <select name="a6" required>
+                    <option value="">選擇...</option>
+                    <option value="Is">Is</option>
+                    <option value="Are">Are</option>
+                    <option value="Do">Do</option>
+                    <option value="Does">Does</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Part B -->
+        <h2 class="section-title">Part B: Find and Fix the Mistake</h2>
+        <div class="section">
+            <div class="question">
+                <p>7. What time is the lesson finish? (改寫正確句子)</p>
+                <input type="text" name="b1" placeholder="輸入正確的句子..." required>
+            </div>
+            <div class="question">
+                <p>8. Does the weather cold today? (改寫正確句子)</p>
+                <input type="text" name="b2" placeholder="輸入正確的句子..." required>
+            </div>
+            <div class="question">
+                <p>9. What time does the shops open? (改寫正確句子)</p>
+                <input type="text" name="b3" placeholder="輸入正確的句子..." required>
+            </div>
+            <div class="question">
+                <p>10. Is your father work in an office? (改寫正確句子)</p>
+                <input type="text" name="b4" placeholder="輸入正確的句子..." required>
+            </div>
+        </div>
+
+        <!-- Part C -->
+        <h2 class="section-title">Part C: Sentence Transformation</h2>
+        <div class="section">
+            <div class="question">
+                <p>11. The panda eats bamboo. (改為問句)</p>
+                <input type="text" name="c1" placeholder="輸入問句..." required>
+            </div>
+            <div class="question">
+                <p>12. The movie is very long. (改為問句)</p>
+                <input type="text" name="c2" placeholder="輸入問句..." required>
+            </div>
+            <div class="question">
+                <p>13. The buses arrive at noon. (改為問句)</p>
+                <input type="text" name="c3" placeholder="輸入問句..." required>
+            </div>
+        </div>
+
+        <button type="button" id="submitBtn" onclick="checkAnswers()">提交答案並核對解析</button>
+    </form>
+
+    <div id="result" style="display: none;">
+        <div class="score-box">
+            <div class="score-text" id="scoreDisplay"></div>
+        </div>
+        <div id="details"></div>
+    </div>
+</div>
+
+<script>
+    const correctData = {
+        a1: { ans: "Does", exp: "主語是單數 (sister)，且有動作動詞 like，所以用 Does。" },
+        a2: { ans: "Is", exp: "這裡詢問的是 library 的狀態 (open 在此為形容詞)，沒有動作動詞，所以用 Is。" },
+        a3: { ans: "Are", exp: "這是現在進行式 (Are they going)，表示即將發生的動作。" },
+        a4: { ans: "Does", exp: "主語單數 (train)，有動作動詞 leave，用 Does。" },
+        a5: { ans: "Are", exp: "主語複數 (shoes)，expensive 是形容詞，所以用 Are。" },
+        a6: { ans: "Do", exp: "主語複數 (students)，有動作動詞 finish，用 Do。" },
+        
+        b1: { ans: "What time does the lesson finish?", exp: "因為有動作 finish，問句要用 does 代替 is。" },
+        b2: { ans: "Is the weather cold today?", exp: "cold 是形容詞而非動詞，所以應該用 Is。" },
+        b3: { ans: "What time do the shops open?", exp: "shops 是複數，助動詞應該用 do 而非 does。" },
+        b4: { ans: "Does your father work in an office?", exp: "因為有動作 work，問句要用 does 代替 is。" },
+        
+        c1: { ans: "Does the panda eat bamboo?", exp: "主語 panda 是單數，使用 Does，且動詞 eats 要變回原形 eat。" },
+        c2: { ans: "Is the movie very long?", exp: "句子原本使用 is，直接將 is 移到句首即可。" },
+        c3: { ans: "Do the buses arrive at noon?", exp: "主語 buses 是複數，使用 Do。" }
+    };
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const btn = document.getElementById('themeBtn');
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        btn.innerHTML = newTheme === 'dark' ? '<span>☀️</span> 亮色模式' : '<span>🌙</span> 暗色模式';
+        localStorage.setItem('theme', newTheme);
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const btn = document.getElementById('themeBtn');
+        if (savedTheme === 'dark') btn.innerHTML = '<span>☀️</span> 亮色模式';
+    });
+
+    function cleanString(str) {
+        return str.toLowerCase().replace(/[?.!]$/, "").trim();
+    }
+
+    function checkAnswers() {
+        const form = document.getElementById('quizForm');
+        const detailsDiv = document.getElementById('details');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        
+        let score = 0;
+        let total = Object.keys(correctData).length;
+        let html = '';
+
+        for (let key in correctData) {
+            const userVal = form[key].value;
+            const target = correctData[key].ans;
+            const isCorrect = cleanString(userVal) === cleanString(target);
+            
+            if (isCorrect) score++;
+
+            html += `
+                <div class="result-item ${isCorrect ? 'correct' : 'wrong'}">
+                    <strong style="color: var(--text-primary);">第 ${key.substring(1)} 題: ${isCorrect ? '✅ 正確' : '❌ 錯誤'}</strong><br>
+                    <p style="margin-top: 8px;">你的答案: <i style="color: var(--text-secondary);">${userVal || "(空白)"}</i></p>
+                    <p style="font-weight: bold; color: var(--accent-primary);">正確答案: ${target}</p>
+                    <span class="explanation"><strong>解析：</strong>${correctData[key].exp}</span>
+                </div>
+            `;
+        }
+
+        scoreDisplay.innerText = `得分：${score} / ${total}`;
+        detailsDiv.innerHTML = html;
+        document.getElementById('result').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
